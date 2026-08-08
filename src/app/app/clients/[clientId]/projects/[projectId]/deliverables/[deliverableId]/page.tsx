@@ -9,6 +9,7 @@ import { createServerClientService } from "@/modules/clients/server";
 import {
   archiveDeliverableAction,
   createTaskAction,
+  requestApprovalAction,
   updateDeliverableAction,
 } from "@/modules/core/actions";
 import { auroraWorkspaceId } from "@/modules/core/contracts";
@@ -16,6 +17,7 @@ import { createServerDeliverableService } from "@/modules/deliverables/server";
 import { createServerProjectService } from "@/modules/projects/server";
 import { listWorkspaceMembers } from "@/modules/tasks/members";
 import { createServerTaskService } from "@/modules/tasks/server";
+import { createServerApprovalService } from "@/modules/approvals/server";
 
 export default async function DeliverablePage({
   params,
@@ -31,9 +33,10 @@ export default async function DeliverablePage({
       (await createServerDeliverableService()).get(context, { id: deliverableId }),
     ]);
     if (project.clientId !== client.id || deliverable.projectId !== project.id) notFound();
-    const [tasks, members] = await Promise.all([
+    const [tasks, members, approvals] = await Promise.all([
       (await createServerTaskService()).list(context, { deliverableId }),
       listWorkspaceMembers(context),
+      (await createServerApprovalService()).list(context, { limit: 20 }),
     ]);
     const admin = context.role === "ADMIN";
     const memberOptions = [
@@ -151,6 +154,32 @@ export default async function DeliverablePage({
               </Card>
             </div>
           )}
+          <Card>
+            <h2 className="core-section-title">Aprovação interna</h2>
+            {approvals.some(
+              (approval) =>
+                approval.deliverableId === deliverable.id && approval.status === "PENDING",
+            ) ? (
+              <p>Esta entrega já aguarda uma decisão interna.</p>
+            ) : admin ? (
+              <EntityForm
+                action={requestApprovalAction}
+                confirmMessage="Solicitar revisão interna desta entrega?"
+                fields={[
+                  {
+                    defaultValue: deliverable.id,
+                    label: "",
+                    name: "deliverableId",
+                    type: "hidden",
+                  },
+                  { label: "Nota para revisão", name: "note", required: true, type: "textarea" },
+                ]}
+                submitLabel="Solicitar aprovação"
+              />
+            ) : (
+              <p>Somente ADMIN pode solicitar aprovação.</p>
+            )}
+          </Card>
           <section className="task-list">
             {tasks.length ? (
               tasks.map((task) => (

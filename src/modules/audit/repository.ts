@@ -6,7 +6,7 @@ import type { AuthorizationContext } from "../authorization/service";
 export type AuditEvent = Readonly<{
   action: string;
   entityId: string;
-  entityType: "client" | "deliverable" | "project" | "task";
+  entityType: "approval" | "client" | "deliverable" | "project" | "task" | "task_update";
   metadata?: Readonly<Record<string, boolean | number | string | null>>;
 }>;
 

@@ -8,6 +8,8 @@ import { createServerClientService } from "../clients/server";
 import { createServerProjectService } from "../projects/server";
 import { createServerDeliverableService } from "../deliverables/server";
 import { createServerTaskService } from "../tasks/server";
+import { createServerApprovalService } from "../approvals/server";
+import { createServerTaskUpdateService } from "../updates/server";
 import { auroraWorkspaceId, type CoreActionState } from "./contracts";
 
 function values(formData: FormData) {
@@ -145,5 +147,38 @@ export async function updateTaskAction(_state: CoreActionState, data: FormData) 
 export async function archiveTaskAction(_state: CoreActionState, data: FormData) {
   return run(data, async (context) =>
     (await createServerTaskService()).archive(context, { id: text(data, "id") }),
+  );
+}
+export async function createTaskUpdateAction(_state: CoreActionState, data: FormData) {
+  return run(data, async (context) =>
+    (await createServerTaskUpdateService()).create(context, {
+      body: text(data, "body"),
+      taskId: text(data, "taskId"),
+    }),
+  );
+}
+export async function requestApprovalAction(_state: CoreActionState, data: FormData) {
+  return run(data, async (context) =>
+    (await createServerApprovalService()).request(context, {
+      deliverableId: text(data, "deliverableId"),
+      note: text(data, "note"),
+    }),
+  );
+}
+export async function decideApprovalAction(_state: CoreActionState, data: FormData) {
+  return run(data, async (context) =>
+    (await createServerApprovalService()).decide(context, {
+      id: text(data, "id"),
+      note: text(data, "note"),
+      status: text(data, "status"),
+    }),
+  );
+}
+export async function resetApprovalAction(_state: CoreActionState, data: FormData) {
+  return run(data, async (context) =>
+    (await createServerApprovalService()).reset(context, {
+      id: text(data, "id"),
+      note: text(data, "note"),
+    }),
   );
 }

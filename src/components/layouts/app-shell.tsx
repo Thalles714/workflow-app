@@ -16,7 +16,7 @@ const navigation: ReadonlyArray<{
   { href: "/app/my-work", icon: "✓", label: "Meu Trabalho" },
   { href: "/app/clients", icon: "◇", label: "Clientes" },
   { href: "/app#projetos", icon: "▱", label: "Projetos" },
-  { count: "3", href: "/app#aprovacoes", icon: "◉", label: "Aprovações" },
+  { count: "3", href: "/app/approvals", icon: "◉", label: "Aprovações" },
 ];
 
 export function AppShell({ children, footer }: { children: ReactNode; footer: ReactNode }) {

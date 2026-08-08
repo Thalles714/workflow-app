@@ -5,12 +5,17 @@ import { Breadcrumbs, CoreShell, PageHeading } from "@/components/core/core-shel
 import { Alert, Badge, Card } from "@/components/ui";
 import { createAuthorizationContext } from "@/modules/authorization/server";
 import { createServerClientService } from "@/modules/clients/server";
-import { archiveTaskAction, updateTaskAction } from "@/modules/core/actions";
+import {
+  archiveTaskAction,
+  createTaskUpdateAction,
+  updateTaskAction,
+} from "@/modules/core/actions";
 import { auroraWorkspaceId } from "@/modules/core/contracts";
 import { createServerDeliverableService } from "@/modules/deliverables/server";
 import { createServerProjectService } from "@/modules/projects/server";
 import { listWorkspaceMembers } from "@/modules/tasks/members";
 import { createServerTaskService } from "@/modules/tasks/server";
+import { createServerTaskUpdateService } from "@/modules/updates/server";
 
 export default async function TaskPage({
   params,
@@ -20,12 +25,13 @@ export default async function TaskPage({
   const { clientId, deliverableId, projectId, taskId } = await params;
   const context = await createAuthorizationContext(auroraWorkspaceId);
   try {
-    const [client, project, deliverable, task, members] = await Promise.all([
+    const [client, project, deliverable, task, members, updates] = await Promise.all([
       (await createServerClientService()).get(context, { id: clientId }),
       (await createServerProjectService()).get(context, { id: projectId }),
       (await createServerDeliverableService()).get(context, { id: deliverableId }),
       (await createServerTaskService()).get(context, { id: taskId }),
       listWorkspaceMembers(context),
+      (await createServerTaskUpdateService()).list(context, { taskId, limit: 20 }),
     ]);
     if (
       project.clientId !== client.id ||
@@ -145,6 +151,26 @@ export default async function TaskPage({
               {admin && <ArchiveForm action={archiveTaskAction} id={task.id} />}
             </Card>
           )}
+          <Card>
+            <h2 className="core-section-title">Atualizações</h2>
+            <EntityForm
+              action={createTaskUpdateAction}
+              fields={[
+                { defaultValue: task.id, label: "", name: "taskId", type: "hidden" },
+                { label: "Atualização curta", name: "body", required: true, type: "textarea" },
+              ]}
+              submitLabel="Registrar atualização"
+            />
+            {updates.length ? (
+              <ul>
+                {updates.map((update) => (
+                  <li key={update.id}>{update.body}</li>
+                ))}
+              </ul>
+            ) : (
+              <p>Sem atualizações registradas.</p>
+            )}
+          </Card>
         </div>
       </CoreShell>
     );
