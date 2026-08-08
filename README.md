@@ -90,6 +90,8 @@ O roteiro ensaiável dura cerca de 3–5 minutos e está em [`docs/demo/demo-scr
 
 Para uma demonstração pública, use `/demo`: é intencionalmente estática e de leitura. Isso permite avaliar a hierarquia, a Central de Atenção e o detalhe de projeto sem distribuir uma conta compartilhada nem expor uma superfície de alteração.
 
+O roteiro público e seu mapa de telas estão em [`docs/demo/public-tour.md`](./docs/demo/public-tour.md).
+
 ## Deploy e custo
 
 O objetivo é manter o projeto em **R$0** com GitHub Actions, Vercel Hobby e Supabase Free, respeitando a condição de uso pessoal/não comercial do Hobby. Limites, variáveis, migrations, smoke e rollback estão documentados em [`docs/deployment.md`](./docs/deployment.md).
