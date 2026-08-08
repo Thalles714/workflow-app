@@ -1,0 +1,58 @@
+name: Quality
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+# The workflow needs only repository contents. It never receives deployment or
+# Supabase credentials; production changes are an explicit, human-controlled step.
+permissions:
+  contents: read
+
+concurrency:
+  group: quality-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: Lint, types, tests and build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      # Valid build-time placeholders only. Real public configuration belongs in
+      # the hosting provider environment, never in this workflow or repository.
+      NEXT_PUBLIC_APP_URL: https://ci.workflow.invalid
+      NEXT_PUBLIC_SUPABASE_URL: https://ci.supabase.invalid
+      NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ci-public-placeholder
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Enable pnpm through Corepack
+        run: corepack enable
+
+      - name: Install locked dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Check formatting
+        run: pnpm format:check
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Type-check
+        run: pnpm typecheck
+
+      - name: Run unit and integration tests
+        run: pnpm test
+
+      - name: Build production bundle
+        run: pnpm build
