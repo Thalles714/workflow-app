@@ -1040,6 +1040,56 @@ p {
     transform: translateX(4px);
   }
 }
+
+/* Clean theme — replaces the temporary Alloy colour fields at the user's request. */
+body {
+  background: var(--canvas);
+}
+.app-sidebar,
+.workspace-switch,
+.ui-card,
+.entity-card,
+.entity-card--blue,
+.entity-card--aqua,
+.project-metric,
+.project-column,
+.project-column:nth-child(2),
+.project-column:nth-child(3),
+.project-column:nth-child(4),
+.project-filters,
+.hero-summary > div,
+.hero-summary > div:nth-child(2),
+.hero-summary > div:last-child {
+  background: var(--surface);
+}
+.operation-hero {
+  background: var(--surface-raised);
+  box-shadow: var(--shadow-sm);
+}
+.operation-hero::before,
+.operation-hero::after,
+.metric-card::after {
+  display: none;
+}
+.login-shell__visual {
+  border-left: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--ink);
+}
+.login-thesis .eyebrow,
+.login-thesis > p {
+  color: var(--subtle);
+}
+.mini-signal {
+  background: var(--surface-raised);
+  color: var(--ink);
+  box-shadow: var(--shadow-xs);
+}
+.ui-button--brand,
+.workspace-logo,
+.ui-avatar {
+  background: var(--primary);
+}
 @media (max-width: 900px) {
   :root {
     --sidebar: 220px;
@@ -1372,6 +1422,8 @@ p {
   width: min(calc(100% - 64px), 1380px);
   margin: 0 auto;
   padding: 28px 0 72px;
+  display: grid;
+  gap: 16px;
 }
 .core-breadcrumbs {
   display: flex;

@@ -15,7 +15,7 @@ const navigation: ReadonlyArray<{
   { count: "4", href: "/app", icon: "⌁", label: "Painel" },
   { href: "/app/my-work", icon: "✓", label: "Meu Trabalho" },
   { href: "/app/clients", icon: "◇", label: "Clientes" },
-  { href: "/app#projetos", icon: "▱", label: "Projetos" },
+  { href: "/app/clients", icon: "▱", label: "Projetos" },
   { count: "3", href: "/app/approvals", icon: "◉", label: "Aprovações" },
 ];
 
