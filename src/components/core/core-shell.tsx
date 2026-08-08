@@ -4,9 +4,12 @@ import type { ReactNode } from "react";
 import { AppShell } from "../layouts/app-shell";
 import { logout } from "../../modules/auth/actions";
 import { requirePageUser } from "../../modules/auth/guard";
+import { createAuthorizationContext } from "../../modules/authorization/server";
+import { auroraWorkspaceId } from "../../modules/core/contracts";
 
 export async function CoreShell({ children }: { children: ReactNode }) {
-  await requirePageUser();
+  const user = await requirePageUser();
+  const context = await createAuthorizationContext(auroraWorkspaceId);
   return (
     <AppShell
       footer={
@@ -16,6 +19,8 @@ export async function CoreShell({ children }: { children: ReactNode }) {
           </button>
         </form>
       }
+      roleLabel={context.role === "ADMIN" ? "Administrador" : "Membro"}
+      userLabel={user.email ?? "Conta demo"}
     >
       {children}
     </AppShell>

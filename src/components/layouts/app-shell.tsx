@@ -19,7 +19,17 @@ const navigation: ReadonlyArray<{
   { count: "3", href: "/app/approvals", icon: "◉", label: "Aprovações" },
 ];
 
-export function AppShell({ children, footer }: { children: ReactNode; footer: ReactNode }) {
+export function AppShell({
+  children,
+  footer,
+  roleLabel,
+  userLabel,
+}: {
+  children: ReactNode;
+  footer: ReactNode;
+  roleLabel: string;
+  userLabel: string;
+}) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [mobile, setMobile] = useState(false);
@@ -102,10 +112,10 @@ export function AppShell({ children, footer }: { children: ReactNode; footer: Re
           ))}
         </nav>
         <div className="sidebar-footer">
-          <Avatar label="Thalles Martins" size="sm" />
+          <Avatar label={userLabel} size="sm" />
           <span>
-            <b>Thalles Martins</b>
-            <small>Administrador</small>
+            <b>{userLabel}</b>
+            <small>{roleLabel}</small>
           </span>
           {footer}
         </div>
