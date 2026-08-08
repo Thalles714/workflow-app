@@ -14,7 +14,7 @@ O repositório local está em:
 
 Antes de propor qualquer fase ou tecnologia, analise integralmente o conteúdo relevante do repositório. Considere os arquivos abaixo fontes de verdade, nesta ordem de precedência:
 
-1. `workflow-briefing.md` — fonte principal para produto, domínio, escopo, segurança e definição de pronto.
+1. `docs/project/briefing.md` — fonte principal para produto, domínio, escopo, segurança e definição de pronto.
 2. `assets/design_system/design_system.html` — **base visual obrigatória** para todas as telas e componentes.
 3. `assets/templates/` — referências secundárias de composição, navegação, dashboards, listas, sidebars e movimento. Elas podem inspirar estrutura, mas nunca substituir ou contradizer o design system oficial.
 4. `docs/research/work-management-references.md` e quaisquer outros arquivos/pastas com referências a Asana, Jira, monday.com ou produtos semelhantes — referências funcionais e de arquitetura de informação, não de identidade visual.
@@ -295,4 +295,3 @@ Seu plano está pronto somente se:
 - o fluxo dourado pode ser demonstrado com seed data;
 - o recrutador consegue abrir a URL, entender o produto, explorar o repositório e reproduzir o projeto localmente;
 - não há overengineering, promessa de escala fictícia ou complexidade sem valor de portfólio.
-

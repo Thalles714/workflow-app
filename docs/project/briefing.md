@@ -59,17 +59,17 @@ Agência (workspace)
 
 ### Entidades essenciais
 
-| Entidade | Responsabilidade |
-|---|---|
-| Workspace | Espaço isolado de cada agência; contém equipe, dados e configurações. |
-| Usuário | Pessoa autenticada que pertence a um ou mais workspaces. |
-| Membro | Vínculo do usuário com o workspace e seu papel (administrador ou membro). |
-| Cliente | Empresa atendida pela agência. |
-| Projeto | Trabalho contratado ou campanha que reúne entregas. |
-| Entrega | Resultado relevante para o cliente; possui prazo, responsável e aprovação. |
-| Tarefa | Unidade executável de trabalho de uma entrega. |
-| Aprovação | Registro interno do estado de revisão de uma entrega. |
-| Alerta | Item calculado pela Central de Atenção. |
+| Entidade            | Responsabilidade                                                            |
+| ------------------- | --------------------------------------------------------------------------- |
+| Workspace           | Espaço isolado de cada agência; contém equipe, dados e configurações.       |
+| Usuário             | Pessoa autenticada que pertence a um ou mais workspaces.                    |
+| Membro              | Vínculo do usuário com o workspace e seu papel (administrador ou membro).   |
+| Cliente             | Empresa atendida pela agência.                                              |
+| Projeto             | Trabalho contratado ou campanha que reúne entregas.                         |
+| Entrega             | Resultado relevante para o cliente; possui prazo, responsável e aprovação.  |
+| Tarefa              | Unidade executável de trabalho de uma entrega.                              |
+| Aprovação           | Registro interno do estado de revisão de uma entrega.                       |
+| Alerta              | Item calculado pela Central de Atenção.                                     |
 | Template de projeto | Modelo reutilizável de projeto com estrutura inicial de entregas e tarefas. |
 
 **Decisão de domínio:** entrega é uma entidade própria, não uma tarefa especial. Ela permite que o sistema relacione várias tarefas ao resultado que será entregue, meça seu risco e acompanhe sua aprovação.
@@ -129,12 +129,12 @@ As aprovações serão registradas internamente pela agência. Clientes externos
 
 A Central de Atenção transforma os dados operacionais em prioridades. Regras iniciais, transparentes e determinísticas:
 
-| Nível | Regra |
-|---|---|
-| Crítico | Tarefa atrasada que bloqueia uma entrega. |
-| Risco | Entrega vence em até 3 dias e possui tarefas pendentes; ou projeto sem atualização há 7 dias. |
-| Atenção | Entrega aguardando aprovação por vários dias; ou tarefa marcada como bloqueada. |
-| Informação | Entrega importante próxima, ainda sem risco. |
+| Nível      | Regra                                                                                         |
+| ---------- | --------------------------------------------------------------------------------------------- |
+| Crítico    | Tarefa atrasada que bloqueia uma entrega.                                                     |
+| Risco      | Entrega vence em até 3 dias e possui tarefas pendentes; ou projeto sem atualização há 7 dias. |
+| Atenção    | Entrega aguardando aprovação por vários dias; ou tarefa marcada como bloqueada.               |
+| Informação | Entrega importante próxima, ainda sem risco.                                                  |
 
 As regras devem ser configuradas como código testável. IA poderá explicá-las e sugerir ações no futuro, mas não substituirá sua lógica inicial.
 
@@ -178,13 +178,13 @@ O monday.com organiza o trabalho em estruturas com itens, responsáveis, status,
 
 ### Síntese adotada pelo Workflow
 
-| Necessidade do Workflow | Referência estrutural | Decisão no MVP |
-|---|---|---|
-| “O que preciso fazer agora?” | Asana My Tasks + monday My Work | Tela Meu Trabalho consolidada por usuário e prazo. |
-| “Como está este projeto?” | Asana Project Overview + Jira Board | Visão geral do projeto, seguida de Kanban e Lista sobre a mesma fonte de dados. |
-| “Onde preciso agir?” | Jira Work items for attention + dashboards consolidados do monday | Painel por exceção, com alertas explicáveis e links diretos para resolver cada problema. |
-| “Quais dados tornam o acompanhamento confiável?” | Campos de board do monday + cards configuráveis do Jira | Campos obrigatórios e enxutos: responsável, prazo, prioridade, status e bloqueio. |
-| “Como a IA participa?” | Assistentes contextualizados nos três produtos | Agente limitado a consultar, preparar criação/edição e solicitar confirmação; sem exclusão ou automação autônoma. |
+| Necessidade do Workflow                          | Referência estrutural                                             | Decisão no MVP                                                                                                    |
+| ------------------------------------------------ | ----------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| “O que preciso fazer agora?”                     | Asana My Tasks + monday My Work                                   | Tela Meu Trabalho consolidada por usuário e prazo.                                                                |
+| “Como está este projeto?”                        | Asana Project Overview + Jira Board                               | Visão geral do projeto, seguida de Kanban e Lista sobre a mesma fonte de dados.                                   |
+| “Onde preciso agir?”                             | Jira Work items for attention + dashboards consolidados do monday | Painel por exceção, com alertas explicáveis e links diretos para resolver cada problema.                          |
+| “Quais dados tornam o acompanhamento confiável?” | Campos de board do monday + cards configuráveis do Jira           | Campos obrigatórios e enxutos: responsável, prazo, prioridade, status e bloqueio.                                 |
+| “Como a IA participa?”                           | Assistentes contextualizados nos três produtos                    | Agente limitado a consultar, preparar criação/edição e solicitar confirmação; sem exclusão ou automação autônoma. |
 
 ### Limites de inspiração
 
@@ -265,17 +265,17 @@ O projeto deve demonstrar competências valorizadas em vagas atuais de desenvolv
 
 ### Evidências esperadas no portfólio
 
-| Competência que vagas avaliam | Evidência no Workflow |
-|---|---|
-| Produto e UX | Fluxos claramente documentados, telas orientadas a perguntas do usuário e estados vazios/erro/carregamento. |
-| Front-end moderno | React/Next.js, TypeScript estrito, componentes acessíveis, responsividade e formulários validados. |
-| Back-end | API modular, regras de domínio, validação, tratamento de erros e contratos tipados. |
-| Banco e dados | PostgreSQL, Prisma, migrações, seeds, índices necessários e modelagem multi-tenant. |
-| Segurança | autenticação, autorização no servidor, isolamento por workspace, gestão de segredos e auditoria. |
-| Qualidade | testes unitários, integração e E2E; lint, formatação, tipos e CI automatizados. |
-| DevOps | Docker local, variáveis de ambiente documentadas, deploy público e pipeline de integração contínua. |
-| Arquitetura | decisões registradas (ADRs), módulos coesos e fronteiras claras entre UI, aplicação e domínio. |
-| IA aplicada com responsabilidade | agente limitado por permissões, prévia antes de alterar dados, confirmação e trilha de auditoria. |
+| Competência que vagas avaliam    | Evidência no Workflow                                                                                       |
+| -------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| Produto e UX                     | Fluxos claramente documentados, telas orientadas a perguntas do usuário e estados vazios/erro/carregamento. |
+| Front-end moderno                | React/Next.js, TypeScript estrito, componentes acessíveis, responsividade e formulários validados.          |
+| Back-end                         | API modular, regras de domínio, validação, tratamento de erros e contratos tipados.                         |
+| Banco e dados                    | PostgreSQL, Prisma, migrações, seeds, índices necessários e modelagem multi-tenant.                         |
+| Segurança                        | autenticação, autorização no servidor, isolamento por workspace, gestão de segredos e auditoria.            |
+| Qualidade                        | testes unitários, integração e E2E; lint, formatação, tipos e CI automatizados.                             |
+| DevOps                           | Docker local, variáveis de ambiente documentadas, deploy público e pipeline de integração contínua.         |
+| Arquitetura                      | decisões registradas (ADRs), módulos coesos e fronteiras claras entre UI, aplicação e domínio.              |
+| IA aplicada com responsabilidade | agente limitado por permissões, prévia antes de alterar dados, confirmação e trilha de auditoria.           |
 
 ### Requisitos de experiência não visuais
 
@@ -347,4 +347,3 @@ Modelos próprios, calendário, documentos, horas, integrações, IA por chave p
 Uma agência de teste consegue criar seu workspace, convidar a equipe, registrar cliente/projeto/entrega/tarefas, atribuir trabalho, atualizar o andamento, registrar aprovação, visualizar o que precisa fazer e identificar os riscos operacionais — em uma aplicação publicada, responsiva, segura, testada e documentada.
 
 Além disso, um recrutador deve conseguir clonar o repositório, iniciar o ambiente com instruções claras, explorar dados de demonstração, executar a suíte de testes e localizar as decisões de arquitetura. Um design system posterior dará identidade visual ao produto sem alterar essa definição de pronto.
-

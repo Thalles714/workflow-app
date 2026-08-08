@@ -10,11 +10,14 @@
 ## Organização
 
 - `src/app`: rotas, layouts e composição por Server Components.
-- `src/features`: módulos funcionais autocontidos.
-- `src/lib`: utilidades puras e compartilhadas.
-- `src/server`: código server-only, autorização, domínio e persistência.
+- `src/components`: primitives, layouts e UI específica por contexto.
+- `src/modules`: módulos de domínio, autorização, validação e persistência.
+- `src/features` e `src/lib`: código compartilhado pequeno e sem regras de domínio duplicadas.
+- `src/server`: infraestrutura server-only e testes de banco.
+- `supabase`: migrations, políticas RLS, configuração e seed.
 - `tests/e2e`: fluxos de navegador.
-- `prototypes` e `assets`: fontes aprovadas; não mover, apagar ou reescrever sem novo gate.
+- `docs`: produto, arquitetura, desenvolvimento, qualidade e release; consulte o índice em `docs/README.md`.
+- `prototypes` e `assets`: fontes visuais aprovadas; não mover ou reescrever sem novo gate.
 
 ## Qualidade obrigatória
 

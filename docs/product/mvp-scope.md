@@ -4,7 +4,7 @@
 >
 > Data: 07 de agosto de 2026
 >
-> Fonte de produto: `../../workflow-briefing.md`
+> Fonte de produto: [`../project/briefing.md`](../project/briefing.md)
 >
 > Fonte visual: `../../assets/design_system/design_system.html`
 

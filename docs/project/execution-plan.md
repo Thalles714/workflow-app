@@ -4,7 +4,7 @@
 
 ## 1. Evidências encontradas no repositório
 
-- `workflow-briefing.md` define o produto: sistema operacional de entregas para agências de 3–30 pessoas, com o domínio `Workspace → Cliente → Projeto → Entrega → Tarefa`, aprovações internas e gestão por exceção. Entrega é entidade própria; Kanban e Lista são views da mesma fonte.
+- `docs/project/briefing.md` define o produto: sistema operacional de entregas para agências de 3–30 pessoas, com o domínio `Workspace → Cliente → Projeto → Entrega → Tarefa`, aprovações internas e gestão por exceção. Entrega é entidade própria; Kanban e Lista são views da mesma fonte.
 - `assets/design_system/design_system.html` é a fonte visual obrigatória. Define a direção “calma para operar / sinal antes de ruído”, Plus Jakarta Sans, Inter e JetBrains Mono; canvas `#F7F7F5`, surface `#FFFFFF`, ink `#121211`, indigo `#5B5CE2`, violeta `#8B5CF6`, cyan `#17A2B8`; escala de 4 px, ritmo de 8 px; raios de 4 a 26 px; estados semânticos; foco visível; componentes completos; movimento `micro` 160–180 ms, `control` 180–250 ms, `layer` 280–380 ms e suporte a `prefers-reduced-motion`.
 - `assets/templates/` contém sete referências: `sidebar` para navegação responsiva; `dashboard-list` e `cool-dashboard` para hierarquia/densidade; `animations-gemini2` para vocabulário de movimento; Axion e Volta para composição; `ai-marketing-56` para fluxo. São inspiração secundária, nunca identidade visual nem código a copiar integralmente.
 - `docs/research/work-management-references.md` confirma padrões funcionais de Asana, Jira e monday.com: trabalho pessoal consolidado, múltiplas views sobre o mesmo dado, boards como leitura do fluxo, atenção acionável e automação auditável.
@@ -18,8 +18,8 @@ O Workflow demonstra que uma única pessoa construiu um produto full-stack segur
 
 ### Agora / Depois / Fora do portfólio
 
-| Agora — primeiro deploy | Depois — opcional pós-deploy | Fora do portfólio |
-|---|---|---|
+| Agora — primeiro deploy                                                                                                                                                                                                                                                                                                                        | Depois — opcional pós-deploy                                                                                                                                                       | Fora do portfólio                                                                                                                                                                                                                                         |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Login real com conta demo limitada; um workspace seed; RBAC admin/membro; clientes, projetos, entregas e tarefas; bloqueio; atualização curta; Meu Trabalho; projeto com visão geral/Kanban/Lista; Central de Atenção determinística; aprovação interna; auditoria; estados, responsividade, acessibilidade; testes, CI, deploy e documentação | Agente por regras com consulta e criação/edição mediante prévia e confirmação; convites reais por e-mail; comentários; templates próprios; reset automatizado do seed; GIF de demo | Pagamentos, CRM, financeiro, RH, contratos, timesheets, portal de cliente, calendário, Gantt, dashboards configuráveis, relatórios avançados, integrações, upload/storage, campos/workflows customizáveis, realtime, IA generativa e automações autônomas |
 
 **Decisões:** convites ficam pós-deploy porque e-mail e abuso adicionam risco sem melhorar o fluxo demonstrável; membros vêm do seed. Comentários ficam pós-deploy; uma `TaskUpdate` curta prova histórico com menos superfície. Templates ficam pós-deploy. O agente por regras é opcional e nunca bloqueia o deploy: tem bom valor de portfólio, mas o núcleo completo vale mais.
@@ -28,18 +28,18 @@ O Workflow demonstra que uma única pessoa construiu um produto full-stack segur
 
 ### Telas exatas e estados
 
-| # | Tela/rota conceitual | Estados exigidos |
-|---|---|---|
-| 1 | Login/demo | normal, enviando, erro de credencial/configuração |
-| 2 | Painel da Operação | normal, loading, vazio, erro, sem permissão de gestor |
-| 3 | Meu Trabalho | normal, loading, vazio, erro |
-| 4 | Clientes | normal/lista, loading, vazio, erro |
-| 5 | Cliente + projetos | normal, loading, vazio, erro, não encontrado/sem permissão |
-| 6 | Projeto | visão geral, Kanban, Lista; loading, vazio, erro, sem permissão; filtros sem resultado |
-| 7 | Entrega | normal, loading, vazio de tarefas, erro, sem permissão; aprovação pendente/aprovada/rejeitada |
-| 8 | Tarefa em drawer/rota recuperável | leitura, criação, edição, validação, salvando, erro, sem permissão; bloqueada/desbloqueada |
-| 9 | Aprovações | normal, loading, vazio, erro, sem permissão; confirmar decisão |
-| 10 | Acesso negado / não encontrado | mensagem segura e caminho de retorno |
+| #   | Tela/rota conceitual              | Estados exigidos                                                                              |
+| --- | --------------------------------- | --------------------------------------------------------------------------------------------- |
+| 1   | Login/demo                        | normal, enviando, erro de credencial/configuração                                             |
+| 2   | Painel da Operação                | normal, loading, vazio, erro, sem permissão de gestor                                         |
+| 3   | Meu Trabalho                      | normal, loading, vazio, erro                                                                  |
+| 4   | Clientes                          | normal/lista, loading, vazio, erro                                                            |
+| 5   | Cliente + projetos                | normal, loading, vazio, erro, não encontrado/sem permissão                                    |
+| 6   | Projeto                           | visão geral, Kanban, Lista; loading, vazio, erro, sem permissão; filtros sem resultado        |
+| 7   | Entrega                           | normal, loading, vazio de tarefas, erro, sem permissão; aprovação pendente/aprovada/rejeitada |
+| 8   | Tarefa em drawer/rota recuperável | leitura, criação, edição, validação, salvando, erro, sem permissão; bloqueada/desbloqueada    |
+| 9   | Aprovações                        | normal, loading, vazio, erro, sem permissão; confirmar decisão                                |
+| 10  | Acesso negado / não encontrado    | mensagem segura e caminho de retorno                                                          |
 
 Estados podem ser variantes dentro do `index.html` de cada tela, mas cada uma das dez telas terá seu próprio diretório e `index.html` no protótipo.
 
@@ -51,16 +51,16 @@ Estados podem ser variantes dentro do `index.html` de cada tela, mas cada uma da
 
 Verificação oficial datada de 07/08/2026; detalhes e links primários ficam em `docs/research/free-tier-verification-2026-08-07.md`. Free tiers mudam: revalidar no PROMPT 16 antes de criar recursos.
 
-| Camada | Escolha e função | Limite gratuito relevante | Risco | Alternativa gratuita |
-|---|---|---|---|---|
-| App | Next.js App Router + React + TypeScript estrito; Server Components/Actions e Route Handlers | Open source/local | versão e compatibilidade | React/Vite + API Cloudflare, apenas contingência |
-| UI | Tailwind CSS + CSS variables + primitives acessíveis próprias; Lucide | Open source | abstração excessiva | CSS Modules |
-| Validação/form | Zod + React Hook Form quando necessário | Open source | duplicar schemas | formulário nativo + Zod |
-| Dados/Auth | Supabase Free: PostgreSQL, Auth e RLS no mesmo provedor | US$0; 2 projetos ativos, banco de 500 MB/projeto, 5 GB egress e 50 mil MAU; [preços](https://supabase.com/pricing) e [billing](https://supabase.com/docs/guides/platform/billing-on-supabase) | pausa após 1 semana inativo, sem backup automático/SLA; read-only ao exceder 500 MB | [Neon Free](https://neon.com/pricing): 0,5 GB e 100 CU-h/mês por projeto; Auth exige reavaliação |
-| Acesso SQL | `@supabase/ssr` + SQL migrations; sem Prisma no MVP | Open source; reduz pool/conexões e mantém RLS nativa | SQL mais explícito | Prisma + Neon/Supabase se a fase 00 provar necessidade |
-| Testes | Vitest + Testing Library + Playwright | Open source | E2E mais lento | Node test runner para unidade |
-| Hospedagem | Vercel Hobby, subdomínio gratuito | Uso pessoal/não comercial; 100 GB de transferência, 1 milhão de Function invocations e 6.000 build-min/mês; [Hobby](https://vercel.com/docs/plans/hobby) | cotas, logs de 1 hora e política não comercial | [Cloudflare Pages](https://developers.cloudflare.com/pages/platform/limits/) + [Workers](https://developers.cloudflare.com/workers/platform/limits/): 500 builds/mês e 100 mil requests/dia |
-| Código/CI | GitHub Free + GitHub Actions | runners padrão gratuitos em repositório público; privado Free: 2.000 min/mês e 500 MB artifacts; [billing oficial](https://docs.github.com/en/billing/concepts/product-billing/github-actions) | minutos/armazenamento; repo deve ser pessoal para integração Hobby | CI local documentado |
+| Camada         | Escolha e função                                                                            | Limite gratuito relevante                                                                                                                                                                      | Risco                                                                               | Alternativa gratuita                                                                                                                                                                        |
+| -------------- | ------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| App            | Next.js App Router + React + TypeScript estrito; Server Components/Actions e Route Handlers | Open source/local                                                                                                                                                                              | versão e compatibilidade                                                            | React/Vite + API Cloudflare, apenas contingência                                                                                                                                            |
+| UI             | Tailwind CSS + CSS variables + primitives acessíveis próprias; Lucide                       | Open source                                                                                                                                                                                    | abstração excessiva                                                                 | CSS Modules                                                                                                                                                                                 |
+| Validação/form | Zod + React Hook Form quando necessário                                                     | Open source                                                                                                                                                                                    | duplicar schemas                                                                    | formulário nativo + Zod                                                                                                                                                                     |
+| Dados/Auth     | Supabase Free: PostgreSQL, Auth e RLS no mesmo provedor                                     | US$0; 2 projetos ativos, banco de 500 MB/projeto, 5 GB egress e 50 mil MAU; [preços](https://supabase.com/pricing) e [billing](https://supabase.com/docs/guides/platform/billing-on-supabase)  | pausa após 1 semana inativo, sem backup automático/SLA; read-only ao exceder 500 MB | [Neon Free](https://neon.com/pricing): 0,5 GB e 100 CU-h/mês por projeto; Auth exige reavaliação                                                                                            |
+| Acesso SQL     | `@supabase/ssr` + SQL migrations; sem Prisma no MVP                                         | Open source; reduz pool/conexões e mantém RLS nativa                                                                                                                                           | SQL mais explícito                                                                  | Prisma + Neon/Supabase se a fase 00 provar necessidade                                                                                                                                      |
+| Testes         | Vitest + Testing Library + Playwright                                                       | Open source                                                                                                                                                                                    | E2E mais lento                                                                      | Node test runner para unidade                                                                                                                                                               |
+| Hospedagem     | Vercel Hobby, subdomínio gratuito                                                           | Uso pessoal/não comercial; 100 GB de transferência, 1 milhão de Function invocations e 6.000 build-min/mês; [Hobby](https://vercel.com/docs/plans/hobby)                                       | cotas, logs de 1 hora e política não comercial                                      | [Cloudflare Pages](https://developers.cloudflare.com/pages/platform/limits/) + [Workers](https://developers.cloudflare.com/workers/platform/limits/): 500 builds/mês e 100 mil requests/dia |
+| Código/CI      | GitHub Free + GitHub Actions                                                                | runners padrão gratuitos em repositório público; privado Free: 2.000 min/mês e 500 MB artifacts; [billing oficial](https://docs.github.com/en/billing/concepts/product-billing/github-actions) | minutos/armazenamento; repo deve ser pessoal para integração Hobby                  | CI local documentado                                                                                                                                                                        |
 
 Dependências existem apenas para: framework full-stack, contratos de entrada, formulários acessíveis, cliente/Auth/RLS, ícones e testes. Não entram state manager global, query cache, DnD, ORM, UI kit, analytics ou logger SaaS sem evidência.
 
@@ -83,18 +83,18 @@ Aplicação única organizada por módulos (`auth`, `workspaces`, `clients`, `pr
 
 ### Modelo relacional mínimo
 
-| Tabela | Campos essenciais e relações | Índices/regras |
-|---|---|---|
-| `profiles` | `id` = auth user, `display_name` | sem dado pessoal seed real |
-| `workspaces` | `id`, `name`, timestamps | nome não é identidade de segurança |
-| `memberships` | `workspace_id`, `user_id`, `role` ADMIN/MEMBER | unique composto; índices pelos dois lados |
-| `clients` | `id`, `workspace_id`, `name`, `status`, timestamps | `(workspace_id,name)`, soft archive |
-| `projects` | `id`, `workspace_id`, `client_id`, `name`, `owner_id`, `due_date`, `last_activity_at`, `status` | FKs do mesmo tenant verificadas; índices tenant/cliente/prazo |
-| `deliverables` | `id`, `workspace_id`, `project_id`, `title`, `owner_id`, `due_date`, `importance`, `status` | tenant/projeto/prazo/status |
-| `tasks` | `id`, `workspace_id`, `deliverable_id`, `title`, `assignee_id`, `due_date`, `priority`, `status`, `is_blocked`, `block_reason` | tenant/assignee/prazo/status; motivo obrigatório se bloqueada |
-| `task_updates` | `id`, `workspace_id`, `task_id`, `author_id`, `body`, `created_at` | tamanho limitado; tenant/task/data |
-| `approvals` | `id`, `workspace_id`, `deliverable_id`, `status`, `decided_by`, `decided_at`, `note` | uma aprovação ativa por entrega |
-| `audit_logs` | `id`, `workspace_id`, `actor_id`, `action`, `entity_type/id`, `metadata`, `created_at` | append-only para ações relevantes |
+| Tabela         | Campos essenciais e relações                                                                                                   | Índices/regras                                                |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------- |
+| `profiles`     | `id` = auth user, `display_name`                                                                                               | sem dado pessoal seed real                                    |
+| `workspaces`   | `id`, `name`, timestamps                                                                                                       | nome não é identidade de segurança                            |
+| `memberships`  | `workspace_id`, `user_id`, `role` ADMIN/MEMBER                                                                                 | unique composto; índices pelos dois lados                     |
+| `clients`      | `id`, `workspace_id`, `name`, `status`, timestamps                                                                             | `(workspace_id,name)`, soft archive                           |
+| `projects`     | `id`, `workspace_id`, `client_id`, `name`, `owner_id`, `due_date`, `last_activity_at`, `status`                                | FKs do mesmo tenant verificadas; índices tenant/cliente/prazo |
+| `deliverables` | `id`, `workspace_id`, `project_id`, `title`, `owner_id`, `due_date`, `importance`, `status`                                    | tenant/projeto/prazo/status                                   |
+| `tasks`        | `id`, `workspace_id`, `deliverable_id`, `title`, `assignee_id`, `due_date`, `priority`, `status`, `is_blocked`, `block_reason` | tenant/assignee/prazo/status; motivo obrigatório se bloqueada |
+| `task_updates` | `id`, `workspace_id`, `task_id`, `author_id`, `body`, `created_at`                                                             | tamanho limitado; tenant/task/data                            |
+| `approvals`    | `id`, `workspace_id`, `deliverable_id`, `status`, `decided_by`, `decided_at`, `note`                                           | uma aprovação ativa por entrega                               |
+| `audit_logs`   | `id`, `workspace_id`, `actor_id`, `action`, `entity_type/id`, `metadata`, `created_at`                                         | append-only para ações relevantes                             |
 
 Enums: `member_role`, `record_status`, `task_status` (`TODO`, `IN_PROGRESS`, `IN_REVIEW`, `DONE`), `priority`, `importance`, `approval_status`. Alertas são projeções calculadas, não tabela: regra, severidade, explicação e link derivam dos dados. Datas em UTC no banco; datas civis interpretadas pelo timezone do workspace (`America/Sao_Paulo` no seed).
 
@@ -102,47 +102,47 @@ Migrações SQL incrementais e reversão documentada; seed usa chaves estáveis/
 
 ### Matriz curta de ameaças
 
-| Ameaça/teste negativo | Controle |
-|---|---|
-| não autenticado | middleware/guard + serviço rejeita |
-| membro sem papel suficiente | RBAC server-side; UI não é controle |
-| ID de outro workspace/IDOR | consulta sempre combina `id` + workspace autorizado; RLS |
-| payload inválido/grande | Zod, limites e mensagens seguras |
-| mutação do agente sem confirmação | token/estado de prévia server-side, expiração e auditoria |
-| segredo ausente/exposto | falha segura na inicialização, `.env.example`, secret scan |
-| erro interno | resposta genérica + log sem dados sensíveis |
+| Ameaça/teste negativo             | Controle                                                   |
+| --------------------------------- | ---------------------------------------------------------- |
+| não autenticado                   | middleware/guard + serviço rejeita                         |
+| membro sem papel suficiente       | RBAC server-side; UI não é controle                        |
+| ID de outro workspace/IDOR        | consulta sempre combina `id` + workspace autorizado; RLS   |
+| payload inválido/grande           | Zod, limites e mensagens seguras                           |
+| mutação do agente sem confirmação | token/estado de prévia server-side, expiração e auditoria  |
+| segredo ausente/exposto           | falha segura na inicialização, `.env.example`, secret scan |
+| erro interno                      | resposta genérica + log sem dados sensíveis                |
 
 ## 5. Mapa de fases e dependências
 
-| Prompt | Entrada | Saída verificável | Gate |
-|---|---|---|---|
-| 00 | fontes atuais | escopo/ADRs/backlog congelados | usuário confirma escopo |
-| 01 | escopo aprovado | 10 protótipos HTML navegáveis | não implementar app |
-| 02 | protótipos | relatório visual/a11y + correções | aprovação humana explícita |
-| 03 | protótipos aprovados | Next.js e padrões base | checks verdes |
-| 04 | fundação | migrations, RLS, seed, Auth | banco limpo + login |
-| 05 | Auth/dados | autorização e serviços de domínio | testes negativos verdes |
-| 06 | tokens aprovados | shell e primitives | revisão 1440/768/390 |
-| 07 | domínio | CRUD núcleo | fluxo hierárquico funcional |
-| 08 | tarefas | Meu Trabalho | agrupamentos testados |
-| 09 | tarefas/projeto | overview/Kanban/Lista | mesma fonte comprovada |
-| 10 | regras | Painel/Central | matriz de regras testada |
-| 11 | entregas | aprovações/updates/auditoria | autorização testada |
-| 12 | núcleo publicado ou estável | agente por regras | opcional; pode pular |
-| 13 | todas as telas | responsividade/a11y/estados | auditoria manual aprovada |
-| 14 | produto integrado | suíte e revisão de segurança | gate de release verde |
-| 15 | suíte verde | seed/demo/recrutador | ensaio 3–5 min |
-| 16 | conta cloud + aprovação | CI/CD e URL pública | ação externa autorizada |
-| 17 | URL e produto | README/ADRs/case/demo | documentação reproduzível |
-| 18 | tudo | auditoria final/handoff | checklist mestre concluído |
-| 19 | demo pública estática + app estável | tour navegável somente leitura | aprovação humana explícita |
+| Prompt | Entrada                             | Saída verificável                 | Gate                        |
+| ------ | ----------------------------------- | --------------------------------- | --------------------------- |
+| 00     | fontes atuais                       | escopo/ADRs/backlog congelados    | usuário confirma escopo     |
+| 01     | escopo aprovado                     | 10 protótipos HTML navegáveis     | não implementar app         |
+| 02     | protótipos                          | relatório visual/a11y + correções | aprovação humana explícita  |
+| 03     | protótipos aprovados                | Next.js e padrões base            | checks verdes               |
+| 04     | fundação                            | migrations, RLS, seed, Auth       | banco limpo + login         |
+| 05     | Auth/dados                          | autorização e serviços de domínio | testes negativos verdes     |
+| 06     | tokens aprovados                    | shell e primitives                | revisão 1440/768/390        |
+| 07     | domínio                             | CRUD núcleo                       | fluxo hierárquico funcional |
+| 08     | tarefas                             | Meu Trabalho                      | agrupamentos testados       |
+| 09     | tarefas/projeto                     | overview/Kanban/Lista             | mesma fonte comprovada      |
+| 10     | regras                              | Painel/Central                    | matriz de regras testada    |
+| 11     | entregas                            | aprovações/updates/auditoria      | autorização testada         |
+| 12     | núcleo publicado ou estável         | agente por regras                 | opcional; pode pular        |
+| 13     | todas as telas                      | responsividade/a11y/estados       | auditoria manual aprovada   |
+| 14     | produto integrado                   | suíte e revisão de segurança      | gate de release verde       |
+| 15     | suíte verde                         | seed/demo/recrutador              | ensaio 3–5 min              |
+| 16     | conta cloud + aprovação             | CI/CD e URL pública               | ação externa autorizada     |
+| 17     | URL e produto                       | README/ADRs/case/demo             | documentação reproduzível   |
+| 18     | tudo                                | auditoria final/handoff           | checklist mestre concluído  |
+| 19     | demo pública estática + app estável | tour navegável somente leitura    | aprovação humana explícita  |
 
 ## 6. Prompts completos e copiáveis
 
 ### PROMPT 00 — Auditoria e congelamento do escopo
 
 1. **Papel:** arquiteto de produto e software para um SaaS de portfólio.
-2. **Contexto:** trabalhe em `C:\Users\Administrator\Projects\workflow`. Workflow atende agências pequenas e usa `Workspace→Cliente→Projeto→Entrega→Tarefa`. Leia integralmente `workflow-briefing.md`, `workflow-execution-plan.md`, o design system oficial, a pesquisa funcional, a pesquisa de free tiers e `AGENTS.md` se existir. Briefing vence em produto; design system vence em visual. Orçamento zero.
+2. **Contexto:** trabalhe em `C:\Users\Administrator\Projects\workflow`. Workflow atende agências pequenas e usa `Workspace→Cliente→Projeto→Entrega→Tarefa`. Leia integralmente `docs/project/briefing.md`, `docs/project/execution-plan.md`, o design system oficial, a pesquisa funcional, a pesquisa de free tiers e `AGENTS.md` se existir. Briefing vence em produto; design system vence em visual. Orçamento zero.
 3. **Pré-condições:** confirme arquivos, estado Git/diff e ausência/presença de app; não presuma memória.
 4. **Objetivo:** congelar um backlog implementável e registrar as decisões antes de código.
 5. **Incluído:** validar Agora/Depois/Fora, telas/estados, fluxo dourado, stack, diagrama, modelo, ameaças; criar `docs/product/mvp-scope.md`, `docs/architecture/adr-001-stack.md`, `adr-002-auth-multitenancy.md` e backlog por fase.
@@ -484,7 +484,7 @@ Migrações SQL incrementais e reversão documentada; seed usa chaves estáveis/
 ## 7. PROMPT 19 — Demo pública navegável e experiência de portfólio
 
 1. **Papel:** product designer e frontend engineer especializado em experiências SaaS de portfólio.
-2. **Contexto:** trabalhe em `C:\Users\Administrator\Projects\workflow`. A demo pública é a porta de entrada para recrutadores: deve demonstrar o valor, domínio e qualidade técnica do Workflow sem login, e-mail, banco ou configuração. Leia integralmente `workflow-execution-plan.md`, `workflow-briefing.md`, `README.md`, `docs/portfolio/case-study.md`, `docs/demo/**`, `docs/product/mvp-scope.md`, ADRs, inventário/revisão dos protótipos, instruções locais e a implementação em `src/app/demo/**`, `src/components/demo/**`, `src/components/layouts/**` e `src/components/ui/**`.
+2. **Contexto:** trabalhe em `C:\Users\Administrator\Projects\workflow`. A demo pública é a porta de entrada para recrutadores: deve demonstrar o valor, domínio e qualidade técnica do Workflow sem login, e-mail, banco ou configuração. Leia integralmente `docs/project/execution-plan.md`, `docs/project/briefing.md`, `README.md`, `docs/portfolio/case-study.md`, `docs/demo/**`, `docs/product/mvp-scope.md`, ADRs, inventário/revisão dos protótipos, instruções locais e a implementação em `src/app/demo/**`, `src/components/demo/**`, `src/components/layouts/**` e `src/components/ui/**`.
 3. **Referências:** as fontes normativas são `C:\Users\Administrator\Projects\workflow\assets\design_system`, `C:\Users\Administrator\Projects\workflow\assets\templates` e `C:\Users\Administrator\Projects\workflow\prototypes`; o design system vence em conflito. Antes de desenhar, inventarie também `C:\Users\Administrator\Projects\tale\skills`, `C:\Users\Administrator\Projects\tale\assets` e `C:\Users\Administrator\Projects\tale\assets\templates`. Leia integralmente apenas skills aplicáveis a design, animação, acessibilidade e prototipação. Use referências para padrões de composição, navegação e microinteração; nunca copie código, marca, textos, estrutura integral ou assets de terceiros.
 4. **Pré-condições:** confirme que `/demo` é público, não consulta Supabase, não cria sessão e não executa escrita. Confirme Git e preserve alterações locais alheias. Não altere migrations, RLS, autenticação, seed, serviços de domínio ou comportamento autenticado.
 5. **Objetivo:** transformar a demo pública em um workspace fictício moderno, bonito, navegável e convincente, capaz de provar em poucos minutos que Workflow é um SaaS de gestão operacional para agências.
@@ -501,19 +501,19 @@ Migrações SQL incrementais e reversão documentada; seed usa chaves estáveis/
 
 ## 8. Matriz de cobertura
 
-| Área | Prompts principais |
-|---|---|
-| Produto/escopo/domínio | 00, 07–11, 15, 18 |
-| Visual/design system | 01, 02, 06, 13, 18, 19 |
-| Segurança/multi-tenancy | 00, 04, 05, 07, 10–12, 14, 16, 18 |
-| Testes/qualidade | 03–15, 18 |
-| Dados demo | 04, 10, 15, 18 |
-| Acessibilidade | 01, 02, 06–13, 18 |
-| Responsividade | 01, 02, 06–13, 17, 18 |
-| Git | 00, 03 e commit de todos os prompts; 16–18 |
-| CI/CD/deploy/custo | 00, 03, 14–16, 18 |
-| Documentação/portfólio | 00, 15–19 |
-| Agente por regras | 00, 05, 12, 14, 18 (opcional) |
+| Área                    | Prompts principais                         |
+| ----------------------- | ------------------------------------------ |
+| Produto/escopo/domínio  | 00, 07–11, 15, 18                          |
+| Visual/design system    | 01, 02, 06, 13, 18, 19                     |
+| Segurança/multi-tenancy | 00, 04, 05, 07, 10–12, 14, 16, 18          |
+| Testes/qualidade        | 03–15, 18                                  |
+| Dados demo              | 04, 10, 15, 18                             |
+| Acessibilidade          | 01, 02, 06–13, 18                          |
+| Responsividade          | 01, 02, 06–13, 17, 18                      |
+| Git                     | 00, 03 e commit de todos os prompts; 16–18 |
+| CI/CD/deploy/custo      | 00, 03, 14–16, 18                          |
+| Documentação/portfólio  | 00, 15–19                                  |
+| Agente por regras       | 00, 05, 12, 14, 18 (opcional)              |
 
 ## 9. Checklist mestre de conclusão
 

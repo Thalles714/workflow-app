@@ -2,6 +2,16 @@
 
 **Revalidado em 8 de agosto de 2026.** Esta instrução é para o portfólio pessoal Workflow, não para uma agência em operação comercial. O caminho previsto é **GitHub Actions + Vercel Hobby + Supabase Free**, com custo projetado de **R$ 0** enquanto as cotas e as regras dos provedores forem respeitadas.
 
+## Publicação atual
+
+- **URL:** [workflow-app-lac.vercel.app](https://workflow-app-lac.vercel.app)
+- **Experiência pública:** `/demo`, estática, fictícia e somente leitura.
+- **Login demonstrativo:** `/demo/login`, sem envio de e-mail ou criação de sessão.
+- **Banco público:** não utilizado pela demonstração atual.
+- **Entrega:** pushes verdes em `main` acionam o deploy integrado da Vercel.
+
+As instruções de Supabase abaixo descrevem a futura publicação do fluxo autenticado. Elas não são necessárias para manter a demonstração pública atual no ar.
+
 ## Estado e fronteiras
 
 - O pipeline versionado em [`.github/workflows/quality.yml`](../.github/workflows/quality.yml) executa formatação, lint, tipos, testes e build em `pull_request` e em `main`.

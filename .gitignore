@@ -26,3 +26,7 @@ pnpm-debug.log*
 Thumbs.db
 .idea/
 .vscode/
+
+# Local design exploration with unverified third-party redistribution rights
+/assets/templates/saas.com/
+/prototypes/demo-central/
