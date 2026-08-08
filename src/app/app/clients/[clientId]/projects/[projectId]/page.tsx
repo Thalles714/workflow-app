@@ -7,6 +7,7 @@ import { EntityForm } from "@/components/core/entity-form";
 import { StatusControl, TaskDrawerButton } from "@/components/projects/project-task-controls";
 import { Badge, Card, EmptyState, Select } from "@/components/ui";
 import { createAuthorizationContext } from "@/modules/authorization/server";
+import { DomainError } from "@/modules/authorization/errors";
 import { createServerClientService } from "@/modules/clients/server";
 import { createDeliverableAction } from "@/modules/core/actions";
 import { auroraWorkspaceId } from "@/modules/core/contracts";
@@ -122,8 +123,9 @@ export default async function ProjectPage({
         </div>
       </CoreShell>
     );
-  } catch {
-    notFound();
+  } catch (error) {
+    if (error instanceof DomainError) notFound();
+    throw error;
   }
 }
 
