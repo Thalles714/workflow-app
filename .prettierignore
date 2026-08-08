@@ -1,0 +1,15 @@
+.next
+coverage
+node_modules
+playwright-report
+test-results
+pnpm-lock.yaml
+assets
+prototypes
+docs/architecture
+docs/design
+docs/product
+docs/research
+workflow-agent-master-prompt.md
+workflow-briefing.md
+workflow-execution-plan.md

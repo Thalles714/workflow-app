@@ -1,0 +1,1486 @@
+<!doctype html>
+<html lang="pt-BR" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#050505">
+  <meta name="description" content="Axion Interface System — design language, tokens, motion and production-ready components.">
+  <title>Axion — Interface System</title>
+  <link rel="stylesheet" href="assets/css2_cef87f555f82.css">
+  <link rel="stylesheet" href="assets/css2_86e10c4bcbd4.css">
+  <link rel="stylesheet" href="assets/css2_62759cd015bd.css">
+  <script>document.documentElement.classList.remove('no-js');document.documentElement.classList.add('motion-ready');</script>
+  <script src="assets/iconify-icon_e19829e7f0e8.js" defer></script>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #050505;
+      --bg-rgb: 5, 5, 5;
+      --surface-1: #080808;
+      --surface-2: #0d0d0f;
+      --surface-3: #151518;
+      --surface-raised: #1c1c1f;
+      --border: #27272a;
+      --border-strong: #3f3f46;
+      --text: #fafafa;
+      --text-soft: #d4d4d8;
+      --muted: #a1a1aa;
+      --dim: #71717a;
+      --ghost: #52525b;
+      --primary: #ea580c;
+      --primary-rgb: 234, 88, 12;
+      --primary-hover: #f97316;
+      --primary-active: #c2410c;
+      --secondary: #f59e0b;
+      --accent: #f4f4f5;
+      --success: #22c55e;
+      --warning: #f59e0b;
+      --error: #ef4444;
+      --info: #38bdf8;
+      --decorative: #fb7185;
+      --font-primary: Inter, Geist, "Segoe UI", Arial, sans-serif;
+      --font-secondary: Geist, Inter, "Segoe UI", sans-serif;
+      --font-mono: "JetBrains Mono", "Geist Mono", Consolas, monospace;
+      --ease-out: cubic-bezier(.16, 1, .3, 1);
+      --ease-spring: cubic-bezier(.2, .8, .2, 1.15);
+      --shadow-glow: 0 0 0 1px rgba(var(--primary-rgb), .18), 0 24px 80px rgba(var(--primary-rgb), .08);
+      --topbar-h: 64px;
+      --rail-w: 64px;
+      --max-w: 1440px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; background: var(--bg); }
+    body {
+      margin: 0;
+      min-width: 320px;
+      overflow-x: hidden;
+      background: var(--bg);
+      color: var(--muted);
+      font-family: var(--font-primary);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      selection-color: var(--text);
+    }
+    ::selection { color: #050505; background: var(--primary-hover); }
+    button, input, textarea, select { font: inherit; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    a { color: inherit; text-decoration: none; }
+    img, svg, canvas { display: block; max-width: 100%; }
+    button { color: inherit; }
+    :focus-visible { outline: 2px solid var(--primary-hover); outline-offset: 3px; }
+    .skip-link { position: fixed; top: 8px; left: 8px; z-index: 200; transform: translateY(-160%); background: var(--text); color: #000; padding: 10px 14px; font: 600 11px/1 var(--font-mono); text-transform: uppercase; letter-spacing: .12em; transition: transform .2s; }
+    .skip-link:focus { transform: none; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+    .mono { font-family: var(--font-mono); }
+    .hide-mobile { display: initial; }
+
+    .bg-grid {
+      background-image: linear-gradient(to right, rgba(63,63,70,.42) 1px, transparent 1px), linear-gradient(to bottom, rgba(63,63,70,.42) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+    .noise {
+      position: fixed; inset: 0; z-index: 80; pointer-events: none; opacity: .035; mix-blend-mode: soft-light;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.8'/%3E%3C/svg%3E");
+    }
+    .site-grid { position: fixed; inset: 0; z-index: -1; opacity: .055; pointer-events: none; }
+
+    .topbar {
+      position: sticky; top: 0; z-index: 70; height: var(--topbar-h); display: grid;
+      grid-template-columns: 256px 1fr auto; align-items: stretch; background: rgba(5,5,5,.88);
+      border-bottom: 1px solid var(--border); backdrop-filter: blur(18px) saturate(120%);
+    }
+    .brand { display: flex; align-items: center; gap: 12px; padding: 0 24px; border-right: 1px solid var(--border); min-width: 0; }
+    .brand-mark { position: relative; width: 26px; height: 26px; border: 1px solid var(--border-strong); background: var(--surface-2); display: grid; place-items: center; overflow: hidden; }
+    .brand-mark::before { content: ""; width: 10px; height: 10px; border: 2px solid var(--text); transform: rotate(45deg); box-shadow: 0 0 16px rgba(var(--primary-rgb),.65); }
+    .brand-mark::after { content: ""; position: absolute; width: 3px; height: 3px; background: var(--primary); right: 3px; bottom: 3px; }
+    .brand-name { color: var(--text); font-size: 13px; font-weight: 650; letter-spacing: .22em; text-transform: uppercase; white-space: nowrap; }
+    .brand-name span { color: var(--ghost); }
+    .system-dot { margin-left: auto; width: 7px; height: 7px; background: var(--primary); box-shadow: 0 0 12px rgba(var(--primary-rgb), .65); }
+    .topnav { display: flex; min-width: 0; }
+    .topnav a { display: flex; align-items: center; gap: 9px; padding: 0 24px; border-right: 1px solid var(--border); color: var(--dim); font: 500 10px/1 var(--font-mono); text-transform: uppercase; letter-spacing: .14em; transition: color .2s, background .2s; }
+    .topnav a:hover, .topnav a[aria-current="true"] { color: var(--text); background: rgba(255,255,255,.025); }
+    .topnav a[aria-current="true"] span { color: var(--primary); }
+    .top-actions { display: flex; align-items: stretch; }
+    .top-action { min-width: 64px; border: 0; border-left: 1px solid var(--border); background: transparent; display: grid; place-items: center; cursor: pointer; transition: background .2s, color .2s; }
+    .top-action:hover { color: var(--text); background: var(--surface-3); }
+    .top-action.primary { min-width: 156px; padding: 0 20px; background: var(--primary); color: #050505; gap: 10px; display: flex; font: 700 10px/1 var(--font-mono); letter-spacing: .12em; text-transform: uppercase; }
+    .top-action.primary:hover { background: var(--primary-hover); }
+    .menu-trigger { display: none; }
+
+    .page-shell { display: grid; grid-template-columns: var(--rail-w) minmax(0,1fr); }
+    .rail { position: sticky; top: var(--topbar-h); z-index: 50; height: calc(100vh - var(--topbar-h)); border-right: 1px solid var(--border); background: rgba(5,5,5,.78); backdrop-filter: blur(12px); display: flex; flex-direction: column; justify-content: space-between; align-items: center; padding: 24px 0; }
+    .rail-label { writing-mode: vertical-rl; transform: rotate(180deg); font: 500 9px/1 var(--font-mono); text-transform: uppercase; letter-spacing: .18em; color: var(--ghost); }
+    .rail-nav { display: grid; gap: 14px; }
+    .rail-nav a { position: relative; width: 10px; height: 10px; display: block; }
+    .rail-nav a::before { content: ""; position: absolute; inset: 3px; background: var(--ghost); transition: inset .2s, background .2s, box-shadow .2s; }
+    .rail-nav a:hover::before, .rail-nav a.active::before { inset: 1px; background: var(--primary); box-shadow: 0 0 10px rgba(var(--primary-rgb),.6); }
+    .rail-nav a::after { content: attr(data-label); position: absolute; left: 22px; top: 50%; transform: translate(8px,-50%); background: var(--text); color: #050505; padding: 7px 9px; white-space: nowrap; pointer-events: none; opacity: 0; font: 650 9px/1 var(--font-mono); letter-spacing: .1em; text-transform: uppercase; transition: opacity .2s, transform .2s; }
+    .rail-nav a:hover::after { opacity: 1; transform: translate(0,-50%); }
+    .rail-status { width: 7px; height: 7px; border-radius: 50%; background: var(--success); box-shadow: 0 0 10px rgba(34,197,94,.7); }
+    main { min-width: 0; }
+
+    .section { position: relative; overflow: clip; border-bottom: 1px solid var(--border); background: var(--bg); }
+    .section::before { content: ""; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(650px circle at var(--glow-x, 82%) var(--glow-y, 15%), rgba(var(--primary-rgb),.055), transparent 65%); }
+    .section::after { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; opacity: .1; background-image: linear-gradient(rgba(63,63,70,.22) 1px,transparent 1px),linear-gradient(90deg,rgba(63,63,70,.22) 1px,transparent 1px); background-size: 40px 40px; -webkit-mask-image: linear-gradient(90deg,transparent,black 18%,black 82%,transparent); mask-image: linear-gradient(90deg,transparent,black 18%,black 82%,transparent); animation: field-drift 22s linear infinite; }
+    .section-inner { position: relative; z-index: 2; width: min(100%, var(--max-w)); margin: 0 auto; padding: 112px clamp(24px,4vw,64px); }
+    .section-head { display: grid; grid-template-columns: minmax(0,1fr) minmax(260px,430px); gap: 48px; align-items: end; margin-bottom: 64px; }
+    .eyebrow { display: flex; align-items: center; gap: 10px; color: var(--primary); font: 500 10px/1.2 var(--font-mono); letter-spacing: .16em; text-transform: uppercase; margin-bottom: 18px; }
+    .eyebrow::before { content: ""; width: 20px; height: 1px; background: currentColor; }
+    .section-title { margin: 0; color: var(--text); font-size: clamp(38px,5vw,72px); line-height: .94; letter-spacing: -.055em; font-weight: 560; text-transform: uppercase; }
+    .section-title span { color: var(--ghost); }
+    .section-copy { margin: 0; color: var(--dim); font: 400 12px/1.8 var(--font-mono); max-width: 52ch; }
+    .section-index { color: var(--ghost); font: 500 10px/1 var(--font-mono); letter-spacing: .14em; text-transform: uppercase; margin-bottom: 16px; }
+    .rule-title { display: flex; align-items: center; justify-content: space-between; gap: 20px; color: var(--text-soft); font: 600 11px/1 var(--font-mono); letter-spacing: .14em; text-transform: uppercase; padding-bottom: 14px; border-bottom: 1px solid var(--border); margin: 0 0 24px; }
+    .rule-title span { color: var(--ghost); font-weight: 400; }
+
+    .hero { min-height: calc(100svh - var(--topbar-h)); display: grid; grid-template-columns: minmax(0,7fr) minmax(420px,5fr); position: relative; border-bottom: 1px solid var(--border); background: var(--bg); isolation: isolate; }
+    .hero-copy { min-height: 720px; position: relative; z-index: 3; padding: clamp(42px,6vw,92px); display: flex; flex-direction: column; justify-content: space-between; border-right: 1px solid var(--border); background: linear-gradient(100deg,rgba(5,5,5,.98) 48%,rgba(5,5,5,.82)); }
+    .hero-copy::before, .hero-copy::after { content: ""; position: absolute; width: 18px; height: 18px; pointer-events: none; }
+    .hero-copy::before { left: 28px; top: 28px; border-left: 1px solid var(--border-strong); border-top: 1px solid var(--border-strong); }
+    .hero-copy::after { right: 28px; bottom: 28px; border-right: 1px solid var(--border-strong); border-bottom: 1px solid var(--border-strong); }
+    .hero-kicker { display: flex; align-items: center; justify-content: space-between; gap: 24px; font: 500 10px/1 var(--font-mono); letter-spacing: .15em; text-transform: uppercase; }
+    .hero-kicker .sequence { color: var(--primary); }
+    .hero-kicker .version { color: var(--ghost); }
+    .hero-title { margin: auto 0 28px; color: var(--text); font-size: clamp(64px,8.2vw,132px); line-height: .79; letter-spacing: -.075em; font-weight: 560; text-transform: uppercase; max-width: 8ch; }
+    .hero-title span { display: block; color: var(--ghost); }
+    .hero-lede { margin: 0; padding-left: 18px; border-left: 2px solid var(--primary); max-width: 54ch; color: var(--dim); font: 400 12px/1.8 var(--font-mono); }
+    .hero-bottom { display: flex; align-items: flex-end; justify-content: space-between; gap: 32px; padding-top: 48px; }
+    .hero-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+    .hero-spec { display: grid; grid-template-columns: repeat(3,auto); gap: 28px; }
+    .hero-spec strong { display: block; color: var(--text); font-size: 18px; font-weight: 450; letter-spacing: -.03em; }
+    .hero-spec span { display: block; margin-top: 5px; color: var(--ghost); font: 500 8px/1 var(--font-mono); letter-spacing: .12em; text-transform: uppercase; }
+
+    .hero-visual { position: relative; min-height: 720px; overflow: hidden; background: #080808; cursor: crosshair; }
+    .hero-visual::after { content: ""; position: absolute; inset: 0; z-index: 2; pointer-events: none; opacity: .22; background-image: linear-gradient(rgba(18,16,16,0) 50%, rgba(0,0,0,.2) 50%), linear-gradient(90deg,rgba(255,0,0,.025),rgba(0,255,0,.01),rgba(0,0,255,.025)); background-size: 100% 3px, 4px 100%; }
+    #lattice { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; }
+    .canvas-fallback { position: absolute; inset: 0; z-index: 0; background: radial-gradient(circle at 54% 46%, rgba(var(--primary-rgb),.18), transparent 28%), linear-gradient(rgba(39,39,42,.22) 1px, transparent 1px), linear-gradient(90deg,rgba(39,39,42,.22) 1px, transparent 1px), #080808; background-size: auto, 42px 42px, 42px 42px, auto; }
+    .visual-hud { position: absolute; inset: 0; z-index: 4; pointer-events: none; padding: 24px; display: flex; flex-direction: column; justify-content: space-between; }
+    .hud-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
+    .hud-tag { border: 1px solid rgba(161,161,170,.3); background: rgba(5,5,5,.62); backdrop-filter: blur(12px); padding: 8px 10px; color: var(--text-soft); font: 500 9px/1 var(--font-mono); letter-spacing: .1em; text-transform: uppercase; }
+    .hud-tag.live::before { content: ""; display: inline-block; width: 6px; height: 6px; margin-right: 8px; background: var(--success); box-shadow: 0 0 8px rgba(34,197,94,.65); }
+    .coordinate { color: rgba(161,161,170,.5); font: 500 8px/1 var(--font-mono); letter-spacing: .12em; text-transform: uppercase; }
+    .core-stage { position: absolute; inset: 50% auto auto 50%; z-index: 3; width: min(48vw,430px); aspect-ratio: 1; transform: translate(-50%,-50%); display: grid; place-items: center; pointer-events: none; }
+    .orbit { position: absolute; inset: 0; border: 1px solid rgba(161,161,170,.16); border-radius: 50%; animation: spin 18s linear infinite; }
+    .orbit::before { content: ""; position: absolute; top: -3px; left: 50%; width: 6px; height: 6px; border-radius: 50%; background: var(--text); box-shadow: 0 0 12px rgba(255,255,255,.6); }
+    .orbit.o2 { inset: 13%; animation-duration: 12s; animation-direction: reverse; border-style: dashed; }
+    .orbit.o2::before { background: var(--primary); box-shadow: 0 0 15px rgba(var(--primary-rgb),.8); }
+    .orbit.o3 { inset: 29%; animation-duration: 7s; }
+    .core { position: relative; width: 116px; height: 116px; display: grid; place-items: center; border: 1px solid rgba(var(--primary-rgb),.42); border-radius: 50%; background: radial-gradient(circle,rgba(var(--primary-rgb),.22),rgba(5,5,5,.82) 58%); box-shadow: inset 0 0 28px rgba(var(--primary-rgb),.12), 0 0 60px rgba(var(--primary-rgb),.16); }
+    .core::before { content: ""; width: 38px; height: 38px; border: 1px solid var(--primary); transform: rotate(45deg); box-shadow: 0 0 22px rgba(var(--primary-rgb),.45); animation: core-breathe 3.8s var(--ease-out) infinite; }
+    .core::after { content: "SYS\A CORE"; white-space: pre; position: absolute; text-align: center; color: var(--text); font: 600 7px/1.25 var(--font-mono); letter-spacing: .12em; }
+    .telemetry { align-self: flex-end; width: min(100%,280px); border: 1px solid rgba(161,161,170,.28); background: rgba(5,5,5,.74); backdrop-filter: blur(16px); pointer-events: auto; box-shadow: 0 20px 55px rgba(0,0,0,.38); }
+    .telemetry-head { display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; border-bottom: 1px solid var(--border); color: var(--text-soft); font: 600 9px/1 var(--font-mono); letter-spacing: .1em; text-transform: uppercase; }
+    .telemetry-head span:last-child { color: var(--success); }
+    .telemetry-body { display: grid; grid-template-columns: 1fr 1fr; }
+    .telemetry-metric { padding: 14px; border-right: 1px solid var(--border); }
+    .telemetry-metric:last-child { border-right: 0; }
+    .telemetry-metric strong { display: block; color: var(--text); font-size: 20px; font-weight: 450; letter-spacing: -.04em; }
+    .telemetry-metric span { display: block; margin-top: 4px; color: var(--ghost); font: 500 8px/1 var(--font-mono); text-transform: uppercase; letter-spacing: .1em; }
+    .scroll-cue { position: absolute; z-index: 5; bottom: 24px; left: 24px; display: flex; align-items: center; gap: 10px; color: var(--ghost); font: 500 8px/1 var(--font-mono); letter-spacing: .14em; text-transform: uppercase; }
+    .scroll-cue::before { content: ""; width: 28px; height: 1px; background: linear-gradient(90deg,var(--primary),var(--border)); animation: cue 2s var(--ease-out) infinite; transform-origin: left; }
+
+    .btn { min-height: 42px; border: 1px solid transparent; border-radius: 0; display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 0 18px; cursor: pointer; font: 650 10px/1 var(--font-mono); text-transform: uppercase; letter-spacing: .12em; transition: transform .22s var(--ease-out), background .2s, color .2s, border-color .2s, box-shadow .2s; position: relative; overflow: hidden; }
+    .btn::after { content: ""; position: absolute; inset: 0; transform: translateX(-105%); background: linear-gradient(90deg,transparent,rgba(255,255,255,.14),transparent); transition: transform .5s var(--ease-out); }
+    .btn:hover::after { transform: translateX(105%); }
+    .btn:hover { transform: translateY(-2px); }
+    .btn:active, .btn.is-active { transform: translateY(0) scale(.98); }
+    .btn-primary { background: var(--text); color: #050505; }
+    .btn-primary:hover, .btn-primary.is-hover { background: var(--primary); color: #050505; box-shadow: 0 10px 28px rgba(var(--primary-rgb),.2); }
+    .btn-secondary { background: var(--surface-3); color: var(--text); border-color: var(--border-strong); }
+    .btn-secondary:hover, .btn-secondary.is-hover { background: var(--surface-raised); border-color: var(--primary); }
+    .btn-ghost { background: transparent; color: var(--muted); border-color: var(--border); }
+    .btn-ghost:hover, .btn-ghost.is-hover { color: var(--text); border-color: var(--border-strong); background: rgba(255,255,255,.025); }
+    .btn-danger { background: rgba(239,68,68,.08); color: #fca5a5; border-color: rgba(239,68,68,.28); }
+    .btn-danger:hover { color: #050505; background: var(--error); }
+    .btn[disabled], .btn.is-disabled { opacity: .36; pointer-events: none; filter: saturate(.2); }
+    .btn-sm { min-height: 34px; padding: 0 13px; font-size: 9px; }
+    .btn-lg { min-height: 52px; padding: 0 24px; }
+    .icon-btn { width: 42px; height: 42px; padding: 0; border: 1px solid var(--border); background: var(--surface-2); display: inline-grid; place-items: center; cursor: pointer; transition: background .2s, border-color .2s, color .2s, transform .2s var(--ease-out); }
+    .icon-btn:hover { color: var(--text); background: var(--surface-3); border-color: var(--border-strong); transform: translateY(-2px); }
+    .fab { position: fixed; z-index: 60; right: 24px; bottom: 24px; width: 52px; height: 52px; border: 1px solid rgba(var(--primary-rgb),.55); background: rgba(8,8,8,.84); backdrop-filter: blur(16px); color: var(--primary-hover); display: grid; place-items: center; cursor: pointer; box-shadow: var(--shadow-glow); transform: translateY(80px); opacity: 0; transition: transform .4s var(--ease-out), opacity .4s; }
+    .fab.show { transform: translateY(0); opacity: 1; }
+
+    .grid-2, .grid-3, .grid-4 { display: grid; gap: 1px; background: var(--border); border: 1px solid var(--border); }
+    .grid-2 { grid-template-columns: repeat(2,minmax(0,1fr)); }
+    .grid-3 { grid-template-columns: repeat(3,minmax(0,1fr)); }
+    .grid-4 { grid-template-columns: repeat(4,minmax(0,1fr)); }
+    .module { background: var(--bg); padding: 28px; min-width: 0; }
+    .module.soft { background: var(--surface-1); }
+    .module:hover .module-icon { color: var(--primary); transform: translateY(-2px); }
+    .module-icon { color: var(--ghost); transition: color .2s, transform .25s var(--ease-out); }
+    .module-label { color: var(--ghost); font: 500 9px/1 var(--font-mono); letter-spacing: .12em; text-transform: uppercase; }
+    .module h3 { margin: 32px 0 10px; color: var(--text); font-size: 18px; font-weight: 520; text-transform: uppercase; letter-spacing: -.02em; }
+    .module p { margin: 0; color: var(--dim); font: 400 11px/1.7 var(--font-mono); }
+
+    .beam-panel { position: relative; isolation: isolate; }
+    .beam-panel::before { content: ""; position: absolute; z-index: 2; inset: -1px; padding: 1px; pointer-events: none; background: conic-gradient(from var(--beam-angle,0deg),transparent 0 73%,rgba(var(--primary-rgb),.08) 77%,var(--primary) 82%,#fff 84%,var(--primary) 86%,transparent 91%); -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude; animation: beam-spin 8.5s linear infinite; }
+    .beam-panel:hover::before, .beam-panel:focus-within::before { animation-duration: 3s; filter: drop-shadow(0 0 7px rgba(var(--primary-rgb),.5)); }
+
+    .token-strip { display: flex; min-height: 132px; overflow: hidden; border: 1px solid var(--border); }
+    .swatch { flex: 1 1 0; min-width: 110px; padding: 16px; display: flex; flex-direction: column; justify-content: flex-end; color: #fff; position: relative; transition: flex .35s var(--ease-out), filter .2s; }
+    .swatch:hover { flex-grow: 1.55; }
+    .swatch::after { content: ""; position: absolute; inset: 0; border-right: 1px solid rgba(255,255,255,.12); pointer-events: none; }
+    .swatch strong { font: 650 9px/1 var(--font-mono); text-transform: uppercase; letter-spacing: .1em; text-shadow: 0 1px 4px rgba(0,0,0,.8); }
+    .swatch code { margin-top: 6px; font: 400 9px/1 var(--font-mono); opacity: .72; text-shadow: 0 1px 4px rgba(0,0,0,.8); }
+    .swatch.light-label { color: #050505; }
+    .swatch.light-label strong, .swatch.light-label code { text-shadow: none; }
+    .data-table-wrap { overflow-x: auto; border: 1px solid var(--border); }
+    .data-table { width: 100%; min-width: 760px; border-collapse: collapse; background: var(--bg); }
+    .data-table th { padding: 13px 16px; color: var(--ghost); background: var(--surface-1); border-bottom: 1px solid var(--border); text-align: left; font: 600 9px/1 var(--font-mono); letter-spacing: .12em; text-transform: uppercase; }
+    .data-table td { padding: 15px 16px; color: var(--muted); border-bottom: 1px solid rgba(39,39,42,.7); font: 400 10px/1.5 var(--font-mono); vertical-align: middle; }
+    .data-table tr:last-child td { border-bottom: 0; }
+    .data-table tbody tr { transition: background .2s; }
+    .data-table tbody tr:hover { background: rgba(255,255,255,.022); }
+    .token-dot { width: 12px; height: 12px; display: inline-block; vertical-align: -2px; margin-right: 9px; box-shadow: 0 0 0 1px rgba(255,255,255,.14); }
+    code.token { padding: 3px 6px; background: var(--surface-3); border: 1px solid var(--border); color: var(--text-soft); font: 400 9px/1 var(--font-mono); }
+
+    .type-sample { display: grid; grid-template-columns: minmax(240px,1.25fr) minmax(360px,1fr); border: 1px solid var(--border); border-bottom: 0; background: var(--bg); }
+    .type-sample:last-child { border-bottom: 1px solid var(--border); }
+    .type-preview { padding: 26px; color: var(--text); min-width: 0; overflow: hidden; }
+    .type-meta { padding: 22px 26px; background: var(--surface-1); border-left: 1px solid var(--border); display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 13px; align-content: center; }
+    .type-meta div { min-width: 0; }
+    .type-meta span { display: block; color: var(--ghost); font: 500 8px/1 var(--font-mono); letter-spacing: .1em; text-transform: uppercase; margin-bottom: 5px; }
+    .type-meta code { color: var(--muted); font: 400 9px/1.35 var(--font-mono); word-break: break-word; }
+    .t-h1 { font-size: clamp(48px,6vw,80px); line-height: .9; letter-spacing: -.06em; font-weight: 560; text-transform: uppercase; }
+    .t-h2 { font-size: clamp(38px,4.5vw,64px); line-height: .94; letter-spacing: -.055em; font-weight: 560; text-transform: uppercase; }
+    .t-h3 { font-size: 40px; line-height: 1; letter-spacing: -.04em; font-weight: 540; text-transform: uppercase; }
+    .t-h4 { font-size: 30px; line-height: 1.08; letter-spacing: -.035em; font-weight: 540; }
+    .t-h5 { font-size: 22px; line-height: 1.15; letter-spacing: -.025em; font-weight: 550; }
+    .t-h6 { font-size: 16px; line-height: 1.3; letter-spacing: -.01em; font-weight: 600; text-transform: uppercase; }
+    .t-body-lg { font-size: 18px; line-height: 1.65; letter-spacing: -.01em; font-weight: 400; }
+    .t-body { font-size: 15px; line-height: 1.65; font-weight: 400; }
+    .t-body-sm { font-size: 13px; line-height: 1.6; font-weight: 400; }
+    .t-caption { font: 400 11px/1.5 var(--font-mono); }
+    .t-label { font: 600 10px/1.2 var(--font-mono); letter-spacing: .12em; text-transform: uppercase; }
+    .t-helper { font: 400 10px/1.45 var(--font-mono); color: var(--dim); }
+
+    .space-scale { display: flex; align-items: flex-end; gap: 14px; min-height: 150px; padding: 24px; border: 1px solid var(--border); background: var(--surface-1); overflow-x: auto; }
+    .space-item { min-width: 52px; text-align: center; }
+    .space-block { width: 100%; background: linear-gradient(180deg,var(--primary-hover),var(--primary-active)); box-shadow: 0 0 18px rgba(var(--primary-rgb),.12); }
+    .space-item code { display: block; margin-top: 9px; color: var(--ghost); font: 400 8px/1 var(--font-mono); }
+
+    .component-canvas { padding: clamp(22px,4vw,40px); border: 1px solid var(--border); background: radial-gradient(circle at 82% 20%,rgba(var(--primary-rgb),.045),transparent 42%),var(--surface-1); position: relative; overflow: visible; }
+    .component-canvas + .component-canvas { margin-top: 20px; }
+    .canvas-label { display: flex; justify-content: space-between; gap: 16px; margin-bottom: 28px; color: var(--ghost); font: 500 9px/1 var(--font-mono); letter-spacing: .12em; text-transform: uppercase; }
+    .demo-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+    .state-grid { display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); gap: 12px; }
+    .state-cell { min-width: 0; }
+    .state-cell > span { display: block; margin-bottom: 9px; color: var(--ghost); font: 500 8px/1 var(--font-mono); letter-spacing: .1em; text-transform: uppercase; }
+
+    .field-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 22px; }
+    .field { display: grid; gap: 8px; }
+    .field label, .field-label { color: var(--muted); font: 600 9px/1 var(--font-mono); letter-spacing: .11em; text-transform: uppercase; }
+    .field-help { color: var(--ghost); font: 400 9px/1.45 var(--font-mono); }
+    .control { width: 100%; min-height: 44px; padding: 11px 13px; border: 1px solid var(--border); border-radius: 0; background: rgba(5,5,5,.66); color: var(--text); caret-color: var(--primary); outline: none; transition: border-color .2s, background .2s, box-shadow .2s; font-size: 13px; }
+    .control::placeholder { color: var(--ghost); }
+    .control:hover { border-color: var(--border-strong); }
+    .control:focus, .control.is-focus { border-color: var(--primary); background: var(--bg); box-shadow: 0 0 0 3px rgba(var(--primary-rgb),.12); }
+    .control[aria-invalid="true"] { border-color: var(--error); box-shadow: 0 0 0 3px rgba(239,68,68,.09); }
+    textarea.control { min-height: 106px; resize: vertical; line-height: 1.55; }
+    select.control { appearance: none; background-image: linear-gradient(45deg,transparent 50%,var(--dim) 50%),linear-gradient(135deg,var(--dim) 50%,transparent 50%); background-position: calc(100% - 17px) calc(50% - 2px),calc(100% - 12px) calc(50% - 2px); background-size: 5px 5px; background-repeat: no-repeat; }
+    .input-wrap { position: relative; }
+    .input-wrap .control { padding-right: 42px; }
+    .input-affix { position: absolute; top: 50%; right: 13px; transform: translateY(-50%); color: var(--ghost); pointer-events: none; }
+    .choice-row { display: flex; flex-wrap: wrap; gap: 18px 26px; }
+    .choice { display: inline-flex; align-items: center; gap: 10px; cursor: pointer; color: var(--muted); font-size: 12px; }
+    .choice input { position: absolute; opacity: 0; pointer-events: none; }
+    .choice-box { width: 18px; height: 18px; border: 1px solid var(--border-strong); background: var(--bg); display: grid; place-items: center; transition: background .2s,border-color .2s,box-shadow .2s; }
+    .choice-box::after { content: ""; width: 8px; height: 4px; border-left: 2px solid #fff; border-bottom: 2px solid #fff; transform: rotate(-45deg) scale(0); transition: transform .2s var(--ease-spring); }
+    .choice input:checked + .choice-box { background: var(--primary); border-color: var(--primary); }
+    .choice input:checked + .choice-box::after { transform: rotate(-45deg) scale(1); }
+    .choice input:focus-visible + .choice-box { box-shadow: 0 0 0 3px rgba(var(--primary-rgb),.2); }
+    .radio .choice-box { border-radius: 50%; }
+    .radio .choice-box::after { width: 8px; height: 8px; border: 0; border-radius: 50%; background: #fff; }
+    .toggle { display: inline-flex; align-items: center; gap: 11px; cursor: pointer; color: var(--muted); font-size: 12px; }
+    .toggle input { position: absolute; opacity: 0; }
+    .toggle-track { width: 38px; height: 22px; padding: 3px; border: 1px solid var(--border-strong); background: var(--surface-2); transition: background .2s,border-color .2s,box-shadow .2s; }
+    .toggle-track::after { content: ""; display: block; width: 14px; height: 14px; background: var(--dim); transition: transform .25s var(--ease-spring),background .2s; }
+    .toggle input:checked + .toggle-track { background: rgba(var(--primary-rgb),.18); border-color: var(--primary); }
+    .toggle input:checked + .toggle-track::after { transform: translateX(16px); background: var(--primary-hover); }
+    .toggle input:focus-visible + .toggle-track { box-shadow: 0 0 0 3px rgba(var(--primary-rgb),.2); }
+
+    .badge, .chip { display: inline-flex; align-items: center; gap: 7px; border: 1px solid var(--border); font: 600 8px/1 var(--font-mono); letter-spacing: .1em; text-transform: uppercase; }
+    .badge { min-height: 22px; padding: 0 8px; color: var(--muted); background: var(--surface-2); }
+    .badge.primary { color: var(--primary-hover); border-color: rgba(var(--primary-rgb),.32); background: rgba(var(--primary-rgb),.08); }
+    .badge.success { color: #86efac; border-color: rgba(34,197,94,.3); background: rgba(34,197,94,.07); }
+    .badge.warning { color: #fcd34d; border-color: rgba(245,158,11,.28); background: rgba(245,158,11,.07); }
+    .badge.error { color: #fca5a5; border-color: rgba(239,68,68,.28); background: rgba(239,68,68,.07); }
+    .badge.info { color: #7dd3fc; border-color: rgba(56,189,248,.28); background: rgba(56,189,248,.07); }
+    .badge-dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; box-shadow: 0 0 6px currentColor; }
+    .chip { min-height: 30px; padding: 0 10px; background: var(--surface-2); color: var(--muted); cursor: pointer; transition: background .2s,border-color .2s,color .2s,transform .2s; }
+    .chip:hover { color: var(--text); border-color: var(--border-strong); transform: translateY(-1px); }
+    .chip.selected { color: var(--text); border-color: var(--primary); background: rgba(var(--primary-rgb),.1); }
+    .chip .remove { color: var(--ghost); font-size: 12px; }
+
+    .tooltip { position: relative; display: inline-flex; }
+    .tooltip-bubble { position: absolute; z-index: 30; left: 50%; bottom: calc(100% + 10px); transform: translate(-50%,6px); width: max-content; max-width: 220px; padding: 8px 10px; border: 1px solid var(--border-strong); background: var(--text); color: #050505; font: 600 9px/1.35 var(--font-mono); opacity: 0; visibility: hidden; pointer-events: none; transition: opacity .18s,transform .18s var(--ease-out),visibility .18s; }
+    .tooltip:hover .tooltip-bubble, .tooltip:focus-within .tooltip-bubble { opacity: 1; visibility: visible; transform: translate(-50%,0); }
+    .avatar { width: 38px; height: 38px; border: 1px solid var(--border-strong); display: grid; place-items: center; background: linear-gradient(145deg,var(--surface-raised),var(--surface-2)); color: var(--text); font: 650 10px/1 var(--font-mono); position: relative; }
+    .avatar.status::after { content: ""; position: absolute; right: -2px; bottom: -2px; width: 8px; height: 8px; border: 2px solid var(--bg); border-radius: 50%; background: var(--success); }
+    .avatar-group { display: flex; }
+    .avatar-group .avatar { margin-left: -8px; box-shadow: 0 0 0 2px var(--surface-1); }
+    .avatar-group .avatar:first-child { margin-left: 0; }
+
+    .card { position: relative; min-height: 250px; padding: 26px; background: var(--surface-1); border: 1px solid var(--border); overflow: hidden; transition: border-color .25s,transform .35s var(--ease-out),background .25s,box-shadow .25s; }
+    .card:hover { transform: translateY(-4px); border-color: var(--border-strong); background: var(--surface-2); box-shadow: 0 24px 70px rgba(0,0,0,.25); }
+    .card-corners::before, .card-corners::after { content: ""; position: absolute; width: 12px; height: 12px; pointer-events: none; transition: border-color .2s; }
+    .card-corners::before { left: 10px; top: 10px; border-left: 1px solid var(--ghost); border-top: 1px solid var(--ghost); }
+    .card-corners::after { right: 10px; bottom: 10px; border-right: 1px solid var(--ghost); border-bottom: 1px solid var(--ghost); }
+    .card:hover.card-corners::before, .card:hover.card-corners::after { border-color: var(--primary); }
+    .card h3 { margin: 34px 0 10px; color: var(--text); font-size: 18px; font-weight: 550; text-transform: uppercase; letter-spacing: -.02em; }
+    .card p { margin: 0; color: var(--dim); font: 400 11px/1.7 var(--font-mono); }
+    .metric-value { margin-top: 38px; color: var(--text); font-size: 48px; line-height: .9; letter-spacing: -.06em; font-weight: 450; }
+    .metric-delta { color: var(--success); font: 500 9px/1 var(--font-mono); }
+    .image-card { padding: 0; min-height: 320px; }
+    .image-card img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: grayscale(.2) brightness(.48) contrast(1.08); transition: filter .6s,transform 1s var(--ease-out); }
+    .image-card:hover img { filter: grayscale(0) brightness(.72); transform: scale(1.035); }
+    .image-card .card-overlay { position: absolute; inset: 0; padding: 24px; display: flex; flex-direction: column; justify-content: space-between; background: linear-gradient(180deg,rgba(5,5,5,.25),rgba(5,5,5,.86)); }
+
+    .tabs { border: 1px solid var(--border); }
+    .tab-list { display: flex; overflow-x: auto; border-bottom: 1px solid var(--border); background: var(--surface-1); }
+    .tab-button { min-width: 140px; height: 48px; padding: 0 18px; border: 0; border-right: 1px solid var(--border); background: transparent; color: var(--dim); cursor: pointer; font: 600 9px/1 var(--font-mono); letter-spacing: .12em; text-transform: uppercase; position: relative; transition: color .2s,background .2s; }
+    .tab-button::after { content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; background: var(--primary); transform: scaleX(0); transition: transform .3s var(--ease-out); }
+    .tab-button:hover { color: var(--text-soft); background: rgba(255,255,255,.018); }
+    .tab-button[aria-selected="true"] { color: var(--text); }
+    .tab-button[aria-selected="true"]::after { transform: scaleX(1); }
+    .tab-panel { display: none; padding: 30px; min-height: 170px; background: var(--bg); animation: tab-in .35s var(--ease-out); }
+    .tab-panel.active { display: block; }
+    .tab-panel h4 { margin: 0 0 12px; color: var(--text); font-size: 18px; text-transform: uppercase; }
+    .tab-panel p { margin: 0; max-width: 65ch; font: 400 11px/1.75 var(--font-mono); color: var(--dim); }
+
+    .accordion { border: 1px solid var(--border); border-bottom: 0; }
+    .accordion-item { border-bottom: 1px solid var(--border); background: var(--bg); }
+    .accordion-trigger { width: 100%; min-height: 62px; padding: 0 20px; border: 0; background: transparent; color: var(--text-soft); display: flex; align-items: center; justify-content: space-between; gap: 20px; cursor: pointer; text-align: left; font-size: 13px; font-weight: 550; }
+    .accordion-trigger span:first-child { display: flex; align-items: center; gap: 15px; }
+    .accordion-index { color: var(--primary); font: 500 9px/1 var(--font-mono); }
+    .accordion-trigger iconify-icon { transition: transform .35s var(--ease-out); }
+    .accordion-trigger[aria-expanded="true"] iconify-icon { transform: rotate(45deg); }
+    .accordion-panel { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .4s var(--ease-out); }
+    .accordion-panel > div { overflow: hidden; }
+    .accordion-panel p { margin: 0; padding: 0 20px 0 54px; color: var(--dim); font: 400 11px/1.7 var(--font-mono); max-width: 78ch; transition: padding .4s var(--ease-out); }
+    .accordion-trigger[aria-expanded="true"] + .accordion-panel { grid-template-rows: 1fr; }
+    .accordion-trigger[aria-expanded="true"] + .accordion-panel p { padding-bottom: 22px; }
+
+    .dropdown { position: relative; display: inline-block; }
+    .dropdown-menu { position: absolute; z-index: 40; top: calc(100% + 8px); right: 0; width: 220px; padding: 6px; border: 1px solid var(--border-strong); background: rgba(8,8,8,.96); backdrop-filter: blur(16px); box-shadow: 0 24px 60px rgba(0,0,0,.45); opacity: 0; visibility: hidden; transform: translateY(-7px) scale(.98); transform-origin: top right; transition: opacity .2s,transform .25s var(--ease-out),visibility .2s; }
+    .dropdown.open .dropdown-menu { opacity: 1; visibility: visible; transform: none; }
+    .dropdown-item { width: 100%; min-height: 38px; border: 0; background: transparent; color: var(--muted); display: flex; align-items: center; gap: 10px; padding: 0 10px; cursor: pointer; text-align: left; font-size: 11px; transition: color .2s,background .2s; }
+    .dropdown-item:hover { color: var(--text); background: var(--surface-3); }
+    .dropdown-separator { height: 1px; background: var(--border); margin: 5px 0; }
+
+    .breadcrumb { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; color: var(--ghost); font: 500 9px/1 var(--font-mono); letter-spacing: .1em; text-transform: uppercase; }
+    .breadcrumb a:hover { color: var(--text); }
+    .breadcrumb [aria-current="page"] { color: var(--primary-hover); }
+    .pagination { display: flex; align-items: center; gap: 6px; }
+    .page-btn { width: 36px; height: 36px; border: 1px solid var(--border); background: var(--surface-1); color: var(--dim); cursor: pointer; display: grid; place-items: center; font: 500 9px/1 var(--font-mono); transition: color .2s,border-color .2s,background .2s; }
+    .page-btn:hover { color: var(--text); border-color: var(--border-strong); }
+    .page-btn.active { color: #050505; border-color: var(--primary); background: var(--primary); font-weight: 700; }
+
+    .alert { display: flex; align-items: flex-start; gap: 14px; padding: 16px; border: 1px solid var(--border); background: var(--surface-1); color: var(--muted); }
+    .alert iconify-icon { margin-top: 1px; flex: 0 0 auto; }
+    .alert strong { display: block; color: var(--text-soft); font-size: 12px; margin-bottom: 4px; }
+    .alert p { margin: 0; font: 400 10px/1.55 var(--font-mono); }
+    .alert.success { border-color: rgba(34,197,94,.28); background: rgba(34,197,94,.045); }
+    .alert.success iconify-icon { color: var(--success); }
+    .alert.warning { border-color: rgba(245,158,11,.28); background: rgba(245,158,11,.045); }
+    .alert.warning iconify-icon { color: var(--warning); }
+    .alert.error { border-color: rgba(239,68,68,.28); background: rgba(239,68,68,.045); }
+    .alert.error iconify-icon { color: var(--error); }
+    .alert.info iconify-icon { color: var(--info); }
+    .alert-stack { display: grid; gap: 10px; }
+
+    .toast-region { position: fixed; z-index: 110; right: 22px; top: calc(var(--topbar-h) + 18px); width: min(360px,calc(100vw - 44px)); display: grid; gap: 10px; pointer-events: none; }
+    .toast { position: relative; display: grid; grid-template-columns: auto 1fr auto; align-items: start; gap: 12px; padding: 15px; border: 1px solid var(--border-strong); background: rgba(8,8,8,.96); backdrop-filter: blur(18px); box-shadow: 0 24px 60px rgba(0,0,0,.45); pointer-events: auto; overflow: hidden; animation: toast-in .48s var(--ease-out); }
+    .toast.removing { animation: toast-out .3s var(--ease-out) forwards; }
+    .toast iconify-icon { color: var(--success); }
+    .toast strong { display: block; color: var(--text); font-size: 11px; margin-bottom: 4px; }
+    .toast span { display: block; color: var(--dim); font: 400 9px/1.45 var(--font-mono); }
+    .toast-close { border: 0; background: transparent; color: var(--ghost); cursor: pointer; padding: 0; }
+    .toast-progress { position: absolute; left: 0; bottom: 0; height: 2px; width: 100%; background: var(--primary); transform-origin: left; animation: toast-progress 4.6s linear forwards; }
+
+    .modal-backdrop, .drawer-backdrop { position: fixed; inset: 0; z-index: 90; background: rgba(0,0,0,.72); backdrop-filter: blur(8px); opacity: 0; visibility: hidden; transition: opacity .25s,visibility .25s; }
+    .modal-backdrop.open, .drawer-backdrop.open { opacity: 1; visibility: visible; }
+    .modal { position: absolute; left: 50%; top: 50%; width: min(560px,calc(100vw - 32px)); transform: translate(-50%,-46%) scale(.97); border: 1px solid var(--border-strong); background: var(--bg); box-shadow: 0 40px 120px rgba(0,0,0,.65); opacity: 0; transition: transform .38s var(--ease-out),opacity .25s; }
+    .modal-backdrop.open .modal { transform: translate(-50%,-50%) scale(1); opacity: 1; }
+    .modal-head, .modal-foot { padding: 18px 20px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .modal-head { border-bottom: 1px solid var(--border); }
+    .modal-foot { border-top: 1px solid var(--border); justify-content: flex-end; }
+    .modal-head h3 { margin: 0; color: var(--text); font-size: 14px; text-transform: uppercase; letter-spacing: .04em; }
+    .modal-body { padding: 24px 20px; color: var(--dim); font: 400 11px/1.7 var(--font-mono); }
+    .drawer-backdrop { display: flex; justify-content: flex-end; }
+    .drawer { width: min(440px,92vw); height: 100%; border-left: 1px solid var(--border-strong); background: var(--bg); box-shadow: -35px 0 100px rgba(0,0,0,.55); transform: translateX(100%); transition: transform .45s var(--ease-out); display: flex; flex-direction: column; }
+    .drawer-backdrop.open .drawer { transform: none; }
+    .drawer .modal-body { flex: 1; }
+
+    .empty-state { min-height: 290px; border: 1px dashed var(--border-strong); display: grid; place-items: center; text-align: center; padding: 34px; background: radial-gradient(circle at center,rgba(var(--primary-rgb),.04),transparent 52%); }
+    .empty-icon { width: 58px; height: 58px; margin: 0 auto 20px; border: 1px solid var(--border); display: grid; place-items: center; color: var(--ghost); transform: rotate(45deg); }
+    .empty-icon iconify-icon { transform: rotate(-45deg); }
+    .empty-state h3 { margin: 0 0 9px; color: var(--text); font-size: 15px; text-transform: uppercase; }
+    .empty-state p { margin: 0 auto 20px; max-width: 42ch; color: var(--dim); font: 400 10px/1.6 var(--font-mono); }
+    .loader { width: 34px; height: 34px; border: 1px solid var(--border); border-top-color: var(--primary); border-radius: 50%; animation: spin .9s linear infinite; }
+    .loader-tech { width: 38px; height: 38px; position: relative; border: 1px solid var(--border-strong); animation: spin 1.8s linear infinite; }
+    .loader-tech::before { content: ""; position: absolute; inset: 7px; border: 1px solid var(--primary); animation: spin .8s linear infinite reverse; }
+    .dots-loader { display: flex; gap: 5px; }
+    .dots-loader span { width: 5px; height: 18px; background: var(--primary); animation: equalize 1s ease-in-out infinite; }
+    .dots-loader span:nth-child(2) { animation-delay: .12s; }
+    .dots-loader span:nth-child(3) { animation-delay: .24s; }
+    .skeleton-stack { display: grid; gap: 11px; width: min(100%,420px); }
+    .skeleton { height: 13px; background: var(--surface-3); overflow: hidden; position: relative; }
+    .skeleton::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg,transparent,rgba(255,255,255,.07),transparent); transform: translateX(-100%); animation: shimmer 1.8s infinite; }
+    .skeleton:nth-child(2) { width: 78%; }
+    .skeleton:nth-child(3) { width: 58%; }
+
+    .motion-demo { min-height: 210px; display: grid; place-items: center; overflow: hidden; position: relative; background: var(--surface-1); border: 1px solid var(--border); }
+    .motion-demo::before { content: ""; position: absolute; inset: 0; opacity: .35; background-image: linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px); background-size: 28px 28px; }
+    .motion-object { position: relative; z-index: 1; width: 54px; height: 54px; border: 1px solid var(--primary); background: rgba(var(--primary-rgb),.1); box-shadow: 0 0 24px rgba(var(--primary-rgb),.15); }
+    .motion-demo:hover .motion-object.spring { animation: demo-spring 1.4s var(--ease-out) both; }
+    .motion-demo:hover .motion-object.orbital { animation: demo-orbit 2.6s var(--ease-out) both; }
+    .motion-demo:hover .motion-object.reveal-demo { animation: demo-reveal 1.1s var(--ease-out) both; }
+
+    .footer { position: relative; border-top: 1px solid var(--border); background: var(--bg); }
+    .footer-grid { display: grid; grid-template-columns: 1.3fr repeat(3,1fr); min-height: 300px; }
+    .footer-module { padding: 34px; border-right: 1px solid var(--border); }
+    .footer-module:last-child { border-right: 0; }
+    .footer-module h4 { margin: 0 0 24px; color: var(--ghost); font: 600 9px/1 var(--font-mono); letter-spacing: .14em; text-transform: uppercase; }
+    .footer-module a { display: block; width: fit-content; margin: 0 0 11px; color: var(--dim); font-size: 11px; transition: color .2s,transform .2s; }
+    .footer-module a:hover { color: var(--text); transform: translateX(3px); }
+    .footer-brand { color: var(--text); font-size: 24px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; }
+    .footer-brand span { color: var(--ghost); }
+    .footer-status { margin-top: 46px; padding: 14px; border: 1px solid var(--border); background: var(--surface-1); }
+    .footer-status div { display: flex; justify-content: space-between; gap: 16px; color: var(--ghost); font: 500 8px/1 var(--font-mono); letter-spacing: .1em; text-transform: uppercase; }
+    .footer-status strong { color: var(--success); font-weight: 600; }
+    .footer-bottom { min-height: 48px; padding: 0 28px; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 20px; color: var(--ghost); font: 500 8px/1 var(--font-mono); letter-spacing: .1em; text-transform: uppercase; }
+
+    .motion-ready .sys-reveal:not(.sys-active) { opacity: 0; transform: translateY(28px); filter: blur(5px); }
+    .motion-ready .sys-slide-l:not(.sys-active) { transform: translateX(-30px); }
+    .motion-ready .sys-slide-r:not(.sys-active) { transform: translateX(30px); }
+    .motion-ready .sys-scale:not(.sys-active) { transform: scale(.94); }
+    .sys-reveal { transition: opacity 1s var(--ease-out),transform 1s var(--ease-out),filter 1s ease-out; }
+    .sys-active { opacity: 1 !important; transform: none !important; filter: blur(0) !important; }
+    .delay-1 { transition-delay: 100ms; }
+    .delay-2 { transition-delay: 200ms; }
+    .delay-3 { transition-delay: 300ms; }
+    .delay-4 { transition-delay: 400ms; }
+
+    @property --beam-angle { syntax: "<angle>"; initial-value: 0deg; inherits: false; }
+    @keyframes beam-spin { to { --beam-angle: 360deg; } }
+    @keyframes field-drift { to { background-position: 40px 40px; } }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes core-breathe { 0%,100% { transform: rotate(45deg) scale(.92); opacity: .6; } 45% { transform: rotate(225deg) scale(1.08); opacity: 1; } }
+    @keyframes cue { 0%,100% { transform: scaleX(.35); opacity: .4; } 50% { transform: scaleX(1); opacity: 1; } }
+    @keyframes tab-in { from { opacity: 0; transform: translateY(8px); filter: blur(3px); } }
+    @keyframes toast-in { from { opacity: 0; transform: translateX(24px) scale(.97); } }
+    @keyframes toast-out { to { opacity: 0; transform: translateX(24px) scale(.97); } }
+    @keyframes toast-progress { to { transform: scaleX(0); } }
+    @keyframes equalize { 0%,100% { transform: scaleY(.35); opacity: .35; } 50% { transform: scaleY(1); opacity: 1; } }
+    @keyframes shimmer { to { transform: translateX(100%); } }
+    @keyframes demo-spring { 0% { transform: translateX(-70px) scale(.85); } 45% { transform: translateX(82px) scale(1.05); } 65% { transform: translateX(60px); } 100% { transform: translateX(70px); } }
+    @keyframes demo-orbit { 0% { transform: rotate(0) translateX(0) rotate(0); } 35% { transform: rotate(150deg) translateX(68px) rotate(-150deg); } 100% { transform: rotate(360deg) translateX(0) rotate(-360deg); } }
+    @keyframes demo-reveal { 0% { opacity: 0; transform: translateY(28px) scale(.92); filter: blur(9px); } 100% { opacity: 1; transform: none; filter: blur(0); } }
+
+    @media (max-width: 1180px) {
+      .topbar { grid-template-columns: 220px 1fr auto; }
+      .topnav a { padding: 0 16px; }
+      .hero { grid-template-columns: minmax(0,1.1fr) minmax(380px,.9fr); }
+      .hero-copy { padding: 54px 42px; }
+      .hero-title { font-size: clamp(60px,8vw,96px); }
+      .state-grid { grid-template-columns: repeat(3,minmax(0,1fr)); }
+      .grid-4 { grid-template-columns: repeat(2,minmax(0,1fr)); }
+    }
+    @media (max-width: 900px) {
+      :root { --rail-w: 0px; }
+      .topbar { grid-template-columns: 1fr auto; }
+      .topnav { display: none; position: fixed; top: var(--topbar-h); left: 0; right: 0; background: rgba(5,5,5,.97); border-bottom: 1px solid var(--border); flex-direction: column; }
+      .topnav.open { display: flex; }
+      .topnav a { min-height: 52px; border-right: 0; border-bottom: 1px solid var(--border); }
+      .brand { border-right: 0; }
+      .top-action.primary { display: none; }
+      .menu-trigger { display: grid; }
+      .rail { display: none; }
+      .page-shell { display: block; }
+      .hero { grid-template-columns: 1fr; }
+      .hero-copy { min-height: 640px; border-right: 0; border-bottom: 1px solid var(--border); }
+      .hero-visual { min-height: 620px; }
+      .section-head { grid-template-columns: 1fr; gap: 24px; }
+      .footer-grid { grid-template-columns: repeat(2,1fr); }
+      .footer-module:nth-child(2) { border-right: 0; }
+      .footer-module { border-bottom: 1px solid var(--border); }
+    }
+    @media (max-width: 680px) {
+      :root { --topbar-h: 58px; }
+      .hide-mobile { display: none !important; }
+      .topbar { height: 58px; --topbar-h: 58px; }
+      .brand { padding: 0 16px; }
+      .top-action { min-width: 56px; }
+      .hero-copy { min-height: 600px; padding: 38px 24px; }
+      .hero-title { margin-top: 60px; font-size: clamp(54px,18vw,78px); max-width: 7ch; }
+      .hero-bottom { align-items: flex-start; flex-direction: column; }
+      .hero-spec { width: 100%; grid-template-columns: repeat(3,1fr); gap: 12px; }
+      .hero-visual { min-height: 540px; }
+      .core-stage { width: 350px; }
+      .visual-hud { padding: 16px; }
+      .scroll-cue { left: 16px; bottom: 16px; }
+      .section-inner { padding: 82px 20px; }
+      .section-head { margin-bottom: 44px; }
+      .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+      .token-strip { overflow-x: auto; }
+      .swatch { flex: 0 0 120px; }
+      .type-sample { grid-template-columns: 1fr; }
+      .type-meta { border-left: 0; border-top: 1px solid var(--border); }
+      .state-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+      .field-grid { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr; }
+      .footer-module { border-right: 0; }
+      .footer-bottom { align-items: flex-start; flex-direction: column; padding: 16px 20px; }
+      .fab { right: 16px; bottom: 16px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *,*::before,*::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .001ms !important; }
+      .motion-ready .sys-reveal:not(.sys-active) { opacity: 1; transform: none; filter: none; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#content">Pular para o conteúdo</a>
+  <div class="noise" aria-hidden="true"></div>
+  <div class="site-grid bg-grid" aria-hidden="true"></div>
+  <header class="topbar" aria-label="Navegação principal">
+    <a class="brand" href="#hero" aria-label="Axion Interface System — início">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span class="brand-name">Axion<span>_Sys</span></span>
+      <span class="system-dot" aria-hidden="true"></span>
+    </a>
+    <nav class="topnav" id="topnav" aria-label="Seções">
+      <a href="#foundations" aria-current="true"><span>01.</span> Foundations</a>
+      <a href="#components"><span>02.</span> Components</a>
+      <a href="#patterns"><span>03.</span> Patterns</a>
+      <a href="#motion"><span>04.</span> Motion</a>
+    </nav>
+    <div class="top-actions">
+      <button class="top-action menu-trigger" id="menuTrigger" aria-expanded="false" aria-controls="topnav" aria-label="Abrir menu">
+        <iconify-icon icon="solar:hamburger-menu-linear" width="19"></iconify-icon>
+      </button>
+      <button class="top-action" id="commandTrigger" aria-label="Abrir paleta de comandos">
+        <iconify-icon icon="solar:command-linear" width="19"></iconify-icon>
+      </button>
+      <button class="top-action primary" data-toast-trigger>
+        <span>Export tokens</span><iconify-icon icon="solar:download-minimalistic-linear" width="16"></iconify-icon>
+      </button>
+    </div>
+  </header>
+
+  <div class="page-shell">
+    <aside class="rail" aria-label="Navegação rápida">
+      <span class="rail-label">System index / v4.2</span>
+      <nav class="rail-nav">
+        <a href="#hero" class="active" data-label="Hero"><span class="sr-only">Hero</span></a>
+        <a href="#foundations" data-label="Foundations"><span class="sr-only">Foundations</span></a>
+        <a href="#colors" data-label="Colors"><span class="sr-only">Colors</span></a>
+        <a href="#typography" data-label="Typography"><span class="sr-only">Typography</span></a>
+        <a href="#components" data-label="Components"><span class="sr-only">Components</span></a>
+        <a href="#patterns" data-label="Patterns"><span class="sr-only">Patterns</span></a>
+        <a href="#motion" data-label="Motion"><span class="sr-only">Motion</span></a>
+      </nav>
+      <span class="rail-status" title="System operational"></span>
+    </aside>
+
+    <main id="content">
+      <section class="hero" id="hero" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <div class="hero-kicker sys-reveal">
+            <span class="sequence">// Interface sequence initiated</span>
+            <span class="version">Build 04.2 / Dark</span>
+          </div>
+          <div>
+            <h1 class="hero-title sys-reveal delay-1" id="hero-title">Operational <span>Interfaces</span></h1>
+            <p class="hero-lede sys-reveal delay-2">Um sistema visual para produtos autônomos de missão crítica. Preciso, modular e calibrado para transformar alta densidade de dados em decisões claras.</p>
+          </div>
+          <div class="hero-bottom sys-reveal delay-3">
+            <div class="hero-actions">
+              <a class="btn btn-primary btn-lg" href="#foundations">Initialize system <iconify-icon icon="solar:arrow-right-linear" width="16"></iconify-icon></a>
+              <button class="btn btn-ghost btn-lg" data-modal-open="specModal">View spec</button>
+            </div>
+            <div class="hero-spec" aria-label="Métricas do sistema">
+              <div><strong data-counter="42">0</strong><span>Components</span></div>
+              <div><strong data-counter="12">0</strong><span>Token sets</span></div>
+              <div><strong>AA+</strong><span>Contrast</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="hero-visual" id="heroVisual" aria-label="Command Lattice interativa. Mova o cursor e clique para criar um pulso.">
+          <div class="canvas-fallback" aria-hidden="true"></div>
+          <canvas id="lattice" aria-hidden="true"></canvas>
+          <div class="core-stage" aria-hidden="true">
+            <div class="orbit o1"></div><div class="orbit o2"></div><div class="orbit o3"></div><div class="core"></div>
+          </div>
+          <div class="visual-hud">
+            <div class="hud-row">
+              <span class="hud-tag live">Lattice_01 [Live]</span>
+              <span class="coordinate" id="coordinates">X 000 / Y 000</span>
+            </div>
+            <div class="hud-row">
+              <span class="coordinate">Pointer warp enabled<br>Click: impulse event</span>
+              <div class="telemetry beam-panel sys-reveal sys-slide-r delay-4">
+                <div class="telemetry-head"><span>Nexus render core</span><span>Optimal</span></div>
+                <div class="telemetry-body">
+                  <div class="telemetry-metric"><strong>8.2ms</strong><span>Frame latency</span></div>
+                  <div class="telemetry-metric"><strong>60</strong><span>Target FPS</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="scroll-cue">Scroll to inspect</div>
+        </div>
+      </section>
+
+      <section class="section" id="foundations" style="--glow-x:8%;--glow-y:12%" aria-labelledby="foundations-title">
+        <div class="section-inner">
+          <div class="section-head">
+            <div>
+              <div class="section-index">01 / System foundations</div>
+              <div class="eyebrow">Operating principles</div>
+              <h2 class="section-title sys-reveal" id="foundations-title">Built for <span>signal</span></h2>
+            </div>
+            <p class="section-copy sys-reveal delay-1">A linguagem Axion combina a disciplina de um console industrial com a clareza de um produto contemporâneo. Cada linha organiza. Cada luz informa. Cada movimento confirma estado.</p>
+          </div>
+
+          <div class="grid-4 sys-reveal">
+            <article class="module">
+              <div class="module-label">FIG. 01 / Precision</div>
+              <iconify-icon class="module-icon" icon="solar:target-linear" width="28"></iconify-icon>
+              <h3>Signal over noise</h3>
+              <p>Uma hierarquia dominante por tela. Decoração nunca compete com decisão.</p>
+            </article>
+            <article class="module soft">
+              <div class="module-label">FIG. 02 / Structure</div>
+              <iconify-icon class="module-icon" icon="solar:widget-4-linear" width="28"></iconify-icon>
+              <h3>Visible systems</h3>
+              <p>Divisórias, índices e métricas tornam arquitetura e estado imediatamente legíveis.</p>
+            </article>
+            <article class="module">
+              <div class="module-label">FIG. 03 / Motion</div>
+              <iconify-icon class="module-icon" icon="solar:radar-2-linear" width="28"></iconify-icon>
+              <h3>Physical response</h3>
+              <p>Movimento nasce da ação: press, foco, mudança de estado ou nova informação.</p>
+            </article>
+            <article class="module soft">
+              <div class="module-label">FIG. 04 / Access</div>
+              <iconify-icon class="module-icon" icon="solar:shield-check-linear" width="28"></iconify-icon>
+              <h3>Calm reliability</h3>
+              <p>Contraste AA como base, foco inequívoco e movimento reduzido sem perda de contexto.</p>
+            </article>
+          </div>
+
+          <div style="height:64px"></div>
+          <div class="grid-2">
+            <div class="module">
+              <h3 class="rule-title">Spacing scale <span>4px base unit</span></h3>
+              <div class="space-scale" aria-label="Escala de espaçamento">
+                <div class="space-item"><div class="space-block" style="height:4px"></div><code>01 / 4</code></div>
+                <div class="space-item"><div class="space-block" style="height:8px"></div><code>02 / 8</code></div>
+                <div class="space-item"><div class="space-block" style="height:12px"></div><code>03 / 12</code></div>
+                <div class="space-item"><div class="space-block" style="height:16px"></div><code>04 / 16</code></div>
+                <div class="space-item"><div class="space-block" style="height:24px"></div><code>06 / 24</code></div>
+                <div class="space-item"><div class="space-block" style="height:32px"></div><code>08 / 32</code></div>
+                <div class="space-item"><div class="space-block" style="height:48px"></div><code>12 / 48</code></div>
+                <div class="space-item"><div class="space-block" style="height:64px"></div><code>16 / 64</code></div>
+                <div class="space-item"><div class="space-block" style="height:96px"></div><code>24 / 96</code></div>
+              </div>
+            </div>
+            <div class="module soft">
+              <h3 class="rule-title">Geometry & elevation <span>Hard-edge system</span></h3>
+              <div class="data-table-wrap">
+                <table class="data-table" style="min-width:560px">
+                  <thead><tr><th>Token</th><th>Value</th><th>Use</th></tr></thead>
+                  <tbody>
+                    <tr><td><code class="token">radius-none</code></td><td>0px</td><td>Controls, tables, core cards</td></tr>
+                    <tr><td><code class="token">radius-sm</code></td><td>2px</td><td>Badges, featured surfaces</td></tr>
+                    <tr><td><code class="token">radius-full</code></td><td>999px</td><td>Status dots, avatars only</td></tr>
+                    <tr><td><code class="token">border-default</code></td><td>1px / #27272A</td><td>Primary structure</td></tr>
+                    <tr><td><code class="token">shadow-glow</code></td><td>Orange / 8%</td><td>Active or elevated state</td></tr>
+                    <tr><td><code class="token">grid-unit</code></td><td>40px</td><td>Environmental backgrounds</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="colors" style="--glow-x:88%;--glow-y:28%" aria-labelledby="colors-title">
+        <div class="section-inner">
+          <div class="section-head">
+            <div>
+              <div class="section-index">02 / Color protocol</div>
+              <div class="eyebrow">Luminous infrastructure</div>
+              <h2 class="section-title sys-reveal" id="colors-title">Color & <span>surface</span></h2>
+            </div>
+            <p class="section-copy sys-reveal delay-1">O laranja sinaliza ação, energia e processamento. O branco organiza a informação primária; a escala zinc cria profundidade sem abandonar a sobriedade industrial.</p>
+          </div>
+
+          <h3 class="rule-title">Core spectrum <span>Hover to inspect</span></h3>
+          <div class="token-strip sys-reveal">
+            <div class="swatch light-label" style="background:#ea580c"><strong>Primary 600</strong><code>#EA580C</code></div>
+            <div class="swatch light-label" style="background:#f97316"><strong>Primary 500</strong><code>#F97316</code></div>
+            <div class="swatch" style="background:#c2410c"><strong>Primary 700</strong><code>#C2410C</code></div>
+            <div class="swatch light-label" style="background:#f59e0b"><strong>Secondary</strong><code>#F59E0B</code></div>
+            <div class="swatch light-label" style="background:#fafafa"><strong>Accent white</strong><code>#FAFAFA</code></div>
+            <div class="swatch" style="background:#27272a"><strong>Border</strong><code>#27272A</code></div>
+            <div class="swatch" style="background:#0d0d0f"><strong>Surface 02</strong><code>#0D0D0F</code></div>
+            <div class="swatch" style="background:#050505"><strong>Void</strong><code>#050505</code></div>
+          </div>
+
+          <div style="height:48px"></div>
+          <h3 class="rule-title">System color registry <span>Hex / RGB / HSL / usage</span></h3>
+          <div class="data-table-wrap sys-reveal">
+            <table class="data-table">
+              <thead><tr><th>Role</th><th>Token</th><th>Hex</th><th>RGB</th><th>HSL</th><th>Opacity variants</th><th>Correct use</th></tr></thead>
+              <tbody>
+                <tr><td><span class="token-dot" style="background:#ea580c"></span>Primary</td><td><code class="token">primary-600</code></td><td>#EA580C</td><td>234, 88, 12</td><td>20°, 90%, 48%</td><td>8 / 12 / 20 / 40%</td><td>CTA, focus, active, live energy</td></tr>
+                <tr><td><span class="token-dot" style="background:#f97316"></span>Primary hover</td><td><code class="token">primary-500</code></td><td>#F97316</td><td>249, 115, 22</td><td>25°, 95%, 53%</td><td>10 / 18 / 32%</td><td>Hover, highlights, illuminated type</td></tr>
+                <tr><td><span class="token-dot" style="background:#c2410c"></span>Primary active</td><td><code class="token">primary-700</code></td><td>#C2410C</td><td>194, 65, 12</td><td>17°, 88%, 40%</td><td>12 / 24%</td><td>Pressed state, strong border</td></tr>
+                <tr><td><span class="token-dot" style="background:#f59e0b"></span>Secondary</td><td><code class="token">amber-500</code></td><td>#F59E0B</td><td>245, 158, 11</td><td>38°, 92%, 50%</td><td>8 / 16 / 28%</td><td>Warning and secondary data emphasis</td></tr>
+                <tr><td><span class="token-dot" style="background:#fafafa"></span>Accent</td><td><code class="token">zinc-50</code></td><td>#FAFAFA</td><td>250, 250, 250</td><td>0°, 0%, 98%</td><td>72 / 88%</td><td>Headings, primary text, inverse CTA</td></tr>
+                <tr><td><span class="token-dot" style="background:#050505"></span>Neutral / Void</td><td><code class="token">void-950</code></td><td>#050505</td><td>5, 5, 5</td><td>0°, 0%, 2%</td><td>72 / 88 / 96%</td><td>Page background, overlays</td></tr>
+                <tr><td><span class="token-dot" style="background:#0d0d0f"></span>Neutral / Surface</td><td><code class="token">surface-2</code></td><td>#0D0D0F</td><td>13, 13, 15</td><td>240°, 7%, 5%</td><td>64 / 84%</td><td>Cards, dropdowns, form fields</td></tr>
+                <tr><td><span class="token-dot" style="background:#27272a"></span>Neutral / Border</td><td><code class="token">zinc-800</code></td><td>#27272A</td><td>39, 39, 42</td><td>240°, 4%, 16%</td><td>50 / 70%</td><td>Grid, separators, default border</td></tr>
+                <tr><td><span class="token-dot" style="background:#a1a1aa"></span>Neutral / Muted</td><td><code class="token">zinc-400</code></td><td>#A1A1AA</td><td>161, 161, 170</td><td>240°, 5%, 65%</td><td>56 / 72%</td><td>Secondary copy, labels</td></tr>
+                <tr><td><span class="token-dot" style="background:#22c55e"></span>Success</td><td><code class="token">green-500</code></td><td>#22C55E</td><td>34, 197, 94</td><td>142°, 71%, 45%</td><td>7 / 14 / 28%</td><td>Operational, verified, completed</td></tr>
+                <tr><td><span class="token-dot" style="background:#f59e0b"></span>Warning</td><td><code class="token">amber-500</code></td><td>#F59E0B</td><td>245, 158, 11</td><td>38°, 92%, 50%</td><td>7 / 14 / 28%</td><td>Attention, degraded service</td></tr>
+                <tr><td><span class="token-dot" style="background:#ef4444"></span>Error</td><td><code class="token">red-500</code></td><td>#EF4444</td><td>239, 68, 68</td><td>0°, 84%, 60%</td><td>7 / 14 / 28%</td><td>Failure, destructive action, invalid</td></tr>
+                <tr><td><span class="token-dot" style="background:#38bdf8"></span>Info</td><td><code class="token">sky-400</code></td><td>#38BDF8</td><td>56, 189, 248</td><td>199°, 92%, 60%</td><td>7 / 14 / 28%</td><td>Neutral guidance and context</td></tr>
+                <tr><td><span class="token-dot" style="background:#fb7185"></span>Decorative</td><td><code class="token">rose-400</code></td><td>#FB7185</td><td>251, 113, 133</td><td>351°, 95%, 71%</td><td>5 / 10%</td><td>Charts only; never primary action</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div style="height:32px"></div>
+          <div class="grid-3">
+            <div class="module" style="background:linear-gradient(135deg,#050505 10%,#411505 55%,#ea580c 120%);min-height:180px">
+              <div class="module-label">Gradient / Thermal</div><h3>Core energy</h3><p style="color:#d4d4d8">Hero glows and focused moments.</p>
+            </div>
+            <div class="module" style="background:radial-gradient(circle at 25% 20%,rgba(234,88,12,.26),transparent 36%),linear-gradient(145deg,#111113,#050505);min-height:180px">
+              <div class="module-label">Gradient / Surface</div><h3>Raised panel</h3><p>Depth without elevated brightness.</p>
+            </div>
+            <div class="module bg-grid" style="background-color:#080808;min-height:180px">
+              <div class="module-label">Pattern / Grid 40</div><h3>System field</h3><p>Use below 8% opacity.</p>
+            </div>
+          </div>
+          <p class="section-copy" style="margin-top:24px"><strong style="color:var(--text-soft)">Contrast:</strong> text-50 on void-950 = 19.5:1 (AAA); zinc-400 on void-950 = 7.9:1 (AAA); primary-500 on void-950 = 7.2:1 (AAA). Primary-600 uses void-950 labels in controls and is reserved for large accent text on dark surfaces. Disabled content uses opacity only when it is non-essential.</p>
+        </div>
+      </section>
+
+      <section class="section" id="typography" style="--glow-x:16%;--glow-y:52%" aria-labelledby="typography-title">
+        <div class="section-inner">
+          <div class="section-head">
+            <div>
+              <div class="section-index">03 / Typography protocol</div>
+              <div class="eyebrow">Engineered hierarchy</div>
+              <h2 class="section-title sys-reveal" id="typography-title">Type as <span>interface</span></h2>
+            </div>
+            <p class="section-copy sys-reveal delay-1">Inter conduz narrativa e produto; JetBrains Mono estrutura telemetria, labels e estados. Geist existe como fallback local de alta compatibilidade.</p>
+          </div>
+
+          <div class="grid-3" style="margin-bottom:48px">
+            <div class="module"><div class="module-label">Primary / Inter</div><div style="font-size:54px;color:var(--text);letter-spacing:-.06em;margin:28px 0 8px">Aa</div><p>Weight 300–700 · Headings, body, controls</p></div>
+            <div class="module soft"><div class="module-label">Secondary / Geist</div><div style="font:500 54px/1 var(--font-secondary);color:var(--text);letter-spacing:-.06em;margin:28px 0 8px">Gg</div><p>Local fallback · Supporting editorial moments</p></div>
+            <div class="module"><div class="module-label">Monospace / JetBrains Mono</div><div style="font:400 42px/1 var(--font-mono);color:var(--primary-hover);letter-spacing:-.06em;margin:38px 0 11px">01_Ax</div><p>Weight 300–600 · Data, labels, helper text</p></div>
+          </div>
+
+          <h3 class="rule-title">Loading strategy <span>Resilient by design</span></h3>
+          <div class="data-table-wrap" style="margin-bottom:48px">
+            <table class="data-table">
+              <thead><tr><th>Priority</th><th>Source</th><th>Implementation</th><th>Behavior</th></tr></thead>
+              <tbody>
+                <tr><td>01 / Primary</td><td>Local mirrored CSS manifest</td><td><code class="token">assets/css2_cef…css</code></td><td>Inter + JetBrains Mono with font-display: swap</td></tr>
+                <tr><td>02 / Local fallback</td><td>Bundled WOFF2</td><td><code class="token">assets/css2_86e…css</code> + <code class="token">css2_627…css</code></td><td>Geist and Geist Mono, no layout-blocking</td></tr>
+                <tr><td>03 / System</td><td>OS defaults</td><td>Segoe UI / Arial / Consolas</td><td>Immediate rendering when font assets fail</td></tr>
+                <tr><td>Optional CDN</td><td>Google Fonts</td><td>Preconnect + version-pinned stylesheet</td><td>Use only when local distribution is unavailable</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="type-system">
+            <div class="type-sample"><div class="type-preview t-h1">Command</div><div class="type-meta"><div><span>Style</span><code>H1 / Display</code></div><div><span>Family</span><code>Inter</code></div><div><span>Weight / size</span><code>560 / 80px</code></div><div><span>Line / tracking / case</span><code>0.90 / -0.06em / uppercase</code></div></div></div>
+            <div class="type-sample"><div class="type-preview t-h2">System ready</div><div class="type-meta"><div><span>Style</span><code>H2</code></div><div><span>Family</span><code>Inter</code></div><div><span>Weight / size</span><code>560 / 64px</code></div><div><span>Line / tracking / case</span><code>0.94 / -0.055em / uppercase</code></div></div></div>
+            <div class="type-sample"><div class="type-preview t-h3">Operational logic</div><div class="type-meta"><div><span>Style</span><code>H3</code></div><div><span>Family</span><code>Inter</code></div><div><span>Weight / size</span><code>540 / 40px</code></div><div><span>Line / tracking / case</span><code>1.00 / -0.04em / uppercase</code></div></div></div>
+            <div class="type-sample"><div class="type-preview t-h4">Infrastructure layer</div><div class="type-meta"><div><span>Style</span><code>H4</code></div><div><span>Family</span><code>Inter</code></div><div><span>Weight / size</span><code>540 / 30px</code></div><div><span>Line / tracking / case</span><code>1.08 / -0.035em / sentence</code></div></div></div>
+            <div class="type-sample"><div class="type-preview t-h5">Autonomous deployment</div><div class="type-meta"><div><span>Style</span><code>H5</code></div><div><span>Family</span><code>Inter</code></div><div><span>Weight / size</span><code>550 / 22px</code></div><div><span>Line / tracking / case</span><code>1.15 / -0.025em / sentence</code></div></div></div>
+            <div class="type-sample"><div class="type-preview t-h6">System integrity</div><div class="type-meta"><div><span>Style</span><code>H6</code></div><div><span>Family</span><code>Inter</code></div><div><span>Weight / size</span><code>600 / 16px</code></div><div><span>Line / tracking / case</span><code>1.30 / -0.01em / uppercase</code></div></div></div>
+            <div class="type-sample"><div class="type-preview t-body-lg">Large body copy introduces a product idea with calm authority and generous rhythm.</div><div class="type-meta"><div><span>Style</span><code>Body Large</code></div><div><span>Family</span><code>Inter</code></div><div><span>Weight / size</span><code>400 / 18px</code></div><div><span>Line / tracking / case</span><code>1.65 / -0.01em / sentence</code></div></div></div>
+            <div class="type-sample"><div class="type-preview t-body">Default body copy balances reading comfort and compact product layouts.</div><div class="type-meta"><div><span>Style</span><code>Body</code></div><div><span>Family</span><code>Inter</code></div><div><span>Weight / size</span><code>400 / 15px</code></div><div><span>Line / tracking / case</span><code>1.65 / 0 / sentence</code></div></div></div>
+            <div class="type-sample"><div class="type-preview t-body-sm">Small body supports dense panels without becoming utility text.</div><div class="type-meta"><div><span>Style</span><code>Body Small</code></div><div><span>Family</span><code>Inter</code></div><div><span>Weight / size</span><code>400 / 13px</code></div><div><span>Line / tracking / case</span><code>1.60 / 0 / sentence</code></div></div></div>
+            <div class="type-sample"><div class="type-preview t-caption">SYS_CAPTURE / 14:32:01 UTC</div><div class="type-meta"><div><span>Style</span><code>Caption</code></div><div><span>Family</span><code>JetBrains Mono</code></div><div><span>Weight / size</span><code>400 / 11px</code></div><div><span>Line / tracking / case</span><code>1.50 / 0 / contextual</code></div></div></div>
+            <div class="type-sample"><div class="type-preview t-label">Environment status</div><div class="type-meta"><div><span>Style</span><code>Label</code></div><div><span>Family</span><code>JetBrains Mono</code></div><div><span>Weight / size</span><code>600 / 10px</code></div><div><span>Line / tracking / case</span><code>1.20 / 0.12em / uppercase</code></div></div></div>
+            <div class="type-sample"><div class="type-preview t-helper">Use 8–32 characters. Spaces are converted to underscores.</div><div class="type-meta"><div><span>Style</span><code>Helper</code></div><div><span>Family</span><code>JetBrains Mono</code></div><div><span>Weight / size</span><code>400 / 10px</code></div><div><span>Line / tracking / case</span><code>1.45 / 0 / sentence</code></div></div></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="components" style="--glow-x:92%;--glow-y:8%" aria-labelledby="components-title">
+        <div class="section-inner">
+          <div class="section-head">
+            <div>
+              <div class="section-index">04 / Component registry</div>
+              <div class="eyebrow">Production primitives</div>
+              <h2 class="section-title sys-reveal" id="components-title">Control <span>surface</span></h2>
+            </div>
+            <p class="section-copy sys-reveal delay-1">Componentes compartilham geometria rígida, estados luminosos e transições curtas. O usuário sempre percebe o que é interativo, o que mudou e o que acontece depois.</p>
+          </div>
+
+          <div class="component-canvas sys-reveal">
+            <div class="canvas-label"><span>04.01 / Buttons</span><span>Default · Hover · Active · Focus · Disabled</span></div>
+            <div class="state-grid">
+              <div class="state-cell"><span>Default</span><button class="btn btn-primary" style="width:100%">Initialize</button></div>
+              <div class="state-cell"><span>Hover</span><button class="btn btn-primary is-hover" style="width:100%">Initialize</button></div>
+              <div class="state-cell"><span>Active</span><button class="btn btn-primary is-active" style="width:100%">Initialize</button></div>
+              <div class="state-cell"><span>Focus</span><button class="btn btn-secondary" style="width:100%;outline:2px solid var(--primary-hover);outline-offset:3px">Initialize</button></div>
+              <div class="state-cell"><span>Disabled</span><button class="btn btn-primary" style="width:100%" disabled>Initialize</button></div>
+            </div>
+            <div class="demo-row" style="margin-top:28px">
+              <button class="btn btn-primary">Primary <iconify-icon icon="solar:arrow-right-linear"></iconify-icon></button>
+              <button class="btn btn-secondary">Secondary</button>
+              <button class="btn btn-ghost">Ghost</button>
+              <button class="btn btn-danger">Delete node</button>
+              <button class="btn btn-primary btn-sm">Small</button>
+              <button class="btn btn-primary btn-lg">Large action</button>
+              <button class="icon-btn" aria-label="Configurações"><iconify-icon icon="solar:settings-linear"></iconify-icon></button>
+              <button class="icon-btn" aria-label="Notificações"><iconify-icon icon="solar:bell-linear"></iconify-icon></button>
+            </div>
+          </div>
+
+          <div class="component-canvas sys-reveal">
+            <div class="canvas-label"><span>04.02 / Inputs & selection</span><span>Complete form states</span></div>
+            <div class="field-grid">
+              <div class="field"><label for="workspaceName">Workspace name</label><div class="input-wrap"><input class="control" id="workspaceName" placeholder="AXION_LABS"><span class="input-affix"><iconify-icon icon="solar:pen-linear"></iconify-icon></span></div><span class="field-help">Use 3–32 characters.</span></div>
+              <div class="field"><label for="region">Deployment region</label><select class="control" id="region"><option>US East / N. Virginia</option><option>SA East / São Paulo</option><option>EU West / Ireland</option></select><span class="field-help">Region can be changed before launch.</span></div>
+              <div class="field"><label for="apiKey">Access token / Focus</label><input class="control is-focus" id="apiKey" value="ax_live_••••••••••••"><span class="field-help">Tokens are encrypted at rest.</span></div>
+              <div class="field"><label for="invalidField">Endpoint / Error</label><input class="control" id="invalidField" aria-invalid="true" value="api//invalid"><span class="field-help" style="color:#fca5a5">Enter a valid HTTPS endpoint.</span></div>
+              <div class="field" style="grid-column:1/-1"><label for="instructions">Agent instructions</label><textarea class="control" id="instructions" placeholder="Describe the operational objective…"></textarea><span class="field-help">0 / 1,200 characters</span></div>
+            </div>
+            <div class="choice-row" style="margin-top:28px">
+              <label class="choice"><input type="checkbox" checked><span class="choice-box"></span>Telemetry</label>
+              <label class="choice"><input type="checkbox"><span class="choice-box"></span>Audit logs</label>
+              <label class="choice radio"><input name="tier" type="radio" checked><span class="choice-box"></span>Automatic</label>
+              <label class="choice radio"><input name="tier" type="radio"><span class="choice-box"></span>Manual</label>
+              <label class="toggle"><input type="checkbox" checked><span class="toggle-track"></span>Auto-scale</label>
+              <label class="toggle"><input type="checkbox"><span class="toggle-track"></span>Maintenance</label>
+            </div>
+          </div>
+
+          <div class="component-canvas sys-reveal">
+            <div class="canvas-label"><span>04.03 / Status & identity</span><span>Badges · Chips · Tooltips · Avatars</span></div>
+            <div class="demo-row">
+              <span class="badge"><span class="badge-dot"></span>Default</span>
+              <span class="badge primary"><span class="badge-dot"></span>Processing</span>
+              <span class="badge success"><span class="badge-dot"></span>Operational</span>
+              <span class="badge warning"><span class="badge-dot"></span>Degraded</span>
+              <span class="badge error"><span class="badge-dot"></span>Failed</span>
+              <span class="badge info"><span class="badge-dot"></span>Info</span>
+            </div>
+            <div class="demo-row" style="margin-top:22px">
+              <button class="chip selected">Infrastructure <span class="remove">×</span></button>
+              <button class="chip">Security <span class="remove">×</span></button>
+              <button class="chip">Observability <span class="remove">×</span></button>
+              <span class="tooltip"><button class="icon-btn" aria-describedby="tooltipCopy"><iconify-icon icon="solar:copy-linear"></iconify-icon></button><span class="tooltip-bubble" role="tooltip" id="tooltipCopy">Copy deployment ID</span></span>
+              <div class="avatar-group" aria-label="Equipe ativa"><span class="avatar status">AM</span><span class="avatar">RK</span><span class="avatar">+8</span></div>
+            </div>
+          </div>
+
+          <div class="component-canvas sys-reveal">
+            <div class="canvas-label"><span>04.04 / Cards</span><span>Structural · Metric · Media · Border beam</span></div>
+            <div class="grid-3">
+              <article class="card card-corners">
+                <div class="module-label">NODE_01 / Active</div><iconify-icon class="module-icon" icon="solar:server-square-linear" width="26"></iconify-icon>
+                <h3>Inference cluster</h3><p>Shared processing layer optimized for low-latency autonomous workloads.</p>
+              </article>
+              <article class="card beam-panel" tabindex="0">
+                <div class="module-label" style="color:var(--primary-hover)">LIVE_METRIC</div><span class="metric-delta">+12.4% / 24H</span>
+                <div class="metric-value" data-counter="98.4" data-suffix="%">0</div><p style="margin-top:14px">Global infrastructure efficiency.</p>
+              </article>
+              <article class="card image-card">
+                <img src="assets/8826ae6a-df85-4863-aa7e-53251a_40c4f9a657d9.jpg" alt="Infraestrutura computacional Axion com condutores de energia">
+                <div class="card-overlay"><span class="badge primary">Core engine</span><div><h3>Physical compute</h3><p style="color:#d4d4d8">The visual language in its native environment.</p></div></div>
+              </article>
+            </div>
+          </div>
+
+          <div class="component-canvas sys-reveal">
+            <div class="canvas-label"><span>04.05 / Loaders & skeletons</span><span>System waiting states</span></div>
+            <div class="grid-3">
+              <div class="module" style="min-height:170px;display:grid;place-items:center"><div><div class="loader" aria-label="Carregando"></div><div class="module-label" style="margin-top:18px">Radial / Indeterminate</div></div></div>
+              <div class="module soft" style="min-height:170px;display:grid;place-items:center"><div><div class="loader-tech" aria-label="Inicializando"></div><div class="module-label" style="margin-top:18px">Core / Initialize</div></div></div>
+              <div class="module" style="min-height:170px;display:grid;place-items:center"><div class="skeleton-stack" aria-label="Conteúdo carregando"><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div></div></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="patterns" style="--glow-x:12%;--glow-y:20%" aria-labelledby="patterns-title">
+        <div class="section-inner">
+          <div class="section-head">
+            <div>
+              <div class="section-index">05 / Interaction patterns</div>
+              <div class="eyebrow">States in context</div>
+              <h2 class="section-title sys-reveal" id="patterns-title">Operational <span>patterns</span></h2>
+            </div>
+            <p class="section-copy sys-reveal delay-1">Padrões compostos preservam foco e contexto em fluxos densos. Todo estado temporário é claro, reversível e acessível por teclado.</p>
+          </div>
+
+          <div class="grid-2" style="background:transparent;border:0;gap:20px">
+            <div class="tabs sys-reveal" data-tabs>
+              <div class="tab-list" role="tablist" aria-label="Configurações do cluster">
+                <button class="tab-button" role="tab" aria-selected="true" aria-controls="tab-overview" id="tab-overview-trigger">Overview</button>
+                <button class="tab-button" role="tab" aria-selected="false" aria-controls="tab-security" id="tab-security-trigger">Security</button>
+                <button class="tab-button" role="tab" aria-selected="false" aria-controls="tab-runtime" id="tab-runtime-trigger">Runtime</button>
+              </div>
+              <div class="tab-panel active" role="tabpanel" id="tab-overview" aria-labelledby="tab-overview-trigger"><h4>Cluster overview</h4><p>12 active nodes distributed across three availability zones. Automatic failover and predictive allocation are enabled.</p></div>
+              <div class="tab-panel" role="tabpanel" id="tab-security" aria-labelledby="tab-security-trigger" hidden><h4>Security protocol</h4><p>AES-256 encryption, zero-trust access and immutable audit trails protect every system boundary.</p></div>
+              <div class="tab-panel" role="tabpanel" id="tab-runtime" aria-labelledby="tab-runtime-trigger" hidden><h4>Runtime policy</h4><p>Resources scale between 4 and 32 workers with a 12ms target latency and controlled cold starts.</p></div>
+            </div>
+
+            <div class="accordion sys-reveal delay-1" data-accordion>
+              <div class="accordion-item"><button class="accordion-trigger" aria-expanded="true"><span><span class="accordion-index">01.</span> How are tokens versioned?</span><iconify-icon icon="solar:add-square-linear"></iconify-icon></button><div class="accordion-panel"><div><p>Semantic tokens follow minor releases; breaking visual or behavioral changes require a major system release.</p></div></div></div>
+              <div class="accordion-item"><button class="accordion-trigger" aria-expanded="false"><span><span class="accordion-index">02.</span> When should motion stop?</span><iconify-icon icon="solar:add-square-linear"></iconify-icon></button><div class="accordion-panel"><div><p>Pause continuous motion when its region leaves the viewport, the tab is hidden or reduced motion is active.</p></div></div></div>
+              <div class="accordion-item"><button class="accordion-trigger" aria-expanded="false"><span><span class="accordion-index">03.</span> Can orange be decorative?</span><iconify-icon icon="solar:add-square-linear"></iconify-icon></button><div class="accordion-panel"><div><p>Only at low opacity in environmental light. Full-intensity orange always communicates action, focus or live energy.</p></div></div></div>
+            </div>
+          </div>
+
+          <div class="component-canvas sys-reveal" style="margin-top:20px">
+            <div class="canvas-label"><span>05.02 / Navigation & overlays</span><span>Breadcrumb · Dropdown · Pagination · Modal · Drawer</span></div>
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap">
+              <nav class="breadcrumb" aria-label="Breadcrumb"><a href="#hero">Axion</a><iconify-icon icon="solar:alt-arrow-right-linear"></iconify-icon><a href="#components">Components</a><iconify-icon icon="solar:alt-arrow-right-linear"></iconify-icon><span aria-current="page">Patterns</span></nav>
+              <div class="dropdown" data-dropdown>
+                <button class="btn btn-secondary" aria-expanded="false">Actions <iconify-icon icon="solar:alt-arrow-down-linear"></iconify-icon></button>
+                <div class="dropdown-menu" role="menu">
+                  <button class="dropdown-item" role="menuitem"><iconify-icon icon="solar:copy-linear"></iconify-icon>Duplicate node</button>
+                  <button class="dropdown-item" role="menuitem"><iconify-icon icon="solar:restart-linear"></iconify-icon>Restart service</button>
+                  <div class="dropdown-separator"></div>
+                  <button class="dropdown-item" role="menuitem" style="color:#fca5a5"><iconify-icon icon="solar:trash-bin-trash-linear"></iconify-icon>Remove node</button>
+                </div>
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-top:30px;padding-top:24px;border-top:1px solid var(--border)">
+              <div class="pagination" aria-label="Paginação"><button class="page-btn" aria-label="Página anterior"><iconify-icon icon="solar:alt-arrow-left-linear"></iconify-icon></button><button class="page-btn active" aria-current="page">01</button><button class="page-btn">02</button><button class="page-btn">03</button><span class="page-btn" style="border:0;background:transparent">…</span><button class="page-btn">12</button><button class="page-btn" aria-label="Próxima página"><iconify-icon icon="solar:alt-arrow-right-linear"></iconify-icon></button></div>
+              <div class="demo-row"><button class="btn btn-secondary" data-modal-open="specModal">Open modal</button><button class="btn btn-primary" data-drawer-open="nodeDrawer">Open drawer</button></div>
+            </div>
+          </div>
+
+          <div class="component-canvas sys-reveal">
+            <div class="canvas-label"><span>05.03 / Feedback</span><span>Alerts & toast</span></div>
+            <div class="alert-stack">
+              <div class="alert info"><iconify-icon icon="solar:info-circle-linear" width="19"></iconify-icon><div><strong>Deployment scheduled</strong><p>Changes will be applied during the next maintenance window at 02:00 UTC.</p></div></div>
+              <div class="alert success"><iconify-icon icon="solar:check-circle-linear" width="19"></iconify-icon><div><strong>System verified</strong><p>All 24 checks passed. Production access is now available.</p></div></div>
+              <div class="alert warning"><iconify-icon icon="solar:danger-triangle-linear" width="19"></iconify-icon><div><strong>Capacity at 82%</strong><p>Add one compute node to preserve the target latency during peak load.</p></div></div>
+              <div class="alert error"><iconify-icon icon="solar:close-circle-linear" width="19"></iconify-icon><div><strong>Connection interrupted</strong><p>Token expired. Generate a new token and retry this operation.</p></div></div>
+            </div>
+            <button class="btn btn-primary" data-toast-trigger style="margin-top:22px">Trigger toast <iconify-icon icon="solar:bell-bing-linear"></iconify-icon></button>
+          </div>
+
+          <div class="component-canvas sys-reveal">
+            <div class="canvas-label"><span>05.04 / Data table</span><span>Dense operational data</span></div>
+            <div class="data-table-wrap">
+              <table class="data-table">
+                <thead><tr><th>Node</th><th>Region</th><th>Status</th><th>CPU load</th><th>Latency</th><th>Last event</th><th><span class="sr-only">Actions</span></th></tr></thead>
+                <tbody>
+                  <tr><td style="color:var(--text-soft)">AXN-CORE-01</td><td>SA-EAST-1</td><td><span class="badge success"><span class="badge-dot"></span>Optimal</span></td><td>42%</td><td>8.2ms</td><td>12 sec ago</td><td><button class="icon-btn" aria-label="Mais ações" style="width:32px;height:32px"><iconify-icon icon="solar:menu-dots-linear"></iconify-icon></button></td></tr>
+                  <tr><td style="color:var(--text-soft)">AXN-EDGE-08</td><td>US-EAST-4</td><td><span class="badge warning"><span class="badge-dot"></span>Degraded</span></td><td>82%</td><td>24ms</td><td>28 sec ago</td><td><button class="icon-btn" aria-label="Mais ações" style="width:32px;height:32px"><iconify-icon icon="solar:menu-dots-linear"></iconify-icon></button></td></tr>
+                  <tr><td style="color:var(--text-soft)">AXN-STORE-12</td><td>EU-WEST-2</td><td><span class="badge"><span class="badge-dot"></span>Idle</span></td><td>12%</td><td>11ms</td><td>1 min ago</td><td><button class="icon-btn" aria-label="Mais ações" style="width:32px;height:32px"><iconify-icon icon="solar:menu-dots-linear"></iconify-icon></button></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="grid-2" style="background:transparent;border:0;gap:20px;margin-top:20px">
+            <div class="empty-state sys-reveal"><div><div class="empty-icon"><iconify-icon icon="solar:server-path-linear" width="23"></iconify-icon></div><h3>No nodes connected</h3><p>Connect your first infrastructure node to begin receiving live telemetry.</p><button class="btn btn-primary">Connect node</button></div></div>
+            <div class="component-canvas sys-reveal delay-1" style="margin:0;display:flex;flex-direction:column;justify-content:space-between">
+              <div class="canvas-label"><span>05.05 / Composite navbar</span><span>Responsive module</span></div>
+              <nav style="display:flex;min-height:58px;border:1px solid var(--border);background:var(--bg);align-items:stretch;overflow-x:auto" aria-label="Exemplo de navbar">
+                <a href="#hero" style="display:flex;align-items:center;padding:0 16px;border-right:1px solid var(--border);color:var(--text);font-weight:650;letter-spacing:.12em;text-transform:uppercase;font-size:10px">Axion</a>
+                <a href="#colors" style="display:flex;align-items:center;padding:0 16px;border-right:1px solid var(--border);font:500 9px/1 var(--font-mono);text-transform:uppercase">Platform</a>
+                <a href="#motion" style="display:flex;align-items:center;padding:0 16px;border-right:1px solid var(--border);font:500 9px/1 var(--font-mono);text-transform:uppercase">Docs</a>
+                <button class="icon-btn" style="margin-left:auto;height:auto;border-width:0 0 0 1px" aria-label="Pesquisar"><iconify-icon icon="solar:magnifer-linear"></iconify-icon></button>
+              </nav>
+              <div style="margin-top:24px;display:flex;align-items:center;gap:12px;color:var(--dim);font:400 10px/1.6 var(--font-mono)"><span class="rail-status"></span>Sticky at page level. Collapses into a menu below 900px.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="motion" style="--glow-x:50%;--glow-y:22%" aria-labelledby="motion-title">
+        <div class="section-inner">
+          <div class="section-head">
+            <div>
+              <div class="section-index">06 / Motion language</div>
+              <div class="eyebrow">Calibrated kinetics</div>
+              <h2 class="section-title sys-reveal" id="motion-title">Motion with <span>purpose</span></h2>
+            </div>
+            <p class="section-copy sys-reveal delay-1">A animação Axion é rápida nos controles, generosa nas entradas e contínua apenas em telemetria viva. Passe o cursor sobre os módulos para executar cada assinatura.</p>
+          </div>
+
+          <div class="grid-3" style="background:transparent;border:0;gap:20px">
+            <div><div class="motion-demo"><div class="motion-object reveal-demo"></div></div><div class="module" style="border:1px solid var(--border);border-top:0"><div class="module-label">Reveal / 1000ms</div><h3>Blur resolve</h3><p>Section entry · cubic-bezier(.16,1,.3,1)</p></div></div>
+            <div><div class="motion-demo"><div class="motion-object spring"></div></div><div class="module" style="border:1px solid var(--border);border-top:0"><div class="module-label">Response / 1400ms</div><h3>Soft spring</h3><p>High-value transition · interruptible feel</p></div></div>
+            <div><div class="motion-demo"><div class="motion-object orbital"></div></div><div class="module" style="border:1px solid var(--border);border-top:0"><div class="module-label">Orbital / 2600ms</div><h3>System activity</h3><p>Only for live, ongoing processes</p></div></div>
+          </div>
+
+          <div style="height:48px"></div>
+          <div class="data-table-wrap">
+            <table class="data-table">
+              <thead><tr><th>Token</th><th>Duration</th><th>Easing</th><th>Use</th><th>Reduced motion</th></tr></thead>
+              <tbody>
+                <tr><td><code class="token">motion-instant</code></td><td>100ms</td><td>linear</td><td>Color, opacity feedback</td><td>Keep</td></tr>
+                <tr><td><code class="token">motion-control</code></td><td>200ms</td><td>ease-out</td><td>Hover, press, toggle</td><td>Keep ≤ 100ms</td></tr>
+                <tr><td><code class="token">motion-panel</code></td><td>380ms</td><td>cubic-bezier(.16,1,.3,1)</td><td>Dropdown, modal, drawer</td><td>Opacity only</td></tr>
+                <tr><td><code class="token">motion-reveal</code></td><td>1000ms</td><td>cubic-bezier(.16,1,.3,1)</td><td>Scroll entry, hero orchestration</td><td>Disable transform and blur</td></tr>
+                <tr><td><code class="token">motion-ambient</code></td><td>7–18s</td><td>linear / ease-in-out</td><td>Orbit, beam, background</td><td>Freeze first meaningful frame</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="component-canvas beam-panel" style="margin-top:48px;min-height:290px;display:grid;grid-template-columns:1fr auto;align-items:center;gap:34px">
+            <div><div class="eyebrow">Accessibility protocol</div><h3 style="margin:0 0 16px;color:var(--text);font-size:clamp(28px,4vw,54px);line-height:.95;letter-spacing:-.05em;text-transform:uppercase">Motion never blocks meaning.</h3><p class="section-copy">WebGL pauses offscreen and in hidden tabs. The static fallback preserves composition. `prefers-reduced-motion` removes parallax, continuous rotation, blur and displacement while keeping clear state changes.</p></div>
+            <div class="loader-tech hide-mobile" style="width:90px;height:90px;margin-right:20px" aria-hidden="true"></div>
+          </div>
+        </div>
+      </section>
+
+      <footer class="footer" aria-label="Rodapé Axion">
+        <div class="footer-grid">
+          <div class="footer-module">
+            <div class="footer-brand">Axion<span>_Sys</span></div>
+            <p class="section-copy" style="margin-top:16px;max-width:36ch">Operational interface system for autonomous infrastructure.</p>
+            <div class="footer-status"><div><span>System status</span><strong>Operational</strong></div><div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border)"><span>Current release</span><span style="color:var(--text-soft)">v4.2.0</span></div></div>
+          </div>
+          <div class="footer-module"><h4>// Foundations</h4><a href="#colors">Color system</a><a href="#typography">Typography</a><a href="#foundations">Spacing & geometry</a><a href="#motion">Motion tokens</a></div>
+          <div class="footer-module"><h4>// Components</h4><a href="#components">Controls</a><a href="#components">Forms</a><a href="#patterns">Navigation</a><a href="#patterns">Feedback</a></div>
+          <div class="footer-module"><h4>// Resources</h4><a href="#hero">Overview</a><a href="#motion">Accessibility</a><a href="#patterns">Patterns</a><button class="btn btn-ghost btn-sm" data-toast-trigger style="margin-top:12px">Export tokens</button></div>
+        </div>
+        <div class="footer-bottom"><span>© 2026 Axion Systems / Interface protocol</span><span id="clock">LOCAL_TIME 00:00:00</span><span style="color:var(--success)">Secure_connection</span></div>
+      </footer>
+
+      <div class="modal-backdrop" id="specModal" role="dialog" aria-modal="true" aria-labelledby="specModalTitle" aria-hidden="true">
+        <div class="modal beam-panel">
+          <div class="modal-head"><h3 id="specModalTitle">System specification</h3><button class="icon-btn" data-overlay-close aria-label="Fechar modal"><iconify-icon icon="solar:close-circle-linear"></iconify-icon></button></div>
+          <div class="modal-body"><span class="badge success"><span class="badge-dot"></span>Production ready</span><p style="margin:20px 0 0">Axion Interface System v4.2 includes 42 core components, 12 semantic token sets and one motion language. WCAG contrast targets, keyboard focus, responsive behavior and reduced-motion fallbacks are part of the component contract.</p></div>
+          <div class="modal-foot"><button class="btn btn-ghost" data-overlay-close>Cancel</button><button class="btn btn-primary" data-toast-trigger>Copy specification</button></div>
+        </div>
+      </div>
+
+      <div class="drawer-backdrop" id="nodeDrawer" role="dialog" aria-modal="true" aria-labelledby="nodeDrawerTitle" aria-hidden="true">
+        <aside class="drawer">
+          <div class="modal-head"><h3 id="nodeDrawerTitle">Connect infrastructure node</h3><button class="icon-btn" data-overlay-close aria-label="Fechar drawer"><iconify-icon icon="solar:close-circle-linear"></iconify-icon></button></div>
+          <div class="modal-body">
+            <div class="field"><label for="nodeName">Node name</label><input class="control" id="nodeName" placeholder="AXN-EDGE-13"></div>
+            <div class="field" style="margin-top:20px"><label for="nodeRegion">Region</label><select class="control" id="nodeRegion"><option>SA East / São Paulo</option><option>US East / N. Virginia</option></select></div>
+            <div class="alert info" style="margin-top:24px"><iconify-icon icon="solar:info-circle-linear"></iconify-icon><div><strong>Automatic verification</strong><p>Connectivity and encryption are checked before the node becomes active.</p></div></div>
+          </div>
+          <div class="modal-foot"><button class="btn btn-ghost" data-overlay-close>Cancel</button><button class="btn btn-primary" data-toast-trigger>Connect node</button></div>
+        </aside>
+      </div>
+    </main>
+  </div>
+
+  <div class="toast-region" id="toastRegion" role="status" aria-live="polite" aria-atomic="false"></div>
+  <button class="fab" id="backToTop" aria-label="Voltar ao topo"><iconify-icon icon="solar:arrow-up-linear" width="20"></iconify-icon></button>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+      // Axion reveal system: visible by default without JavaScript, orchestrated when available.
+      const revealTargets = document.querySelectorAll('.sys-reveal');
+      const counters = document.querySelectorAll('[data-counter]');
+      const activateCounter = (element) => {
+        if (element.dataset.counted === 'true') return;
+        element.dataset.counted = 'true';
+        const target = Number(element.dataset.counter || 0);
+        const suffix = element.dataset.suffix || '';
+        if (reducedMotion.matches) {
+          element.textContent = target + suffix;
+          return;
+        }
+        const startTime = performance.now();
+        const duration = 1900;
+        const tick = (now) => {
+          const progress = Math.min((now - startTime) / duration, 1);
+          const eased = 1 - Math.pow(1 - progress, 5);
+          const value = target % 1 === 0 ? Math.floor(target * eased) : (target * eased).toFixed(1);
+          element.textContent = value + suffix;
+          if (progress < 1) requestAnimationFrame(tick);
+          else element.textContent = target + suffix;
+        };
+        requestAnimationFrame(tick);
+      };
+
+      if ('IntersectionObserver' in window) {
+        const revealObserver = new IntersectionObserver((entries, observer) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            entry.target.classList.add('sys-active');
+            if (entry.target.matches('[data-counter]')) activateCounter(entry.target);
+            entry.target.querySelectorAll?.('[data-counter]').forEach(activateCounter);
+            observer.unobserve(entry.target);
+          });
+        }, { threshold: .08, rootMargin: '0px 0px -7% 0px' });
+        revealTargets.forEach((element) => revealObserver.observe(element));
+        counters.forEach((element) => revealObserver.observe(element));
+      } else {
+        revealTargets.forEach((element) => element.classList.add('sys-active'));
+        counters.forEach(activateCounter);
+      }
+
+      // Section index and top navigation state.
+      const indexedSections = [...document.querySelectorAll('main section[id]')];
+      const railLinks = [...document.querySelectorAll('.rail-nav a')];
+      const topLinks = [...document.querySelectorAll('.topnav a')];
+      if ('IntersectionObserver' in window) {
+        const sectionObserver = new IntersectionObserver((entries) => {
+          const visible = entries.filter((entry) => entry.isIntersecting).sort((a,b) => b.intersectionRatio - a.intersectionRatio)[0];
+          if (!visible) return;
+          const id = visible.target.id;
+          railLinks.forEach((link) => link.classList.toggle('active', link.getAttribute('href') === '#' + id));
+          const group = id === 'components' ? 'components' : id === 'patterns' ? 'patterns' : id === 'motion' ? 'motion' : 'foundations';
+          topLinks.forEach((link) => link.setAttribute('aria-current', String(link.getAttribute('href') === '#' + group)));
+        }, { rootMargin: '-20% 0px -64% 0px', threshold: [0,.1,.25] });
+        indexedSections.forEach((section) => sectionObserver.observe(section));
+      }
+
+      // Mobile navigation.
+      const menuTrigger = document.getElementById('menuTrigger');
+      const topnav = document.getElementById('topnav');
+      menuTrigger?.addEventListener('click', () => {
+        const open = topnav.classList.toggle('open');
+        menuTrigger.setAttribute('aria-expanded', String(open));
+      });
+      topnav?.addEventListener('click', (event) => {
+        if (!event.target.closest('a')) return;
+        topnav.classList.remove('open');
+        menuTrigger?.setAttribute('aria-expanded', 'false');
+      });
+
+      // Tabs with keyboard navigation.
+      document.querySelectorAll('[data-tabs]').forEach((tabs) => {
+        const buttons = [...tabs.querySelectorAll('[role="tab"]')];
+        const panels = [...tabs.querySelectorAll('[role="tabpanel"]')];
+        const selectTab = (button) => {
+          buttons.forEach((item) => {
+            const active = item === button;
+            item.setAttribute('aria-selected', String(active));
+            item.tabIndex = active ? 0 : -1;
+          });
+          panels.forEach((panel) => {
+            const active = panel.id === button.getAttribute('aria-controls');
+            panel.hidden = !active;
+            panel.classList.toggle('active', active);
+          });
+        };
+        buttons.forEach((button, index) => {
+          button.addEventListener('click', () => selectTab(button));
+          button.addEventListener('keydown', (event) => {
+            if (!['ArrowLeft','ArrowRight','Home','End'].includes(event.key)) return;
+            event.preventDefault();
+            let next = index;
+            if (event.key === 'ArrowLeft') next = (index - 1 + buttons.length) % buttons.length;
+            if (event.key === 'ArrowRight') next = (index + 1) % buttons.length;
+            if (event.key === 'Home') next = 0;
+            if (event.key === 'End') next = buttons.length - 1;
+            buttons[next].focus();
+            selectTab(buttons[next]);
+          });
+        });
+      });
+
+      // Accordions preserve a single clear focus of attention.
+      document.querySelectorAll('[data-accordion] .accordion-trigger').forEach((trigger) => {
+        trigger.addEventListener('click', () => {
+          const expanded = trigger.getAttribute('aria-expanded') === 'true';
+          const root = trigger.closest('[data-accordion]');
+          root.querySelectorAll('.accordion-trigger').forEach((item) => item.setAttribute('aria-expanded', 'false'));
+          if (!expanded) trigger.setAttribute('aria-expanded', 'true');
+        });
+      });
+
+      // Dropdowns.
+      document.querySelectorAll('[data-dropdown]').forEach((dropdown) => {
+        const trigger = dropdown.querySelector('button');
+        trigger.addEventListener('click', (event) => {
+          event.stopPropagation();
+          const open = dropdown.classList.toggle('open');
+          trigger.setAttribute('aria-expanded', String(open));
+        });
+        dropdown.querySelectorAll('[role="menuitem"]').forEach((item) => item.addEventListener('click', () => {
+          dropdown.classList.remove('open');
+          trigger.setAttribute('aria-expanded', 'false');
+          showToast('Command accepted', item.textContent.trim() + ' is queued.');
+        }));
+      });
+      document.addEventListener('click', () => document.querySelectorAll('[data-dropdown].open').forEach((dropdown) => {
+        dropdown.classList.remove('open');
+        dropdown.querySelector('button')?.setAttribute('aria-expanded', 'false');
+      }));
+
+      // Chips and pagination demos.
+      document.querySelectorAll('.chip').forEach((chip) => chip.addEventListener('click', () => chip.classList.toggle('selected')));
+      document.querySelectorAll('.pagination').forEach((pagination) => pagination.addEventListener('click', (event) => {
+        const button = event.target.closest('.page-btn');
+        if (!button || !/^\d+$/.test(button.textContent.trim())) return;
+        pagination.querySelectorAll('.page-btn').forEach((item) => item.classList.remove('active'));
+        button.classList.add('active');
+      }));
+
+      // Toast feedback.
+      const toastRegion = document.getElementById('toastRegion');
+      function showToast(title = 'Tokens exported', message = 'The Axion token package is ready to use.') {
+        const toast = document.createElement('div');
+        toast.className = 'toast';
+        toast.innerHTML = '<iconify-icon icon="solar:check-circle-linear" width="20"></iconify-icon><div><strong></strong><span></span></div><button class="toast-close" aria-label="Fechar notificação"><iconify-icon icon="solar:close-circle-linear"></iconify-icon></button><i class="toast-progress"></i>';
+        toast.querySelector('strong').textContent = title;
+        toast.querySelector('span').textContent = message;
+        const remove = () => {
+          if (toast.classList.contains('removing')) return;
+          toast.classList.add('removing');
+          setTimeout(() => toast.remove(), 300);
+        };
+        toast.querySelector('.toast-close').addEventListener('click', remove);
+        toastRegion.appendChild(toast);
+        setTimeout(remove, 4800);
+      }
+      document.querySelectorAll('[data-toast-trigger]').forEach((trigger) => trigger.addEventListener('click', () => showToast()));
+
+      // Modal and drawer management, including focus return and simple focus trap.
+      let activeOverlay = null;
+      let returnFocus = null;
+      const focusableSelector = 'button,[href],input,select,textarea,[tabindex]:not([tabindex="-1"])';
+      const openOverlay = (overlay) => {
+        if (!overlay) return;
+        returnFocus = document.activeElement;
+        activeOverlay = overlay;
+        overlay.classList.add('open');
+        overlay.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+        setTimeout(() => overlay.querySelector(focusableSelector)?.focus(), 80);
+      };
+      const closeOverlay = () => {
+        if (!activeOverlay) return;
+        activeOverlay.classList.remove('open');
+        activeOverlay.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+        const focusTarget = returnFocus;
+        activeOverlay = null;
+        setTimeout(() => focusTarget?.focus(), 80);
+      };
+      document.querySelectorAll('[data-modal-open]').forEach((trigger) => trigger.addEventListener('click', () => openOverlay(document.getElementById(trigger.dataset.modalOpen))));
+      document.querySelectorAll('[data-drawer-open]').forEach((trigger) => trigger.addEventListener('click', () => openOverlay(document.getElementById(trigger.dataset.drawerOpen))));
+      document.querySelectorAll('[data-overlay-close]').forEach((trigger) => trigger.addEventListener('click', closeOverlay));
+      document.querySelectorAll('.modal-backdrop,.drawer-backdrop').forEach((backdrop) => backdrop.addEventListener('mousedown', (event) => {
+        if (event.target === backdrop) closeOverlay();
+      }));
+      document.getElementById('commandTrigger')?.addEventListener('click', () => openOverlay(document.getElementById('specModal')));
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') closeOverlay();
+        if (event.key !== 'Tab' || !activeOverlay) return;
+        const focusable = [...activeOverlay.querySelectorAll(focusableSelector)].filter((element) => !element.disabled && element.offsetParent !== null);
+        if (!focusable.length) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+        else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+      });
+
+      // Floating return control and clock.
+      const backToTop = document.getElementById('backToTop');
+      const updateScrollControl = () => backToTop.classList.toggle('show', window.scrollY > 760);
+      window.addEventListener('scroll', updateScrollControl, { passive: true });
+      updateScrollControl();
+      backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: reducedMotion.matches ? 'auto' : 'smooth' }));
+      const clock = document.getElementById('clock');
+      const updateClock = () => { clock.textContent = 'LOCAL_TIME ' + new Date().toLocaleTimeString('pt-BR', { hour12: false }); };
+      updateClock();
+      setInterval(updateClock, 1000);
+
+      // WebGL2 Command Lattice. Static CSS fallback remains under the canvas.
+      const canvas = document.getElementById('lattice');
+      const heroVisual = document.getElementById('heroVisual');
+      const coordinates = document.getElementById('coordinates');
+      let gl = null;
+      let animationFrame = 0;
+      let resizeObserver = null;
+      let resizeFallback = null;
+      let latticeVisible = true;
+      let pointerX = .5;
+      let pointerY = .5;
+      let pulseStart = -10;
+      let program = null;
+      let buffer = null;
+
+      const vertexSource = `#version 300 es
+        in vec2 aPosition;
+        void main(){ gl_Position = vec4(aPosition,0.0,1.0); }
+      `;
+      const fragmentSource = `#version 300 es
+        precision highp float;
+        uniform vec2 uResolution;
+        uniform vec2 uPointer;
+        uniform float uTime;
+        uniform float uPulse;
+        out vec4 outColor;
+
+        float hash(vec2 p){
+          p = fract(p * vec2(123.34,456.21));
+          p += dot(p,p + 45.32);
+          return fract(p.x * p.y);
+        }
+
+        float lineGrid(vec2 p, float scale){
+          vec2 g = abs(fract(p * scale - .5) - .5) / fwidth(p * scale);
+          return 1.0 - min(min(g.x,g.y),1.0);
+        }
+
+        void main(){
+          vec2 frag = gl_FragCoord.xy;
+          vec2 p = (frag - .5 * uResolution) / min(uResolution.x,uResolution.y);
+          vec2 mouse = (uPointer * uResolution - .5 * uResolution) / min(uResolution.x,uResolution.y);
+          vec2 delta = p - mouse;
+          float dist = length(delta);
+          float influence = exp(-dist * dist * 7.0);
+          float breathing = .65 + .35 * sin(uTime * 1.2);
+          p -= normalize(delta + .0001) * influence * .055 * breathing;
+
+          float waveRadius = uPulse * .95;
+          float wave = exp(-abs(dist - waveRadius) * 52.0) * (1.0 - uPulse);
+          p += normalize(delta + .0001) * wave * .035;
+
+          float grid = lineGrid(p,11.0);
+          float fineGrid = lineGrid(p,44.0) * .16;
+          float radial = exp(-length(p - vec2(.03,-.01)) * 4.2);
+          float core = exp(-length(p - vec2(.03,-.01)) * 13.0);
+          float angle = atan(p.y,p.x);
+          float rays = pow(max(0.0,sin(angle * 8.0 + uTime * .12)),22.0) * exp(-length(p)*2.4);
+          float noise = hash(floor(frag * .34) + floor(uTime * 2.0)) * .035;
+          float vignette = smoothstep(.95,.18,length(p));
+
+          vec3 bg = vec3(.018,.018,.019);
+          vec3 zinc = vec3(.24,.24,.27);
+          vec3 orange = vec3(.918,.345,.047);
+          vec3 amber = vec3(1.0,.55,.12);
+          vec3 color = bg;
+          color += zinc * (grid * .16 + fineGrid * .06) * vignette;
+          color += orange * radial * .16;
+          color += amber * core * .34;
+          color += orange * rays * .11;
+          color += orange * influence * grid * .72;
+          color += amber * wave * (grid * 1.2 + .16);
+          color += noise;
+          color *= vignette;
+          outColor = vec4(color,1.0);
+        }
+      `;
+
+      const compileShader = (type, source) => {
+        const shader = gl.createShader(type);
+        gl.shaderSource(shader, source);
+        gl.compileShader(shader);
+        if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+          gl.deleteShader(shader);
+          return null;
+        }
+        return shader;
+      };
+
+      const renderFallback = () => { canvas.style.display = 'none'; };
+      const initLattice = () => {
+        try { gl = canvas.getContext('webgl2', { premultipliedAlpha: true, alpha: true, antialias: true }); }
+        catch (_) { gl = null; }
+        if (!gl) { renderFallback(); return; }
+        const vertex = compileShader(gl.VERTEX_SHADER, vertexSource);
+        const fragment = compileShader(gl.FRAGMENT_SHADER, fragmentSource);
+        if (!vertex || !fragment) { renderFallback(); return; }
+        program = gl.createProgram();
+        gl.attachShader(program, vertex);
+        gl.attachShader(program, fragment);
+        gl.linkProgram(program);
+        gl.deleteShader(vertex);
+        gl.deleteShader(fragment);
+        if (!gl.getProgramParameter(program, gl.LINK_STATUS)) { renderFallback(); return; }
+        buffer = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1,1,-1,-1,1,-1,1,1,-1,1,1]), gl.STATIC_DRAW);
+        gl.useProgram(program);
+        const position = gl.getAttribLocation(program, 'aPosition');
+        gl.enableVertexAttribArray(position);
+        gl.vertexAttribPointer(position, 2, gl.FLOAT, false, 0, 0);
+        const resolutionLocation = gl.getUniformLocation(program, 'uResolution');
+        const pointerLocation = gl.getUniformLocation(program, 'uPointer');
+        const timeLocation = gl.getUniformLocation(program, 'uTime');
+        const pulseLocation = gl.getUniformLocation(program, 'uPulse');
+
+        const resize = () => {
+          const rect = heroVisual.getBoundingClientRect();
+          const ratio = Math.min(window.devicePixelRatio || 1, 1.5);
+          const width = Math.max(1, Math.floor(rect.width * ratio));
+          const height = Math.max(1, Math.floor(rect.height * ratio));
+          if (canvas.width !== width || canvas.height !== height) { canvas.width = width; canvas.height = height; }
+          gl.viewport(0,0,width,height);
+        };
+        if ('ResizeObserver' in window) {
+          resizeObserver = new ResizeObserver(resize);
+          resizeObserver.observe(heroVisual);
+        } else {
+          resizeFallback = resize;
+          window.addEventListener('resize', resizeFallback, { passive: true });
+        }
+        resize();
+
+        const start = performance.now();
+        const draw = (now) => {
+          const elapsed = (now - start) / 1000;
+          const pulse = Math.min(Math.max((elapsed - pulseStart) / 1.25,0),1);
+          gl.useProgram(program);
+          gl.uniform2f(resolutionLocation, canvas.width, canvas.height);
+          gl.uniform2f(pointerLocation, pointerX, pointerY);
+          gl.uniform1f(timeLocation, reducedMotion.matches ? 0 : elapsed);
+          gl.uniform1f(pulseLocation, pulse);
+          gl.drawArrays(gl.TRIANGLES,0,6);
+          if (!reducedMotion.matches && latticeVisible && document.visibilityState === 'visible') animationFrame = requestAnimationFrame(draw);
+        };
+        animationFrame = requestAnimationFrame(draw);
+
+        const visibilityObserver = new IntersectionObserver(([entry]) => {
+          const wasVisible = latticeVisible;
+          latticeVisible = entry.isIntersecting;
+          if (!wasVisible && latticeVisible && !reducedMotion.matches) animationFrame = requestAnimationFrame(draw);
+          if (!latticeVisible) cancelAnimationFrame(animationFrame);
+        }, { threshold: .02 });
+        visibilityObserver.observe(heroVisual);
+        document.addEventListener('visibilitychange', () => {
+          cancelAnimationFrame(animationFrame);
+          if (document.visibilityState === 'visible' && latticeVisible && !reducedMotion.matches) animationFrame = requestAnimationFrame(draw);
+        });
+        heroVisual.addEventListener('pointermove', (event) => {
+          const rect = heroVisual.getBoundingClientRect();
+          pointerX = Math.min(Math.max((event.clientX - rect.left) / rect.width,0),1);
+          pointerY = 1 - Math.min(Math.max((event.clientY - rect.top) / rect.height,0),1);
+          coordinates.textContent = `X ${String(Math.round(pointerX * 999)).padStart(3,'0')} / Y ${String(Math.round((1-pointerY) * 999)).padStart(3,'0')}`;
+        }, { passive: true });
+        heroVisual.addEventListener('pointerdown', () => {
+          const elapsed = (performance.now() - start) / 1000;
+          pulseStart = elapsed;
+        });
+        canvas.addEventListener('webglcontextlost', (event) => { event.preventDefault(); cancelAnimationFrame(animationFrame); renderFallback(); });
+      };
+      initLattice();
+
+      window.addEventListener('beforeunload', () => {
+        cancelAnimationFrame(animationFrame);
+        resizeObserver?.disconnect();
+        if (resizeFallback) window.removeEventListener('resize', resizeFallback);
+        if (gl && program) gl.deleteProgram(program);
+        if (gl && buffer) gl.deleteBuffer(buffer);
+      }, { once: true });
+    });
+  </script>
+</body>
+</html>

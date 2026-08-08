@@ -1,0 +1,26 @@
+# Dependencies
+node_modules/
+
+# Next.js
+.next/
+out/
+
+# Tests and reports
+coverage/
+playwright-report/
+test-results/
+
+# Environment and local providers
+.env*
+!.env.example
+.vercel/
+
+# Tooling
+*.tsbuildinfo
+pnpm-debug.log*
+
+# Editors and operating systems
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
