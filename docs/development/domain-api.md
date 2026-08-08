@@ -42,6 +42,12 @@ Toda consulta de registro combina workspace_id e id; listagens começam por work
 
 A precedência é exclusiva: `IN_REVIEW` entra em **Aguardando aprovação**; depois, prazo anterior ao dia local entra em **Atrasadas**; prazo no dia local entra em **Hoje**; e prazo entre amanhã e o sétimo dia entra em **Próximas**. Tarefas concluídas, sem prazo ou além da janela não aparecem. Cada grupo ordena primeiro pelo prazo e, em empate, por `URGENT`, `HIGH`, `MEDIUM` e `LOW`.
 
+## Fonte única da visão de projeto
+
+`getProjectWorkspace(context, projectId, filters)` carrega projeto, entregas, membros e tarefas pelo `workspaceId` autorizado. Os filtros são aplicados uma vez; overview, Kanban e Lista recebem o mesmo array resultante e derivam dele suas contagens, sem registros próprios. A URL aceita `view`, `assignee`, `status`, `priority`, `due` e `blocked`; controles vazios são ignorados sem apagar parâmetros válidos.
+
+`changeProjectTaskStatus(context, taskId, status)` delega ao serviço seguro de tarefas. Assim, a autorização ADMIN/MEMBER, o filtro por tenant e o evento de auditoria `task.updated` permanecem iguais aos do detalhe da tarefa. A atualização revalida a hierarquia e reaparece em todas as views na leitura seguinte.
+
 ## Matriz de ameaças verificada
 
 | Ameaça                        | Barreira da aplicação                        | Evidência automatizada                   |

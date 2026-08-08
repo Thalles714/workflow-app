@@ -117,6 +117,67 @@ test("seed user signs in, operates the accessible shell and signs out", async ({
   await page.goto("/app/clients");
   await page.getByRole("link", { name: /Órbita Tecnologia/ }).click();
   await page.getByRole("link", { name: /Lançamento Q3/ }).click();
+  const overviewCount = Number(await page.locator(".project-heading-summary strong").textContent());
+  await expect(page.getByRole("link", { name: "Visão geral" })).toHaveAttribute(
+    "aria-current",
+    "page",
+  );
+  await page.getByRole("link", { name: "Kanban" }).click();
+  await expect(page.getByRole("heading", { name: "A fazer", exact: true })).toBeVisible();
+  const boardCount = await page
+    .locator(".project-column > header > span")
+    .allTextContents()
+    .then((values) => values.reduce((total, value) => total + Number(value), 0));
+  expect(boardCount).toBe(overviewCount);
+  const taskCard = page.locator(".project-board-card").filter({ hasText: "Adaptar peças sociais" });
+  const drawerTrigger = taskCard.getByRole("button", { name: "Adaptar peças sociais" });
+  await drawerTrigger.click();
+  await expect(page.getByRole("dialog", { name: "Adaptar peças sociais" })).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(drawerTrigger).toBeFocused();
+  await taskCard.getByLabel("Status de Adaptar peças sociais").selectOption("IN_REVIEW");
+  await taskCard.getByRole("button", { name: "Aplicar" }).click();
+  await expect(
+    page
+      .locator(".project-column")
+      .filter({ has: page.getByRole("heading", { name: "Em revisão", exact: true }) })
+      .getByText("Adaptar peças sociais", { exact: true }),
+  ).toBeVisible();
+  await page.getByRole("link", { name: "Lista" }).click();
+  await expect(page.locator(".project-list tbody tr")).toHaveCount(overviewCount);
+  await page.locator(".project-filters").getByLabel("Status").selectOption("IN_REVIEW");
+  await page.locator(".project-filters").getByRole("button", { name: "Aplicar filtros" }).click();
+  await expect(page).toHaveURL(/status=IN_REVIEW/);
+  await expect(page.getByText("Adaptar peças sociais", { exact: true })).toBeVisible();
+  for (const viewport of [
+    { height: 900, label: "1440", width: 1440 },
+    { height: 1024, label: "768", width: 768 },
+    { height: 844, label: "390", width: 390 },
+  ]) {
+    await page.setViewportSize(viewport);
+    expect(
+      await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth),
+    ).toBe(true);
+    await page.screenshot({
+      fullPage: true,
+      path: `test-results/project-list-${viewport.label}.png`,
+    });
+  }
+  await page.setViewportSize({ height: 900, width: 1440 });
+  const projectUrl = page.url().split("?")[0]!;
+  await page.goto(`${projectUrl}?view=board`);
+  const changedCard = page
+    .locator(".project-board-card")
+    .filter({ hasText: "Adaptar peças sociais" });
+  await changedCard.getByLabel("Status de Adaptar peças sociais").selectOption("TODO");
+  await changedCard.getByRole("button", { name: "Aplicar" }).click();
+  await expect(
+    page
+      .locator(".project-column")
+      .filter({ has: page.getByRole("heading", { name: "A fazer", exact: true }) })
+      .getByText("Adaptar peças sociais", { exact: true }),
+  ).toBeVisible();
+  await page.getByRole("link", { name: "Visão geral" }).click();
   await page.getByRole("link", { name: /Landing page/ }).click();
   await page.getByRole("link", { name: /Revisar formulário/ }).click();
   await expect(page).toHaveURL(/\/tasks\/50000000-0000-0000-0000-000000000001$/);
