@@ -122,8 +122,32 @@ test("seed user signs in, operates the accessible shell and signs out", async ({
   }
 
   await page.setViewportSize({ height: 900, width: 1440 });
-  await page.goto("/app/clients");
-  await page.getByRole("link", { name: /Órbita Tecnologia/ }).click();
+  await page.getByRole("link", { name: "Projetos", exact: true }).click();
+  await expect(page).toHaveURL("http://localhost:3000/app/projects");
+  await expect(page.getByRole("heading", { level: 1, name: "Projetos" })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Projetos", exact: true })).toHaveAttribute(
+    "aria-current",
+    "page",
+  );
+  await expect(page.getByRole("link", { name: "Clientes", exact: true })).not.toHaveAttribute(
+    "aria-current",
+    "page",
+  );
+  for (const viewport of [
+    { height: 900, label: "1440", width: 1440 },
+    { height: 1024, label: "768", width: 768 },
+    { height: 844, label: "390", width: 390 },
+  ]) {
+    await page.setViewportSize(viewport);
+    expect(
+      await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth),
+    ).toBe(true);
+    await page.screenshot({
+      fullPage: true,
+      path: `test-results/projects-index-${viewport.label}.png`,
+    });
+  }
+  await page.setViewportSize({ height: 900, width: 1440 });
   await page.getByRole("link", { name: /Lançamento Q3/ }).click();
   const overviewCount = Number(await page.locator(".project-heading-summary strong").textContent());
   await expect(page.getByRole("link", { name: "Visão geral" })).toHaveAttribute(

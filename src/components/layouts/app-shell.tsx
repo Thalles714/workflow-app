@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import type { Route } from "next";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Avatar } from "../ui";
+import { Waves } from "../ui/wave-background";
 
 const navigation: ReadonlyArray<{
   count?: string | undefined;
@@ -15,7 +16,7 @@ const navigation: ReadonlyArray<{
   { count: "4", href: "/app", icon: "⌁", label: "Painel" },
   { href: "/app/my-work", icon: "✓", label: "Meu Trabalho" },
   { href: "/app/clients", icon: "◇", label: "Clientes" },
-  { href: "/app/clients", icon: "▱", label: "Projetos" },
+  { href: "/app/projects", icon: "▱", label: "Projetos" },
   { count: "3", href: "/app/approvals", icon: "◉", label: "Aprovações" },
 ];
 
@@ -143,21 +144,55 @@ export function LoginShell({ children }: { children: ReactNode }) {
         </div>
       </section>
       <section aria-labelledby="login-thesis" className="login-shell__visual">
+        <Waves />
+        <div className="login-hero-shade" />
         <div className="login-thesis">
-          <span className="eyebrow">Sistema operacional para agências</span>
-          <h2 id="login-thesis">
-            Veja antes.
-            <br />
-            Resolva antes.
-          </h2>
-          <p>
-            O Workflow transforma atrasos, bloqueios e aprovações pendentes em uma fila clara de
-            decisões — sem gráficos que escondem o trabalho.
-          </p>
-          <div aria-label="Prévia da Central de Atenção" className="mini-radar">
-            <MiniSignal label="Landing page bloqueada" meta="crítico" tone="critical" />
-            <MiniSignal label="Aprovação aguardando 48h" meta="atenção" tone="warning" />
-            <MiniSignal label="Entrega vence em 3 dias" meta="risco" tone="info" />
+          <div className="login-thesis__copy">
+            <span className="login-live-pill">
+              <i /> Operação em tempo real
+            </span>
+            <h2 id="login-thesis">
+              Veja o trabalho
+              <br />
+              antes da urgência.
+            </h2>
+            <p>
+              Atrasos, bloqueios e aprovações viram uma fila clara de decisões para a sua agência.
+            </p>
+          </div>
+          <div aria-label="Prévia da Central de Atenção" className="login-product-preview">
+            <header>
+              <span>
+                <i />
+                <i />
+                <i />
+              </span>
+              <b>Agência Aurora</b>
+              <small>Hoje, 8 ago</small>
+            </header>
+            <div className="login-product-preview__heading">
+              <div>
+                <span>Central de atenção</span>
+                <strong>Onde agir agora</strong>
+              </div>
+              <em>4 situações</em>
+            </div>
+            <div className="mini-radar">
+              <MiniSignal label="Landing page bloqueada" meta="crítico" tone="critical" />
+              <MiniSignal label="Aprovação aguardando há 2 dias" meta="atenção" tone="warning" />
+              <MiniSignal label="Peças de campanha vencem em 3 dias" meta="risco" tone="info" />
+            </div>
+            <footer>
+              <span>
+                <b>1</b> tarefa atrasada
+              </span>
+              <span>
+                <b>2</b> entregas na semana
+              </span>
+              <span>
+                <b>1</b> aprovação pendente
+              </span>
+            </footer>
           </div>
         </div>
       </section>
