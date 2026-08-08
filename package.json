@@ -21,6 +21,7 @@
     "db:stop": "supabase stop",
     "db:reset": "supabase db reset --local",
     "db:test": "vitest run src/server/database",
+    "demo:verify-seed": "node scripts/verify-demo-seed.mjs",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },

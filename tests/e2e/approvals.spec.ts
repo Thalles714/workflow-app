@@ -51,7 +51,16 @@ test("administra uma aprovação autenticada com confirmação e estado auditáv
   await page.goto("/app/approvals");
   await expect(page.getByRole("heading", { name: "Aprovações" })).toBeVisible();
 
-  await page.getByLabel("Nota da decisão").fill("Aprovado durante o gate de qualidade.");
+  const decisionNote = page.getByLabel("Nota da decisão");
+  if ((await decisionNote.count()) === 0) {
+    const resetNote = page.getByLabel("Motivo da reabertura");
+    await expect(resetNote).toHaveCount(1);
+    await resetNote.fill("Restaurar o cenário de demonstração.");
+    page.once("dialog", (dialog) => dialog.accept());
+    await page.getByRole("button", { name: "Reabrir aprovação" }).click();
+    await expect(decisionNote).toHaveCount(1);
+  }
+  await decisionNote.fill("Aprovado durante o gate de qualidade.");
   page.once("dialog", (dialog) => dialog.accept());
   await page.getByRole("button", { name: "Registrar decisão" }).click();
 

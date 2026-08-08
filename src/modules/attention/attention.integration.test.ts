@@ -32,7 +32,16 @@ describe("operation attention database integration", () => {
       "RISK",
       "RISK",
       "ATTENTION",
+      "ATTENTION",
       "INFO",
+    ]);
+    expect(result.alerts.map((alert) => alert.title)).toEqual([
+      "Landing page bloqueada por tarefa atrasada",
+      "Peças do lançamento vence com pendências",
+      "Reposicionamento Atlas está sem atualização",
+      "Kit de lançamento aguarda aprovação",
+      "Validar analytics está bloqueada",
+      "Guia de campanha está próxima e saudável",
     ]);
     expect(result.alerts.some((alert) => alert.title.includes("Planejar vitrine"))).toBe(false);
     expect(result.metrics).toMatchObject({

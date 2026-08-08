@@ -41,9 +41,9 @@ describe("versioned database", () => {
 
     expect(result.rows[0]).toEqual({
       alerts: 6,
-      clients: 2,
+      clients: 4,
       memberships: 3,
-      tasks: 7,
+      tasks: 9,
       workspaces: 2,
     });
   }, 15_000);
@@ -67,7 +67,11 @@ describe("versioned database", () => {
     );
 
     expect(workspaces.rows).toEqual([{ name: "Agência Aurora" }]);
-    expect(clients.rows).toEqual([{ name: "Órbita Tecnologia" }]);
+    expect(clients.rows).toEqual([
+      { name: "Casa Norte" },
+      { name: "Estúdio Maré" },
+      { name: "Órbita Tecnologia" },
+    ]);
   });
 
   it("rejects a cross-tenant relationship even for an administrator", async () => {
