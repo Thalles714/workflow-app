@@ -124,7 +124,7 @@ export function DemoShell({ children, title }: { children: ReactNode; title: str
             <a href="https://github.com/Thalles714/workflow-app" rel="noreferrer" target="_blank">
               Ver código ↗
             </a>
-            <a href="/login">Acesso interno</a>
+            <DemoLink href="/demo/login">Acesso interno</DemoLink>
           </div>
         </header>
         <div id="tour-content">{children}</div>

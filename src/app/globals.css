@@ -2319,7 +2319,9 @@ body {
   background: radial-gradient(circle at 82% 0%, #eef4ff, transparent 32%), var(--canvas);
 }
 .login-demo-link {
-  margin-bottom: 14px;
+  display: flex;
+  width: fit-content;
+  margin-bottom: 28px;
 }
 .demo-topbar {
   display: flex;

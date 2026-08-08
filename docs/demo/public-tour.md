@@ -22,5 +22,6 @@ O tour é propositalmente somente leitura. A versão autenticada do repositório
 | Entrega            | `/demo/projects/lancamento-q3/deliverables/landing-page`                          |
 | Tarefa             | `/demo/projects/lancamento-q3/deliverables/landing-page/tasks/revisar-formulario` |
 | Aprovações         | `/demo/approvals`                                                                 |
+| Prévia do login    | `/demo/login`                                                                     |
 
 As rotas de contexto são estáticas e não fazem chamadas ao Supabase. O teste E2E `tests/e2e/public-demo.spec.ts` verifica o percurso principal, Escape no drawer e ausência de overflow em 1440, 768 e 390 px.

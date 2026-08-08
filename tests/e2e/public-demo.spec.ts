@@ -47,3 +47,19 @@ test("keeps the public tour inside desktop, tablet and mobile viewports", async 
   await page.keyboard.press("Escape");
   await expect(menuButton).toBeFocused();
 });
+
+test("shows the internal access experience without creating a real session", async ({ page }) => {
+  await page.goto("/demo");
+  await page.getByRole("link", { exact: true, name: "Acesso interno" }).click();
+
+  await expect(page).toHaveURL(/\/demo\/login$/);
+  await expect(page.getByRole("heading", { name: "Entre na operação." })).toBeVisible();
+  await expect(page.getByLabel("E-mail")).toHaveValue("gestora@agenciaaurora.demo");
+
+  await page.getByRole("button", { name: "Simular envio do link →" }).click();
+  await expect(page.getByText("Link demonstrativo enviado")).toBeVisible();
+  await expect(page.getByText("nenhum dado foi enviado", { exact: false })).toBeVisible();
+
+  await page.getByRole("link", { name: "← Voltar à demonstração" }).click();
+  await expect(page).toHaveURL(/\/demo$/);
+});
