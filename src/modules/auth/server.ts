@@ -1,7 +1,7 @@
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 
-import { readRuntimeSupabaseEnv } from "./env";
+import { readAppUrl, readRuntimeSupabaseEnv } from "./env";
 import type { AuthIdentityProvider } from "./service";
 
 export async function createServerSupabaseClient() {
@@ -35,7 +35,10 @@ export async function createServerAuthProvider(): Promise<AuthIdentityProvider> 
     async requestEmailOtp(email) {
       const { error } = await supabase.auth.signInWithOtp({
         email,
-        options: { shouldCreateUser: false },
+        options: {
+          emailRedirectTo: new URL("/auth/callback", readAppUrl()).toString(),
+          shouldCreateUser: false,
+        },
       });
       return { error: error?.message ?? null };
     },

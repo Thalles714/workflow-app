@@ -48,9 +48,11 @@ Contas fictícias disponíveis, sem senha versionada:
 
 Digite uma delas no login e abra o link recebido no Mailpit. O callback troca o código por uma sessão HTTP-only; páginas protegidas confirmam o usuário com o servidor do Supabase, e o proxy apenas renova cookies.
 
-## Alternativa gratuita usada nesta máquina
+## Verificação local e alternativa portátil
 
-Esta estação não possui runtime de containers. Por isso, `pnpm db:test` executa a migração e o seed em PGlite, um PostgreSQL real em WebAssembly, com stubs mínimos das roles e de `auth.uid()`. Essa verificação cobre sintaxe PostgreSQL, constraints, seed repetido, RLS anônimo e isolamento cross-tenant, mas não substitui o teste de integração do GoTrue/Mailpit. Quando houver Docker, execute `pnpm db:reset` e o login acima antes de promover o ambiente.
+O ambiente completo em Docker foi validado em 8 de agosto de 2026: dois resets consecutivos aplicaram migração e seed, e o teste E2E percorreu link mágico no Mailpit, callback PKCE, rota protegida, logout e bloqueio anônimo. O provedor de e-mail permanece ativo para usuários do seed, enquanto o cadastro global e `shouldCreateUser` continuam desativados.
+
+`pnpm db:test` mantém uma alternativa portátil em PGlite, um PostgreSQL real em WebAssembly, com stubs mínimos das roles e de `auth.uid()`. Ela cobre sintaxe PostgreSQL, constraints, seed repetido, RLS anônimo e isolamento cross-tenant, mas não substitui o teste de integração do GoTrue/Mailpit.
 
 ## Matriz de autorização
 
@@ -74,6 +76,7 @@ pnpm db:test
 pnpm lint
 pnpm typecheck
 pnpm test
+pnpm test:e2e
 pnpm build
 git diff --check
 ```

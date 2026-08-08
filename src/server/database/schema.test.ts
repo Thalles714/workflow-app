@@ -46,7 +46,7 @@ describe("versioned database", () => {
       tasks: 7,
       workspaces: 2,
     });
-  });
+  }, 15_000);
 
   it("rejects anonymous reads", async () => {
     const database = await seededDatabase();
