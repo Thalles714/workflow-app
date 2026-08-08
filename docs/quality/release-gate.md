@@ -1,6 +1,6 @@
 # Release gate — Workflow
 
-**Data:** 2026-08-08  
+**Data:** 2026-08-08
 **Escopo:** evidência de qualidade e segurança proporcional a um projeto público de portfólio. Este documento não declara conformidade, certificação ou pentest externo.
 
 ## Resultado
