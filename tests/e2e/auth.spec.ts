@@ -3,6 +3,56 @@ import { expect, test } from "@playwright/test";
 const mailpitApi = "http://127.0.0.1:54324/api/v1";
 type MailpitMessage = { Created: string; ID: string; To: { Address: string }[] };
 
+test("member sees one tenant-safe task in each deterministic My Work group", async ({
+  page,
+  request,
+}) => {
+  const email = "member@aurora.workflow.local";
+  const startedAt = Date.now();
+  await page.goto("/login");
+  await page.getByLabel("E-mail").fill(email);
+  await page.getByRole("button", { name: "Enviar link de acesso" }).click();
+  const messageId = await expect
+    .poll(async () => {
+      const response = await request.get(`${mailpitApi}/messages`);
+      const body = (await response.json()) as { messages: MailpitMessage[] };
+      return body.messages.find(
+        (message) =>
+          new Date(message.Created).getTime() >= startedAt &&
+          message.To.some((recipient) => recipient.Address === email),
+      )?.ID;
+    })
+    .toBeTruthy();
+  void messageId;
+  const listResponse = await request.get(`${mailpitApi}/messages`);
+  const list = (await listResponse.json()) as { messages: MailpitMessage[] };
+  const message = list.messages.find(
+    (candidate) =>
+      new Date(candidate.Created).getTime() >= startedAt &&
+      candidate.To.some((recipient) => recipient.Address === email),
+  );
+  const messageResponse = await request.get(`${mailpitApi}/message/${message!.ID}`);
+  const { Text: text } = (await messageResponse.json()) as { Text: string };
+  const magicLink = text.match(/Sign in \( (https?:\/\/\S+) \)/)?.[1];
+  await page.goto(magicLink!);
+  await page.goto("/app/my-work");
+
+  for (const heading of ["Atrasadas", "Hoje", "Próximas", "Aguardando aprovação"]) {
+    await expect(page.getByRole("heading", { name: heading, exact: true })).toBeVisible();
+  }
+  await expect(page.getByText("Revisar formulário", { exact: true })).toHaveCount(1);
+  await expect(page.getByText("Adaptar peças sociais", { exact: true })).toHaveCount(1);
+  await expect(page.getByText("Validar mídia paga", { exact: true })).toHaveCount(1);
+  await expect(page.getByText("Consolidar guia", { exact: true })).toHaveCount(1);
+  await expect(page.getByText("Planejar vitrine", { exact: true })).toHaveCount(0);
+
+  await page.setViewportSize({ height: 844, width: 390 });
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(
+    true,
+  );
+  await page.screenshot({ fullPage: true, path: "test-results/my-work-390.png" });
+});
+
 test("seed user signs in, operates the accessible shell and signs out", async ({
   page,
   request,

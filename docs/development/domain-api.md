@@ -36,6 +36,12 @@ Cada domínio expõe list, get, create, update e archive por meio de createClien
 
 Toda consulta de registro combina workspace_id e id; listagens começam por workspace_id e têm limite. Os repositórios Supabase usam query builder parametrizado, sem interpolação SQL.
 
+## Regras de Meu Trabalho
+
+`listMyWork(context)` deriva `workspaceId` e responsável somente do `AuthorizationContext`, consulta no máximo 100 tarefas ativas e usa o timezone cadastrado no Workspace. O dia começa à meia-noite local; datas continuam armazenadas em UTC. A janela **Próximas** vai de amanhã até o sétimo dia local, inclusive.
+
+A precedência é exclusiva: `IN_REVIEW` entra em **Aguardando aprovação**; depois, prazo anterior ao dia local entra em **Atrasadas**; prazo no dia local entra em **Hoje**; e prazo entre amanhã e o sétimo dia entra em **Próximas**. Tarefas concluídas, sem prazo ou além da janela não aparecem. Cada grupo ordena primeiro pelo prazo e, em empate, por `URGENT`, `HIGH`, `MEDIUM` e `LOW`.
+
 ## Matriz de ameaças verificada
 
 | Ameaça                        | Barreira da aplicação                        | Evidência automatizada                   |
