@@ -1,6 +1,6 @@
 # Reconciliação do PROMPT 11 — Aprovações e colaboração mínima
 
-**Data:** 8 de agosto de 2026  
+**Data:** 8 de agosto de 2026
 **Escopo auditado:** commit `6037ee9` e a implementação atual de Aprovações, Atualizações de tarefa, Meu Trabalho, Central de Atenção, RLS e E2E.
 
 ## Decisão
