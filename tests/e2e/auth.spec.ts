@@ -63,6 +63,28 @@ test("seed user signs in, operates the accessible shell and signs out", async ({
     await page.screenshot({ fullPage: true, path: `test-results/shell-${viewport.label}.png` });
   }
 
+  await page.setViewportSize({ height: 900, width: 1440 });
+  await page.goto("/app/clients");
+  await page.getByRole("link", { name: /Órbita Tecnologia/ }).click();
+  await page.getByRole("link", { name: /Lançamento Q3/ }).click();
+  await page.getByRole("link", { name: /Landing page/ }).click();
+  await page.getByRole("link", { name: /Revisar formulário/ }).click();
+  await expect(page).toHaveURL(/\/tasks\/50000000-0000-0000-0000-000000000001$/);
+  await expect(page.getByRole("heading", { level: 1, name: "Revisar formulário" })).toBeVisible();
+
+  const blockReason = page.getByLabel("Motivo do bloqueio");
+  await blockReason.fill("");
+  expect(await blockReason.evaluate((field: HTMLInputElement) => field.validity.valueMissing)).toBe(
+    true,
+  );
+  await blockReason.fill("Aguardando credencial fictícia do ambiente de homologação.");
+  await page.getByRole("button", { name: "Salvar tarefa" }).click();
+  await expect(page.getByRole("status")).toContainText("Alterações salvas");
+
+  await page.goto("/app/clients/20000000-0000-0000-0000-000000000002");
+  await expect(page.getByRole("heading", { level: 1, name: "404" })).toBeVisible();
+  await page.goto("/app");
+
   await page.setViewportSize({ height: 844, width: 390 });
   const menu = page.getByRole("button", { name: "Abrir menu" });
   await menu.click();

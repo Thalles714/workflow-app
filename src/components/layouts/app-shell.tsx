@@ -14,7 +14,7 @@ const navigation: ReadonlyArray<{
 }> = [
   { count: "4", href: "/app", icon: "⌁", label: "Painel" },
   { href: "/app#meu-trabalho", icon: "✓", label: "Meu Trabalho" },
-  { href: "/app#clientes", icon: "◇", label: "Clientes" },
+  { href: "/app/clients", icon: "◇", label: "Clientes" },
   { href: "/app#projetos", icon: "▱", label: "Projetos" },
   { count: "3", href: "/app#aprovacoes", icon: "◉", label: "Aprovações" },
 ];
