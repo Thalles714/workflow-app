@@ -135,6 +135,7 @@ Migrações SQL incrementais e reversão documentada; seed usa chaves estáveis/
 | 16 | conta cloud + aprovação | CI/CD e URL pública | ação externa autorizada |
 | 17 | URL e produto | README/ADRs/case/demo | documentação reproduzível |
 | 18 | tudo | auditoria final/handoff | checklist mestre concluído |
+| 19 | demo pública estática + app estável | tour navegável somente leitura | aprovação humana explícita |
 
 ## 6. Prompts completos e copiáveis
 
@@ -480,12 +481,30 @@ Migrações SQL incrementais e reversão documentada; seed usa chaves estáveis/
 14. **Passagem:** `GO` encerra; `NO-GO` retorna ao prompt responsável pelo bloqueio, depois repete 18.
 15. **Commit:** `docs: record final portfolio release audit`; sem push/rewrite não autorizado.
 
-## 7. Matriz de cobertura
+## 7. PROMPT 19 — Demo pública navegável e experiência de portfólio
+
+1. **Papel:** product designer e frontend engineer especializado em experiências SaaS de portfólio.
+2. **Contexto:** trabalhe em `C:\Users\Administrator\Projects\workflow`. A demo pública é a porta de entrada para recrutadores: deve demonstrar o valor, domínio e qualidade técnica do Workflow sem login, e-mail, banco ou configuração. Leia integralmente `workflow-execution-plan.md`, `workflow-briefing.md`, `README.md`, `docs/portfolio/case-study.md`, `docs/demo/**`, `docs/product/mvp-scope.md`, ADRs, inventário/revisão dos protótipos, instruções locais e a implementação em `src/app/demo/**`, `src/components/demo/**`, `src/components/layouts/**` e `src/components/ui/**`.
+3. **Referências:** as fontes normativas são `C:\Users\Administrator\Projects\workflow\assets\design_system`, `C:\Users\Administrator\Projects\workflow\assets\templates` e `C:\Users\Administrator\Projects\workflow\prototypes`; o design system vence em conflito. Antes de desenhar, inventarie também `C:\Users\Administrator\Projects\tale\skills`, `C:\Users\Administrator\Projects\tale\assets` e `C:\Users\Administrator\Projects\tale\assets\templates`. Leia integralmente apenas skills aplicáveis a design, animação, acessibilidade e prototipação. Use referências para padrões de composição, navegação e microinteração; nunca copie código, marca, textos, estrutura integral ou assets de terceiros.
+4. **Pré-condições:** confirme que `/demo` é público, não consulta Supabase, não cria sessão e não executa escrita. Confirme Git e preserve alterações locais alheias. Não altere migrations, RLS, autenticação, seed, serviços de domínio ou comportamento autenticado.
+5. **Objetivo:** transformar a demo pública em um workspace fictício moderno, bonito, navegável e convincente, capaz de provar em poucos minutos que Workflow é um SaaS de gestão operacional para agências.
+6. **Incluído:** refinar a página pública e rotas de demo; criar workspace estático da Agência Aurora; demonstrar Painel/Central de Atenção, Meu Trabalho, Clientes, Projetos, Entregas, Tarefas e Aprovações; centralizar dados fictícios tipados; implementar tabs, filtros, views, drawer/modal, breadcrumbs e interações locais seguras; adicionar CTA para GitHub, README/setup e case study; deixar explícito modo somente leitura e explicar resumidamente Auth, RLS, RBAC, migrations, testes e CI da versão autenticada.
+7. **Fora:** cadastro/login público, convite, e-mail, pagamento, banco, Supabase, Server Actions, persistência, dados reais, analytics externo, serviços pagos, recriar o app autenticado, refactor amplo e animação decorativa.
+8. **Direção visual:** preservar a identidade Workflow: superfícies claras, hierarquia tipográfica forte, bordas discretas, profundidade leve e espaço generoso. Cor comunica estado, foco, prioridade ou ação. Manter a hero aprovada, evoluindo-a somente se a narrativa exigir. Uma assinatura visual marcante; o restante deve ser calmo e funcional. Todo movimento precisa orientar, revelar ou confirmar algo; respeitar `prefers-reduced-motion`, teclado, foco, contraste e alvos móveis.
+9. **Narrativa recomendada:** abertura com proposta e CTA “Explorar workspace” → Painel com alertas explicáveis → Cliente/Projeto/Entrega/Tarefa → Visão geral/Kanban/Lista → Meu Trabalho → Aprovações visuais → encerramento com arquitetura, qualidade e links. O shell deve permitir exploração livre, mas oferecer caminho claro de 3–5 minutos.
+10. **Arquivos:** `src/app/demo/**`, `src/components/demo/**`, componentes e estilos visuais mínimos, testes da demo, `docs/demo/**`, `README.md` e `docs/portfolio/**` apenas quando a mudança for real. Não alterar `supabase/**`, `src/modules/**` de domínio/autorização/Auth ou rotas autenticadas, salvo correção mínima comprovadamente necessária para preservar a fronteira pública.
+11. **Procedimento:** inspecione referências/skills/rotas/Git → registre inventário visual → defina narrativa e mapa de rotas → centralize dados estáticos → implemente shell e Painel → conecte Cliente, Projeto, Entrega, Tarefa, Meu Trabalho e Aprovações → adicione estados/CTAs/interações → valide 1440/768/390, teclado, foco, Escape, reduced motion, console, links e overflow → execute checks e revise diff.
+12. **Verificações:** `/demo` funciona sem variáveis Supabase; dados são exclusivamente estáticos/fictícios; nenhuma ação persiste; Painel → Projeto → Entrega → Tarefa → Aprovação é navegável sem login; GitHub/README/case study funcionam; 1440/768/390 não têm overflow; acessibilidade e reduced motion corretos; console limpo; `pnpm format:check`, `pnpm lint`, `pnpm typecheck`, testes, `pnpm build` e `git diff --check` verdes.
+13. **Aceitação:** a demo parece produto real em modo somente leitura, não landing page genérica ou conjunto de screenshots; demonstra as perguntas centrais do domínio e deixa evidente a qualidade full-stack sem expor autenticação ou dados reais.
+14. **Relatório:** referências/skills usadas, narrativa, rotas, telas/interações, arquivos, evidências responsivas/acessíveis, checks, limitações e instruções de revisão humana iniciando por `/demo`.
+15. **Passagem:** não iniciar beta, autenticação pública ou monetização. Peça a frase explícita **“demo pública aprovada”**. Depois execute PROMPT 17 e PROMPT 18 para documentação e auditoria final atualizadas. **Commit:** `feat(demo): build interactive public product tour`.
+
+## 8. Matriz de cobertura
 
 | Área | Prompts principais |
 |---|---|
 | Produto/escopo/domínio | 00, 07–11, 15, 18 |
-| Visual/design system | 01, 02, 06, 13, 18 |
+| Visual/design system | 01, 02, 06, 13, 18, 19 |
 | Segurança/multi-tenancy | 00, 04, 05, 07, 10–12, 14, 16, 18 |
 | Testes/qualidade | 03–15, 18 |
 | Dados demo | 04, 10, 15, 18 |
@@ -493,10 +512,10 @@ Migrações SQL incrementais e reversão documentada; seed usa chaves estáveis/
 | Responsividade | 01, 02, 06–13, 17, 18 |
 | Git | 00, 03 e commit de todos os prompts; 16–18 |
 | CI/CD/deploy/custo | 00, 03, 14–16, 18 |
-| Documentação/portfólio | 00, 15–18 |
+| Documentação/portfólio | 00, 15–19 |
 | Agente por regras | 00, 05, 12, 14, 18 (opcional) |
 
-## 8. Checklist mestre de conclusão
+## 9. Checklist mestre de conclusão
 
 - [ ] Escopo Agora/Depois/Fora aprovado e ADRs coerentes.
 - [ ] Dez protótipos HTML independentes aprovados antes do app.
@@ -512,11 +531,12 @@ Migrações SQL incrementais e reversão documentada; seed usa chaves estáveis/
 - [ ] Unitários, integração multi-tenant, UI, E2E, lint, types e build estão verdes.
 - [ ] Nenhum segredo/PII/serviço pago; custo e limites revalidados.
 - [ ] Demo limitada/resetável e fluxo de 3–5 minutos ensaiado.
+- [ ] Demo pública navegável demonstra o produto sem login, banco ou escrita.
 - [ ] CI protege release; URL gratuita passa smoke; rollback documentado.
 - [ ] README, ADRs, case, screenshots, roteiro e limitações correspondem ao deploy.
 - [ ] Auditoria final resulta em `GO`, sem P0/P1.
 
-## 9. Roteiro para o usuário
+## 10. Roteiro para o usuário
 
 1. **Envie o PROMPT 00.** Confira se ele leu fontes reais, preservou arquivos e congelou o menor MVP. Só diga “escopo aprovado” se Agora/Depois/Fora, telas, stack e ameaças estiverem corretos.
 2. **Envie o PROMPT 01.** Abra todos os dez `index.html`, percorra o fluxo e observe 1440/768/390. Não permita que o agente crie Next.js ainda.
@@ -527,4 +547,6 @@ Migrações SQL incrementais e reversão documentada; seed usa chaves estáveis/
 7. **Envie os PROMPTS 14 e 15.** Exija a suíte completa verde e ensaie o roteiro em 3–5 minutos. Não aceite credencial fraca versionada.
 8. **Antes do PROMPT 16**, dê autorização explícita e limitada para contas cloud, secrets, push e deploy que você realmente quer permitir. Confira novamente R$0, cotas e URL gratuita.
 9. **Envie o PROMPT 17**, confira cada comando do README, URL, screenshots e ausência de alegações fictícias.
-10. **Envie o PROMPT 18.** Publique no portfólio apenas com decisão `GO`. Em `NO-GO`, volte ao prompt indicado, corrija e repita a auditoria.
+10. **Envie o PROMPT 19.** Evolua a demo pública somente leitura; não abra cadastro ou pagamento. Faça a aprovação humana explícita antes da documentação final.
+11. **Envie o PROMPT 17.** Atualize README, case, screenshots, URL e limites para refletir a demo final.
+12. **Envie o PROMPT 18.** Publique no portfólio apenas com decisão `GO`. Em `NO-GO`, volte ao prompt indicado, corrija e repita a auditoria.
