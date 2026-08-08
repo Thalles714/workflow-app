@@ -4,7 +4,12 @@ import { NextResponse, type NextRequest } from "next/server";
 import { readRuntimeSupabaseEnv } from "@/modules/auth/env";
 
 export async function proxy(request: NextRequest) {
-  if (request.nextUrl.pathname === "/demo" || request.nextUrl.pathname.startsWith("/demo/")) {
+  if (
+    request.nextUrl.pathname === "/" ||
+    request.nextUrl.pathname === "/health" ||
+    request.nextUrl.pathname === "/demo" ||
+    request.nextUrl.pathname.startsWith("/demo/")
+  ) {
     return NextResponse.next({ request });
   }
 
