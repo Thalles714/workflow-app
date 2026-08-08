@@ -443,9 +443,25 @@ p {
 }
 .metric-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 16px;
   margin: 16px 0;
+}
+.attention-reasons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  margin: 9px 0 0;
+  padding: 0;
+  color: var(--subtle);
+  font: 500 9px var(--font-body);
+  list-style-position: inside;
+}
+.operation-permission {
+  display: grid;
+  gap: 16px;
+  max-width: 720px;
+  padding-top: 40px;
 }
 .metric-card {
   position: relative;

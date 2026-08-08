@@ -1,141 +1,144 @@
 import Link from "next/link";
-
-import { ComponentShowcase } from "@/components/demo/component-showcase";
-import { AppShell } from "@/components/layouts/app-shell";
-import { Badge, Button, Card } from "@/components/ui";
-import { logout } from "@/modules/auth/actions";
+import { CoreShell } from "@/components/core/core-shell";
+import { Alert, Card, EmptyState } from "@/components/ui";
+import { createServerAttentionService } from "@/modules/attention/server";
+import type { AttentionAlert } from "@/modules/attention/evaluate";
 import { requirePageUser } from "@/modules/auth/guard";
+import { createAuthorizationContext } from "@/modules/authorization/server";
+import { auroraWorkspaceId } from "@/modules/core/contracts";
 
-export default async function ProtectedLocalPage() {
-  const user = await requirePageUser();
+export default async function OperationPage() {
+  await requirePageUser();
+  const context = await createAuthorizationContext(auroraWorkspaceId);
   return (
-    <AppShell
-      footer={
-        <form action={logout}>
-          <button className="sidebar-logout" type="submit">
-            Sair
-          </button>
-        </form>
-      }
-    >
+    <CoreShell>
       <div className="app-content">
-        <header className="desktop-topbar">
-          <nav aria-label="Breadcrumb">
-            <span aria-current="page">Painel da Operação</span>
-          </nav>
-          <div>
-            <Badge tone="success">Sessão verificada no servidor</Badge>
-          </div>
-        </header>
-        <section aria-labelledby="operation-hero" className="operation-hero">
-          <span className="hero-kicker">
-            <i />
-            Central de Atenção · agora
+        <div className="desktop-topbar">
+          <span>Painel da Operação</span>
+          <span>Agência Aurora · agora</span>
+        </div>
+        {context.role !== "ADMIN" ? (
+          <section className="operation-permission">
+            <Alert title="Visão gerencial restrita" tone="warning">
+              Use Meu Trabalho para acompanhar suas prioridades. O Painel da Operação exige ADMIN.
+            </Alert>
+            <Link className="ui-button ui-button--primary" href="/app/my-work">
+              Abrir Meu Trabalho
+            </Link>
+          </section>
+        ) : (
+          <ManagerPanel context={context} />
+        )}
+      </div>
+    </CoreShell>
+  );
+}
+
+async function ManagerPanel({
+  context,
+}: {
+  context: Awaited<ReturnType<typeof createAuthorizationContext>>;
+}) {
+  const result = await (await createServerAttentionService()).getOperationAttention(context);
+  const first = result.alerts[0];
+  return (
+    <>
+      <section aria-labelledby="operation-hero" className="operation-hero">
+        <span className="hero-kicker">
+          <i />
+          Central de Atenção · regras determinísticas
+        </span>
+        <h1 id="operation-hero">
+          Onde agir agora.
+          <span>
+            {result.alerts.length
+              ? `${result.alerts.length} situações explicadas e ordenadas.`
+              : "A operação está saudável."}
           </span>
-          <h1 id="operation-hero">
-            Bom dia, Thalles.<span>3 situações pedem sua decisão agora.</span>
-          </h1>
-          <p>
-            A operação está estável, mas a Landing page da Órbita bloqueia uma entrega importante.
-            Comece pelo item crítico; o restante pode esperar.
-          </p>
+        </h1>
+        <p>
+          {first
+            ? first.explanation
+            : "Nenhuma das seis regras encontrou uma exceção que exija decisão neste momento."}
+        </p>
+        {first && (
           <div className="hero-actions">
-            <Button variant="primary">Resolver item crítico →</Button>
-            <a className="ui-button ui-button--secondary" href="#radar">
+            <Link className="ui-button ui-button--primary" href={first.href as never}>
+              Resolver item prioritário →
+            </Link>
+            <a className="ui-button ui-button--secondary" href="#attention">
               Ver toda a atenção
             </a>
           </div>
-          <div className="hero-summary">
-            <HeroStat label="crítico · agir agora" value="01" />
-            <HeroStat label="em risco · próximos 3 dias" value="02" />
-            <HeroStat label="entregas da semana no ritmo" value="84%" />
-          </div>
-        </section>
-        <div className="metric-grid">
-          <Metric label="Entregas da semana" value="7">
-            5 no ritmo, 2 exigem acompanhamento.
-          </Metric>
-          <Metric label="Tarefas atrasadas" value="4">
-            Uma delas bloqueia uma entrega crítica.
-          </Metric>
-          <Metric label="Aprovações" value="3">
-            Órbita aguarda decisão há 48 horas.
-          </Metric>
-        </div>
-        <Card id="radar">
-          <div className="section-heading">
-            <div>
-              <span className="eyebrow">Atualizado agora</span>
-              <h2>Radar de atenção</h2>
-              <p>Exceções ordenadas por impacto, com a regra que gerou cada sinal.</p>
-            </div>
-          </div>
-          <div className="attention-list">
-            <Signal
-              description="Órbita · Lançamento Q3 · Revisar formulário está bloqueada há 2 dias."
-              label="Landing page bloqueada por tarefa atrasada"
-              meta="Agir agora"
-              tone="critical"
-            />
-            <Signal
-              description="2 de 7 tarefas continuam pendentes na entrega."
-              label="Peças do lançamento vencem em 3 dias"
-              meta="11 ago"
-              tone="risk"
-            />
-            <Signal
-              description="Relatório de performance · Cliente Vértice."
-              label="Aprovação aguardando há 48 horas"
-              meta="48h"
-              tone="warning"
-            />
-          </div>
-        </Card>
-        <p className="signed-user">Usuário local: {user.email ?? user.id}</p>
-        <ComponentShowcase />
-        <Link className="back-local" href="/">
-          Voltar à página local
-        </Link>
+        )}
+      </section>
+      <div className="metric-grid">
+        <Metric
+          label="Entregas concluídas na semana"
+          value={result.metrics.deliveriesCompletedThisWeek}
+        />
+        <Metric label="Tarefas atrasadas" value={result.metrics.overdueTasks} />
+        <Metric label="Aprovações pendentes" value={result.metrics.pendingApprovals} />
+        <Metric label="Projetos em risco" value={result.metrics.projectsAtRisk} />
       </div>
-    </AppShell>
+      <Card id="attention">
+        <div className="section-heading">
+          <div>
+            <span className="eyebrow">Prioridade e deduplicação</span>
+            <h2>Central de Atenção</h2>
+            <p>Cada cartão mostra a regra, a evidência e o caminho para resolver.</p>
+          </div>
+        </div>
+        {result.alerts.length ? (
+          <div className="attention-list">
+            {result.alerts.map((alert) => (
+              <AttentionCard alert={alert} key={`${alert.targetType}:${alert.targetId}`} />
+            ))}
+          </div>
+        ) : (
+          <EmptyState
+            title="Nenhuma atenção necessária"
+            description="A operação não viola nenhuma regra determinística neste momento."
+          />
+        )}
+      </Card>
+    </>
   );
 }
-
-function HeroStat({ label, value }: { label: string; value: string }) {
-  return (
-    <div>
-      <b>{value}</b>
-      <span>{label}</span>
-    </div>
-  );
-}
-function Metric({ children, label, value }: { children: string; label: string; value: string }) {
+function Metric({ label, value }: { label: string; value: number }) {
   return (
     <Card className="metric-card">
       <span className="eyebrow">{label}</span>
       <b>{value}</b>
-      <p>{children}</p>
+      <p>Calculado no timezone do Workspace.</p>
     </Card>
   );
 }
-function Signal({
-  description,
-  label,
-  meta,
-  tone,
-}: {
-  description: string;
-  label: string;
-  meta: string;
-  tone: "critical" | "risk" | "warning";
-}) {
+function AttentionCard({ alert }: { alert: AttentionAlert }) {
   return (
-    <article className={`attention-signal attention-signal--${tone}`}>
+    <Link
+      className={`attention-signal attention-signal--${tone(alert.severity)}`}
+      href={alert.href as never}
+    >
       <div>
-        <h3>{label}</h3>
-        <p>{description}</p>
+        <span className="eyebrow">{label(alert.severity)}</span>
+        <h3>{alert.title}</h3>
+        <p>{alert.explanation}</p>
+        <ul className="attention-reasons">
+          {alert.reasons.map((reason) => (
+            <li key={reason}>{reason}</li>
+          ))}
+        </ul>
       </div>
-      <strong>{meta}</strong>
-    </article>
+      <strong>Abrir →</strong>
+    </Link>
   );
+}
+function tone(value: AttentionAlert["severity"]) {
+  return value === "CRITICAL" ? "critical" : value === "RISK" ? "risk" : "warning";
+}
+function label(value: AttentionAlert["severity"]) {
+  return (
+    { CRITICAL: "Crítico", RISK: "Risco", ATTENTION: "Atenção", INFO: "Informação" } as const
+  )[value];
 }

@@ -35,6 +35,7 @@ test("member sees one tenant-safe task in each deterministic My Work group", asy
   const { Text: text } = (await messageResponse.json()) as { Text: string };
   const magicLink = text.match(/Sign in \( (https?:\/\/\S+) \)/)?.[1];
   await page.goto(magicLink!);
+  await expect(page.getByText("Visão gerencial restrita")).toBeVisible();
   await page.goto("/app/my-work");
 
   for (const heading of ["Atrasadas", "Hoje", "Próximas", "Aguardando aprovação"]) {
@@ -96,8 +97,15 @@ test("seed user signs in, operates the accessible shell and signs out", async ({
 
   await page.goto(magicLink!);
   await expect(page).toHaveURL("http://localhost:3000/app");
-  await expect(page.getByText("Sessão verificada no servidor")).toBeVisible();
-  await expect(page.getByText(email)).toBeVisible();
+  await expect(page.getByRole("heading", { name: /Onde agir agora/ })).toBeVisible();
+  for (const severity of ["Crítico", "Risco", "Atenção", "Informação"]) {
+    await expect(page.getByText(severity, { exact: true }).first()).toBeVisible();
+  }
+  await expect(page.getByText("Planejar vitrine", { exact: true })).toHaveCount(0);
+  await expect(page.getByRole("link", { name: /Landing page bloqueada/ })).toHaveAttribute(
+    "href",
+    /\/tasks\/50000000-0000-0000-0000-000000000001$/,
+  );
 
   for (const viewport of [
     { height: 900, label: "1440", width: 1440 },
@@ -106,7 +114,7 @@ test("seed user signs in, operates the accessible shell and signs out", async ({
   ]) {
     await page.setViewportSize(viewport);
     await page.waitForTimeout(350);
-    await expect(page.getByRole("heading", { name: /3 situa/ })).toBeVisible();
+    await expect(page.getByRole("heading", { name: /situações explicadas/ })).toBeVisible();
     expect(
       await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth),
     ).toBe(true);
@@ -202,12 +210,6 @@ test("seed user signs in, operates the accessible shell and signs out", async ({
   await expect(page.locator(".app-sidebar .workflow-brand")).toBeFocused();
   await page.keyboard.press("Escape");
   await expect(menu).toBeFocused();
-
-  const modalTrigger = page.getByRole("button", { name: "Abrir modal" });
-  await modalTrigger.click();
-  await expect(page.getByRole("dialog", { name: "Concluir tarefa" })).toBeVisible();
-  await page.keyboard.press("Escape");
-  await expect(modalTrigger).toBeFocused();
 
   await menu.click();
   await page.getByRole("button", { name: "Sair" }).click();
