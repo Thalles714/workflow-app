@@ -1,12 +1,18 @@
 import { expect, test } from "@playwright/test";
 
 const mailpitApi = "http://127.0.0.1:54324/api/v1";
-
 type MailpitMessage = { Created: string; ID: string; To: { Address: string }[] };
 
-test("seed user signs in by magic link and signs out", async ({ page, request }) => {
+test("seed user signs in, operates the accessible shell and signs out", async ({
+  page,
+  request,
+}) => {
   const email = "admin@aurora.workflow.local";
   const startedAt = Date.now();
+  const consoleErrors: string[] = [];
+  page.on("console", (message) => {
+    if (message.type() === "error") consoleErrors.push(message.text());
+  });
 
   await page.goto("/login");
   await page.getByLabel("E-mail").fill(email);
@@ -33,7 +39,6 @@ test("seed user signs in by magic link and signs out", async ({ page, request })
       candidate.To.some((recipient) => recipient.Address === email),
   );
   expect(message).toBeTruthy();
-
   const messageResponse = await request.get(`${mailpitApi}/message/${message!.ID}`);
   const { Text: text } = (await messageResponse.json()) as { Text: string };
   const magicLink = text.match(/Sign in \( (https?:\/\/\S+) \)/)?.[1];
@@ -44,8 +49,37 @@ test("seed user signs in by magic link and signs out", async ({ page, request })
   await expect(page.getByText("Sessão verificada no servidor")).toBeVisible();
   await expect(page.getByText(email)).toBeVisible();
 
+  for (const viewport of [
+    { height: 900, label: "1440", width: 1440 },
+    { height: 1024, label: "768", width: 768 },
+    { height: 844, label: "390", width: 390 },
+  ]) {
+    await page.setViewportSize(viewport);
+    await page.waitForTimeout(350);
+    await expect(page.getByRole("heading", { name: /3 situa/ })).toBeVisible();
+    expect(
+      await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth),
+    ).toBe(true);
+    await page.screenshot({ fullPage: true, path: `test-results/shell-${viewport.label}.png` });
+  }
+
+  await page.setViewportSize({ height: 844, width: 390 });
+  const menu = page.getByRole("button", { name: "Abrir menu" });
+  await menu.click();
+  await expect(page.locator(".app-sidebar .workflow-brand")).toBeFocused();
+  await page.keyboard.press("Escape");
+  await expect(menu).toBeFocused();
+
+  const modalTrigger = page.getByRole("button", { name: "Abrir modal" });
+  await modalTrigger.click();
+  await expect(page.getByRole("dialog", { name: "Concluir tarefa" })).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(modalTrigger).toBeFocused();
+
+  await menu.click();
   await page.getByRole("button", { name: "Sair" }).click();
   await expect(page).toHaveURL("http://localhost:3000/login");
   await page.goto("/app");
   await expect(page).toHaveURL("http://localhost:3000/login");
+  expect(consoleErrors).toEqual([]);
 });
