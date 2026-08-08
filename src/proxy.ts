@@ -4,6 +4,10 @@ import { NextResponse, type NextRequest } from "next/server";
 import { readRuntimeSupabaseEnv } from "@/modules/auth/env";
 
 export async function proxy(request: NextRequest) {
+  if (request.nextUrl.pathname === "/demo" || request.nextUrl.pathname.startsWith("/demo/")) {
+    return NextResponse.next({ request });
+  }
+
   let response = NextResponse.next({ request });
   const { publishableKey, url } = readRuntimeSupabaseEnv();
   const supabase = createServerClient(url, publishableKey, {
