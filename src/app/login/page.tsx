@@ -11,6 +11,9 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
   return (
     <LoginShell>
       <div id="login-form">
+        <Link className="ui-button ui-button--secondary login-demo-link" href={"/demo" as never}>
+          Explorar demonstração pública →
+        </Link>
         <span className="eyebrow">Agência Aurora · acesso local</span>
         <h1>Entre na operação.</h1>
         <p>Receba um link de acesso no Mailpit local. Novos cadastros estão desativados.</p>
