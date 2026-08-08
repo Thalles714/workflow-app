@@ -45,6 +45,7 @@ describe("My Work service", () => {
 function task(overrides: Partial<MyWorkTask> = {}): MyWorkTask {
   return {
     assigneeId: context.actorId,
+    approvalStatus: null,
     blockReason: null,
     clientId: "20000000-0000-0000-0000-000000000001",
     clientName: "Órbita",

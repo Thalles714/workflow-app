@@ -4,6 +4,7 @@ import { EntityForm } from "@/components/core/entity-form";
 import { CoreShell, PageHeading } from "@/components/core/core-shell";
 import { Badge, Card, EmptyState } from "@/components/ui";
 import { createAuthorizationContext } from "@/modules/authorization/server";
+import { DomainError } from "@/modules/authorization/errors";
 import { decideApprovalAction, resetApprovalAction } from "@/modules/core/actions";
 import { auroraWorkspaceId } from "@/modules/core/contracts";
 import { createServerApprovalService } from "@/modules/approvals/server";
@@ -83,7 +84,8 @@ export default async function ApprovalsPage() {
         </div>
       </CoreShell>
     );
-  } catch {
-    notFound();
+  } catch (error) {
+    if (error instanceof DomainError && error.code === "NOT_FOUND") notFound();
+    throw error;
   }
 }

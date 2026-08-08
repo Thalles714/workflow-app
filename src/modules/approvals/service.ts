@@ -69,8 +69,8 @@ export function createApprovalService(
     async reset(context: AuthorizationContext, input: unknown) {
       requireAdmin(context);
       const parsed = approvalResetSchema.parse(input);
-      if (!(await repository.findById(context.workspaceId, parsed.id)))
-        throw new DomainError("NOT_FOUND");
+      const previous = await repository.findById(context.workspaceId, parsed.id);
+      if (!previous) throw new DomainError("NOT_FOUND");
       const record = await repository.reset(
         context.workspaceId,
         parsed.id,
@@ -82,6 +82,11 @@ export function createApprovalService(
         action: "approval.reset",
         entityId: record.id,
         entityType: "approval",
+        metadata: {
+          previousDecisionNote: previous.decisionNote,
+          previousStatus: previous.status,
+          reason: parsed.note,
+        },
       });
       return record;
     },

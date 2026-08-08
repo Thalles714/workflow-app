@@ -1,6 +1,6 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 
-import type { TaskPriority, TaskStatus } from "../../types/database";
+import type { ApprovalStatus, TaskPriority, TaskStatus } from "../../types/database";
 import { DomainError } from "../authorization/errors";
 import type { MyWorkTask } from "./grouping";
 import type { MyWorkRepository } from "./service";
@@ -8,7 +8,7 @@ import type { MyWorkRepository } from "./service";
 const taskSelection = `
   id, assignee_id, title, status, priority, due_at, is_blocked, block_reason,
   deliverable:deliverables!inner(
-    id, name,
+    id, name, approvals(status),
     project:projects!inner(
       id, name,
       client:clients!inner(id, name)
@@ -45,10 +45,12 @@ export function createSupabaseMyWorkRepository(client: SupabaseClient): MyWorkRe
 
 function mapTask(row: Record<string, unknown>): MyWorkTask {
   const deliverable = relation(row.deliverable);
+  const approvals = relations(deliverable.approvals);
   const project = relation(deliverable.project);
   const client = relation(project.client);
   return {
     assigneeId: String(row.assignee_id),
+    approvalStatus: pendingApprovalStatus(approvals),
     blockReason: row.block_reason ? String(row.block_reason) : null,
     clientId: String(client.id),
     clientName: String(client.name),
@@ -63,6 +65,20 @@ function mapTask(row: Record<string, unknown>): MyWorkTask {
     status: row.status as TaskStatus,
     title: String(row.title),
   };
+}
+
+function relations(value: unknown): Record<string, unknown>[] {
+  if (!Array.isArray(value)) return [];
+  return value.filter(
+    (candidate): candidate is Record<string, unknown> =>
+      Boolean(candidate) && typeof candidate === "object",
+  );
+}
+
+function pendingApprovalStatus(
+  approvals: readonly Record<string, unknown>[],
+): ApprovalStatus | null {
+  return approvals.some((approval) => approval.status === "PENDING") ? "PENDING" : null;
 }
 
 function relation(value: unknown): Record<string, unknown> {

@@ -94,4 +94,41 @@ describe("approval state machine", () => {
       service.request(context, { deliverableId: approval.deliverableId, note: "Nova" }),
     ).rejects.toMatchObject({ code: "CONFLICT" });
   });
+  it("requests a review and records the request", async () => {
+    const { events, service } = harness(null);
+    await expect(
+      service.request(context, {
+        deliverableId: approval.deliverableId,
+        note: "Pronta para revisar",
+      }),
+    ).resolves.toMatchObject({ id: approval.id, status: "PENDING" });
+    expect(events).toEqual([
+      expect.objectContaining({ action: "approval.requested", entityType: "approval" }),
+    ]);
+  });
+  it("records the previous decision and reopen reason in the audit event", async () => {
+    const decided = { ...approval, decisionNote: "Aprovação inicial", status: "APPROVED" as const };
+    const { events, service } = harness(decided);
+
+    await expect(
+      service.reset(context, { id: approval.id, note: "Mudança de escopo" }),
+    ).resolves.toMatchObject({ status: "PENDING" });
+
+    expect(events).toEqual([
+      expect.objectContaining({
+        action: "approval.reset",
+        metadata: {
+          previousDecisionNote: "Aprovação inicial",
+          previousStatus: "APPROVED",
+          reason: "Mudança de escopo",
+        },
+      }),
+    ]);
+  });
+  it("returns a safe not-found result for an approval outside the workspace", async () => {
+    const { service } = harness(null);
+    await expect(
+      service.decide(context, { id: approval.id, note: "x", status: "CHANGES_REQUESTED" }),
+    ).rejects.toMatchObject({ code: "NOT_FOUND" });
+  });
 });

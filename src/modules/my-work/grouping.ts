@@ -1,7 +1,8 @@
-import type { TaskPriority, TaskStatus } from "../../types/database";
+import type { ApprovalStatus, TaskPriority, TaskStatus } from "../../types/database";
 
 export type MyWorkTask = Readonly<{
   assigneeId: string;
+  approvalStatus: ApprovalStatus | null;
   blockReason: string | null;
   clientId: string;
   clientName: string;
@@ -50,7 +51,7 @@ export function groupMyWork(
   for (const task of tasks) {
     if (task.status === "DONE" || task.dueAt === null) continue;
 
-    if (task.status === "IN_REVIEW") {
+    if (task.approvalStatus === "PENDING") {
       groups.awaitingApproval.push(task);
       continue;
     }

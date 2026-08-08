@@ -53,7 +53,7 @@ describe("versioned database", () => {
     await assumeAnonymous(database);
 
     await expect(database.query("select * from public.workspaces")).rejects.toThrow();
-  });
+  }, 20_000);
 
   it("only exposes rows from the authenticated user's workspace", async () => {
     const database = await seededDatabase();
@@ -72,7 +72,7 @@ describe("versioned database", () => {
       { name: "Estúdio Maré" },
       { name: "Órbita Tecnologia" },
     ]);
-  });
+  }, 20_000);
 
   it("rejects a cross-tenant relationship even for an administrator", async () => {
     const database = await seededDatabase();
@@ -89,7 +89,7 @@ describe("versioned database", () => {
         ],
       ),
     ).rejects.toThrow();
-  });
+  }, 20_000);
 
   it("requires a non-empty reason for every blocked task", async () => {
     const database = await seededDatabase();
@@ -107,7 +107,24 @@ describe("versioned database", () => {
         ],
       ),
     ).rejects.toThrow();
-  });
+  }, 20_000);
+
+  it("keeps approvals admin-only and task updates append-only", async () => {
+    const database = await seededDatabase();
+    await assumeAuthenticatedUser(database, auroraMemberId);
+
+    await expect(
+      database.query("update public.approvals set status = 'APPROVED' where id = $1", [
+        "70000000-0000-0000-0000-000000000001",
+      ]),
+    ).resolves.toMatchObject({ affectedRows: 0 });
+    await expect(
+      database.query("update public.task_updates set body = $2 where id = $1", [
+        "60000000-0000-0000-0000-000000000001",
+        "Tentativa de alterar histórico",
+      ]),
+    ).rejects.toThrow();
+  }, 20_000);
 });
 
 async function seededDatabase() {

@@ -35,7 +35,10 @@ describe("My Work tenant integration", () => {
     expect(grouped.upcoming.map((task) => task.id)).toEqual(
       expect.arrayContaining([taskId(3), taskId(5)]),
     );
-    expect(grouped.awaitingApproval.map((task) => task.id)).toEqual([taskId(4)]);
+    expect(grouped.awaitingApproval).toEqual([]);
+    expect(grouped.upcoming.map((task) => task.id)).toEqual(
+      expect.arrayContaining([taskId(3), taskId(4), taskId(5)]),
+    );
     expect(ids).not.toContain(taskId(2));
     expect(ids).not.toContain(taskId(6));
     expect(ids).not.toContain(taskId(7));
@@ -58,7 +61,13 @@ function repository(database: PGlite): MyWorkRepository {
         select t.id::text, t.assignee_id::text, t.title, t.status::text, t.priority::text,
           t.due_at::text, t.is_blocked, t.block_reason, d.id::text deliverable_id,
           d.name deliverable_name, p.id::text project_id, p.name project_name,
-          c.id::text client_id, c.name client_name
+          c.id::text client_id, c.name client_name,
+          exists (
+            select 1 from public.approvals a
+            where a.workspace_id = t.workspace_id
+              and a.deliverable_id = t.deliverable_id
+              and a.status = 'PENDING'
+          ) as has_pending_approval
         from public.tasks t
         join public.deliverables d on d.id = t.deliverable_id and d.workspace_id = t.workspace_id
         join public.projects p on p.id = d.project_id and p.workspace_id = t.workspace_id
@@ -70,6 +79,7 @@ function repository(database: PGlite): MyWorkRepository {
       );
       return result.rows.map((row) => ({
         assigneeId: row.assignee_id,
+        approvalStatus: row.has_pending_approval ? "PENDING" : null,
         blockReason: row.block_reason,
         clientId: row.client_id,
         clientName: row.client_name,
@@ -90,6 +100,7 @@ function repository(database: PGlite): MyWorkRepository {
 
 type Row = {
   assignee_id: string;
+  has_pending_approval: boolean;
   block_reason: string | null;
   client_id: string;
   client_name: string;

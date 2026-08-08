@@ -5,6 +5,7 @@ import { groupMyWork, type MyWorkTask } from "./grouping";
 const now = new Date("2026-08-08T03:30:00.000Z"); // 00:30 em São Paulo
 const base: MyWorkTask = {
   assigneeId: "00000000-0000-0000-0000-000000000102",
+  approvalStatus: null,
   blockReason: null,
   clientId: "20000000-0000-0000-0000-000000000001",
   clientName: "Órbita",
@@ -32,6 +33,7 @@ describe("Meu Trabalho grouping", () => {
         ...base,
         dueAt: "2026-08-07T12:00:00.000Z",
         id: id(6),
+        approvalStatus: "PENDING",
         status: "IN_REVIEW",
         title: "Revisão atrasada",
       },
@@ -48,6 +50,20 @@ describe("Meu Trabalho grouping", () => {
         .flat()
         .map((task) => task.id),
     ).toHaveLength(5);
+  });
+
+  it("reflects a pending approval without keeping a decided review task in that group", () => {
+    const grouped = groupMyWork(
+      [
+        { ...base, dueAt: "2026-08-08T15:00:00.000Z", id: id(7), approvalStatus: "PENDING" },
+        { ...base, dueAt: "2026-08-08T15:00:00.000Z", id: id(8), status: "IN_REVIEW" },
+      ],
+      { now },
+      "America/Sao_Paulo",
+    );
+
+    expect(grouped.awaitingApproval.map((task) => task.id)).toEqual([id(7)]);
+    expect(grouped.today.map((task) => task.id)).toEqual([id(8)]);
   });
 
   it("orders equal dates by priority and excludes completed or undated work", () => {

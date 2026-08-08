@@ -35,7 +35,7 @@ const groups: ReadonlyArray<{
   {
     key: "awaitingApproval",
     title: "Aguardando aprovação",
-    description: "Em revisão, sem duplicar nos demais grupos.",
+    description: "Entrega com decisão interna pendente, sem duplicar tarefas.",
     tone: "iris",
   },
 ];
@@ -136,7 +136,7 @@ function WorkItem({ task }: { task: MyWorkTask }) {
       <div className="my-work-item__badges">
         <Badge tone={priorityTone(task.priority)}>{priorityLabel(task.priority)}</Badge>
         {task.isBlocked && <Badge tone="critical">Bloqueada</Badge>}
-        {task.status === "IN_REVIEW" && <Badge tone="warning">Em revisão</Badge>}
+        {task.approvalStatus === "PENDING" && <Badge tone="warning">Aguardando aprovação</Badge>}
       </div>
       <h3>
         <Link href={taskHref as never}>{task.title}</Link>
