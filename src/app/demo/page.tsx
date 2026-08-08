@@ -1,59 +1,124 @@
 import { demoProjects } from "@/components/demo/demo-data";
 import { AttentionDeck } from "@/components/demo/demo-interactions";
+import { DemoIcon } from "@/components/demo/demo-icon";
 import { DemoLink } from "@/components/demo/demo-link";
 import { DemoShell } from "@/components/demo/demo-shell";
 
 export default function PublicDemoPage() {
   return (
     <DemoShell title="Central de atenção">
-      <section className="tour-hero">
-        <div>
+      <section aria-labelledby="tour-hero-title" className="tour-hero tour-decision-hero">
+        <div className="tour-hero-copy">
           <span className="eyebrow">Agência Aurora · operação em curso</span>
-          <h1>
-            Veja antes.
+          <h1 id="tour-hero-title">
+            Sua operação pede
             <br />
-            <em>Resolva</em> antes.
+            três decisões agora.
           </h1>
-          <p>
-            Uma visita guiada por decisões, entregas e pessoas — feita para mostrar como uma agência
-            encontra o próximo movimento.
+          <p className="tour-hero-lead">
+            O Workflow identifica bloqueios, prazos e aprovações antes que eles comprometam uma
+            entrega.
           </p>
+          <div className="tour-hero-actions">
+            <DemoLink
+              className="tour-button tour-button--primary"
+              href="/demo/projects/lancamento-q3/deliverables/landing-page/tasks/revisar-formulario"
+            >
+              <DemoIcon name="warning" />
+              Começar pelo crítico
+            </DemoLink>
+            <a className="tour-button" href="#attention">
+              <DemoIcon name="filter" />
+              Ver toda a atenção
+            </a>
+          </div>
+          <div aria-label="Características desta demonstração" className="tour-proof-line">
+            <span>6 sinais explicáveis</span>
+            <span>Dados fictícios</span>
+            <span>Somente leitura</span>
+          </div>
         </div>
-        <div className="tour-hero-note">
-          <span>Agora</span>
-          <strong>6 sinais pedem contexto.</strong>
-          <p>Não é um gráfico. É uma fila explicável de trabalho.</p>
-          <i aria-hidden="true" />
+        <div className="tour-decision-wrap">
+          <span className="tour-decision-priority">Prioridade 01</span>
+          <article className="tour-decision-card">
+            <div className="tour-decision-head">
+              <span className="tour-critical-label">
+                <i aria-hidden="true" />
+                Crítico · agir agora
+              </span>
+              <time dateTime="2026-08-07">venceu ontem</time>
+            </div>
+            <h2>Landing page bloqueada</h2>
+            <p>
+              A entrega não avança enquanto a validação jurídica do formulário estiver pendente.
+            </p>
+            <div aria-label="Cadeia do bloqueio" className="tour-dependency">
+              <div>
+                <span className="tour-dependency-icon">
+                  <DemoIcon name="project" />
+                </span>
+                <small>Projeto</small>
+                <strong>Lançamento Q3</strong>
+              </div>
+              <div>
+                <span className="tour-dependency-icon">
+                  <DemoIcon name="deliverable" />
+                </span>
+                <small>Entrega</small>
+                <strong>Landing page</strong>
+              </div>
+              <div>
+                <span className="tour-dependency-icon is-critical">
+                  <DemoIcon name="warning" />
+                </span>
+                <small>Tarefa</small>
+                <strong>Revisar formulário</strong>
+              </div>
+            </div>
+            <div className="tour-decision-action">
+              <p>
+                <strong>Próxima decisão</strong>
+                Validar texto jurídico com o cliente.
+              </p>
+              <DemoLink
+                className="tour-button tour-button--primary"
+                href="/demo/projects/lancamento-q3/deliverables/landing-page/tasks/revisar-formulario"
+              >
+                Abrir tarefa
+                <DemoIcon name="chevron" />
+              </DemoLink>
+            </div>
+          </article>
         </div>
       </section>
       <section aria-label="Resumo da operação" className="tour-metrics">
         <div>
-          <span>Projetos ativos</span>
-          <strong>05</strong>
-          <small>+1 desde segunda</small>
+          <span>Situações críticas</span>
+          <strong>01</strong>
+          <small className="is-critical">1 bloqueia uma entrega</small>
         </div>
         <div>
           <span>Entregas da semana</span>
           <strong>08</strong>
-          <small>3 concluídas</small>
+          <small>3 concluídas hoje</small>
         </div>
         <div>
           <span>Aprovações abertas</span>
           <strong>02</strong>
-          <small>1 há mais de 48h</small>
+          <small>1 aguarda há mais de 48h</small>
         </div>
         <div>
-          <span>Ritmo do time</span>
+          <span>Projetos no ritmo</span>
           <strong>72%</strong>
-          <small>em linha com o plano</small>
+          <small>4 de 5 acompanhados</small>
         </div>
       </section>
-      <section className="tour-split">
+      <section className="tour-split" id="attention">
         <div className="tour-section">
           <div className="tour-section-head">
             <div>
               <span className="eyebrow">01 · Central de atenção</span>
-              <h2>O que merece decisão</h2>
+              <h2>Depois do crítico.</h2>
             </div>
             <p>Clique em um sinal para entender a regra e seguir o contexto.</p>
           </div>

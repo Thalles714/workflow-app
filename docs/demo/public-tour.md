@@ -4,11 +4,12 @@
 
 ## Percurso recomendado
 
-1. **Central:** explique a fila de seis alertas e abra um deles pelo botão **Inspecionar**.
-2. **Projeto:** abra **Lançamento Q3** para mostrar progresso, entrega em foco e a lista de tarefas.
-3. **Entrega e tarefa:** siga a dependência da Landing page até **Revisar formulário**.
-4. **Aprovação:** mostre que a solicitação preserva contexto e encaminha a próxima decisão.
-5. **Arquitetura:** use os links de Código e Case study para aprofundar segurança, RLS, testes, CI e decisões de arquitetura.
+1. **Central:** comece pela decisão crítica destacada na abertura e mostre como o Workflow conecta o bloqueio ao projeto, à entrega e à tarefa.
+2. **Demais sinais:** desça até **Depois do crítico**, filtre a fila de seis alertas e abra um deles pelo botão **Inspecionar**.
+3. **Projeto:** abra **Lançamento Q3** para mostrar progresso, entrega em foco e a lista de tarefas.
+4. **Entrega e tarefa:** siga a dependência da Landing page até **Revisar formulário**.
+5. **Aprovação:** mostre que a solicitação preserva contexto e encaminha a próxima decisão.
+6. **Arquitetura:** use os links de Código e Case study para aprofundar segurança, RLS, testes, CI e decisões de arquitetura.
 
 O tour é propositalmente somente leitura. A versão autenticada do repositório demonstra Auth, RBAC, RLS, migrations, auditoria e testes; esses mecanismos não são expostos em uma conta pública compartilhada.
 
