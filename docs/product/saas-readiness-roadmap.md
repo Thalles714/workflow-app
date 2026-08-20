@@ -9,6 +9,7 @@
 ## Como usar este roadmap
 
 - Cada sessão deve terminar com uma mudança pequena, verificável e documentada.
+- Cada sessão segue o [fluxo profissional de desenvolvimento](../development/professional-workflow.md), exercitando práticas reais de produto, engenharia, revisão, qualidade e operação.
 - Confiabilidade, ativação e segurança têm prioridade sobre amplitude de features.
 - Uma feature nova só entra se reforçar a promessa central e justificar seu custo permanente.
 - Atualize o status e registre evidências ao concluir cada sessão.
@@ -155,3 +156,11 @@ Após as primeiras 20 sessões, priorizar com base em uso real:
 - **Remoção:** o UUID da Agência Aurora deixou de existir no runtime de produção e permanece apenas como dado nomeado em testes de isolamento.
 - **Evidência de navegador:** o administrador do Estúdio Horizonte acessou apenas “Norte Comércio” e não recebeu dados da Agência Aurora.
 - **Validação:** 25 arquivos/70 testes, TypeScript, lint, build e 2 smoke tests autenticados passaram.
+
+### Encerramento do dia — Marco das Sessões 1 a 6
+
+- **Data:** 20 de agosto de 2026.
+- **Marco:** as seis primeiras sessões foram consolidadas em uma branch própria, validadas e enviadas ao GitHub sem alterar diretamente a `main`.
+- **Processo adotado:** a partir deste marco, o projeto seguirá o fluxo profissional documentado, produzindo evidências de planejamento, implementação, revisão, qualidade e entrega.
+- **Limite respeitado:** a sessão diária foi encerrada após aproximadamente uma hora; a Sessão 7 fica reservada para o próximo dia de trabalho.
+- **Próximo passo:** persistir o contexto do workspace ativo e validá-lo contra as memberships do usuário.

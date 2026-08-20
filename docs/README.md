@@ -16,6 +16,7 @@ Este diretório concentra decisões, evidências e instruções que não pertenc
 - [ADR-001 — Stack](./architecture/adr-001-stack.md)
 - [ADR-002 — Auth e multi-tenancy](./architecture/adr-002-auth-multitenancy.md)
 - [Fundação](./development/foundation.md)
+- [Fluxo profissional de desenvolvimento](./development/professional-workflow.md): práticas de equipe, Git, revisão, qualidade e registro das sessões.
 - [Banco e autenticação](./development/database-auth.md)
 - [Domínio e contratos](./development/domain-api.md)
 - [Regras da Central de Atenção](./development/attention-rules.md)
