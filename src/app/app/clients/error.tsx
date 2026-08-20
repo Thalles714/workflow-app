@@ -1,12 +1,14 @@
 "use client";
-import { Alert, Button } from "@/components/ui";
-export default function ClientsError({ reset }: { reset: () => void }) {
+
+import { RouteErrorState } from "@/components/core/route-error-state";
+
+export default function ClientsError({ retry }: { retry: () => void }) {
   return (
-    <main className="core-page">
-      <Alert title="Não foi possível carregar os clientes" tone="error">
-        Os dados não foram alterados.
-      </Alert>
-      <Button onClick={reset}>Tentar novamente</Button>
-    </main>
+    <RouteErrorState
+      description="Nenhum cadastro foi alterado. Tente carregar os clientes novamente."
+      eyebrow="Clientes indisponíveis"
+      retry={retry}
+      title="Não foi possível carregar os clientes"
+    />
   );
 }

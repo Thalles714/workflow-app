@@ -10,12 +10,11 @@ import {
   createProjectAction,
   updateClientAction,
 } from "@/modules/core/actions";
-import { auroraWorkspaceId } from "@/modules/core/contracts";
 import { createServerProjectService } from "@/modules/projects/server";
 
 export default async function ClientPage({ params }: { params: Promise<{ clientId: string }> }) {
   const { clientId } = await params;
-  const context = await createAuthorizationContext(auroraWorkspaceId);
+  const context = await createAuthorizationContext();
   const clients = await createServerClientService();
   let client;
   try {

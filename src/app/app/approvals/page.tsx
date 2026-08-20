@@ -1,16 +1,16 @@
 /* eslint-disable react-hooks/error-boundaries -- awaited tenant lookup is intentionally mapped to a safe not-found response. */
 import { notFound } from "next/navigation";
+import Link from "next/link";
 import { EntityForm } from "@/components/core/entity-form";
 import { CoreShell, PageHeading } from "@/components/core/core-shell";
 import { Badge, Card, EmptyState } from "@/components/ui";
 import { createAuthorizationContext } from "@/modules/authorization/server";
 import { DomainError } from "@/modules/authorization/errors";
 import { decideApprovalAction, resetApprovalAction } from "@/modules/core/actions";
-import { auroraWorkspaceId } from "@/modules/core/contracts";
 import { createServerApprovalService } from "@/modules/approvals/server";
 
 export default async function ApprovalsPage() {
-  const context = await createAuthorizationContext(auroraWorkspaceId);
+  const context = await createAuthorizationContext();
   try {
     const approvals = await (await createServerApprovalService()).list(context, { limit: 50 });
     return (
@@ -79,6 +79,11 @@ export default async function ApprovalsPage() {
             <EmptyState
               title="Sem aprovações"
               description="Solicite uma revisão a partir de uma entrega."
+              action={
+                <Link className="ui-button ui-button--secondary" href="/app/projects">
+                  Encontrar uma entrega
+                </Link>
+              }
             />
           )}
         </div>

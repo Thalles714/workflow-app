@@ -3,7 +3,6 @@ import Link from "next/link";
 import { Breadcrumbs, CoreShell, PageHeading } from "@/components/core/core-shell";
 import { Badge, EmptyState } from "@/components/ui";
 import { createAuthorizationContext } from "@/modules/authorization/server";
-import { auroraWorkspaceId } from "@/modules/core/contracts";
 import type { MyWorkGroups, MyWorkTask } from "@/modules/my-work/grouping";
 import { createServerMyWorkService } from "@/modules/my-work/server";
 
@@ -45,7 +44,7 @@ export default async function MyWorkPage({
 }: {
   searchParams: Promise<{ view?: string }>;
 }) {
-  const context = await createAuthorizationContext(auroraWorkspaceId);
+  const context = await createAuthorizationContext();
   const work = await (await createServerMyWorkService()).listMyWork(context);
   const view = parseView((await searchParams).view);
   const visible = filterGroups(work, view);

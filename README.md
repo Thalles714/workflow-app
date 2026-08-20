@@ -78,6 +78,9 @@ As contas do seed são fictícias e recebem magic links no Mailpit local. Nenhum
 
 ## Qualidade
 
+Mantenha `pnpm dev` em um terminal separado ao executar Playwright. O preflight informa se a
+aplicação, o Supabase ou o Mailpit necessários não estiverem disponíveis.
+
 ```powershell
 pnpm format:check
 pnpm lint
@@ -108,6 +111,7 @@ O [índice completo](./docs/README.md) organiza as fontes por finalidade. Pontos
 
 - [Briefing do produto](./docs/project/briefing.md)
 - [Escopo do MVP](./docs/product/mvp-scope.md)
+- [Roadmap de prontidão comercial](./docs/product/saas-readiness-roadmap.md)
 - [Decisões arquiteturais](./docs/architecture)
 - [Banco e autenticação](./docs/development/database-auth.md)
 - [Tour público](./docs/demo/public-tour.md)

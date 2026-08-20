@@ -1,15 +1,5 @@
-import { Card, Skeleton } from "@/components/ui";
+import { RouteLoadingState } from "@/components/core/route-loading-state";
 
 export default function ProjectsLoading() {
-  return (
-    <div className="core-page" aria-busy="true" aria-label="Carregando projetos">
-      <Skeleton className="ui-skeleton--short" />
-      <Card>
-        <Skeleton className="ui-skeleton--short" />
-      </Card>
-      <Card>
-        <Skeleton />
-      </Card>
-    </div>
-  );
+  return <RouteLoadingState label="projetos" />;
 }

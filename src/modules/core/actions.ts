@@ -10,7 +10,7 @@ import { createServerDeliverableService } from "../deliverables/server";
 import { createServerTaskService } from "../tasks/server";
 import { createServerApprovalService } from "../approvals/server";
 import { createServerTaskUpdateService } from "../updates/server";
-import { auroraWorkspaceId, type CoreActionState } from "./contracts";
+import type { CoreActionState } from "./contracts";
 
 function values(formData: FormData) {
   return Object.fromEntries([...formData.entries()].map(([key, value]) => [key, String(value)]));
@@ -21,7 +21,7 @@ async function run(
 ): Promise<CoreActionState> {
   const submitted = values(formData);
   try {
-    const context = await createAuthorizationContext(auroraWorkspaceId);
+    const context = await createAuthorizationContext();
     await operation(context);
     revalidatePath("/app/clients", "layout");
     return { message: "Alterações salvas.", ok: true, values: {} };

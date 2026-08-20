@@ -4,11 +4,10 @@ import { Breadcrumbs, CoreShell, PageHeading } from "@/components/core/core-shel
 import { EmptyState } from "@/components/ui";
 import { createAuthorizationContext } from "@/modules/authorization/server";
 import { createServerClientService } from "@/modules/clients/server";
-import { auroraWorkspaceId } from "@/modules/core/contracts";
 import { createServerProjectService } from "@/modules/projects/server";
 
 export default async function ProjectsPage() {
-  const context = await createAuthorizationContext(auroraWorkspaceId);
+  const context = await createAuthorizationContext();
   const [projects, clients] = await Promise.all([
     (await createServerProjectService()).list(context),
     (await createServerClientService()).list(context),

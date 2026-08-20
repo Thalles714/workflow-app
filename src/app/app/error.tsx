@@ -1,12 +1,14 @@
 "use client";
-import { Alert, Button } from "@/components/ui";
-export default function OperationError({ reset }: { reset: () => void }) {
+
+import { RouteErrorState } from "@/components/core/route-error-state";
+
+export default function OperationError({ retry }: { retry: () => void }) {
   return (
-    <main className="app-content">
-      <Alert title="Não foi possível calcular a operação" tone="error">
-        Nenhuma regra foi alterada. Tente novamente.
-      </Alert>
-      <Button onClick={reset}>Tentar novamente</Button>
-    </main>
+    <RouteErrorState
+      description="Nenhuma regra ou dado foi alterado. Tente carregar a operação novamente."
+      eyebrow="Operação indisponível"
+      retry={retry}
+      title="Não foi possível calcular a operação"
+    />
   );
 }

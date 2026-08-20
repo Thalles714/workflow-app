@@ -12,7 +12,6 @@ import {
   requestApprovalAction,
   updateDeliverableAction,
 } from "@/modules/core/actions";
-import { auroraWorkspaceId } from "@/modules/core/contracts";
 import { createServerDeliverableService } from "@/modules/deliverables/server";
 import { createServerProjectService } from "@/modules/projects/server";
 import { listWorkspaceMembers } from "@/modules/tasks/members";
@@ -25,7 +24,7 @@ export default async function DeliverablePage({
   params: Promise<{ clientId: string; deliverableId: string; projectId: string }>;
 }) {
   const { clientId, deliverableId, projectId } = await params;
-  const context = await createAuthorizationContext(auroraWorkspaceId);
+  const context = await createAuthorizationContext();
   try {
     const [client, project, deliverable] = await Promise.all([
       (await createServerClientService()).get(context, { id: clientId }),

@@ -9,6 +9,7 @@ Este diretório concentra decisões, evidências e instruções que não pertenc
 - [Prompt mestre](./project/master-prompt.md): instruções que originaram o planejamento.
 - [Escopo do MVP](./product/mvp-scope.md): Agora, Depois e Fora do portfólio.
 - [Backlog](./product/implementation-backlog.md): entregas organizadas por fase.
+- [Roadmap de prontidão comercial](./product/saas-readiness-roadmap.md): sessões diárias para evoluir de portfólio a SaaS comercial.
 
 ## Arquitetura e desenvolvimento
 

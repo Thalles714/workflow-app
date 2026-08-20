@@ -22,6 +22,10 @@ export interface MembershipReader {
   findActiveMembership(userId: string, workspaceId: string): Promise<ActiveMembership | null>;
 }
 
+export interface DefaultMembershipReader {
+  findFirstActiveMembership(userId: string): Promise<ActiveMembership | null>;
+}
+
 export type AuthorizationErrorCode = "FORBIDDEN" | "UNAUTHENTICATED";
 
 export class AuthorizationError extends Error {
@@ -52,6 +56,24 @@ export async function resolveAuthorizationContext(
     membership.userId !== actor.id ||
     membership.workspaceId !== parsedWorkspaceId.data
   ) {
+    throw new AuthorizationError("FORBIDDEN");
+  }
+
+  return {
+    actorId: membership.userId,
+    role: membership.role,
+    workspaceId: membership.workspaceId,
+  };
+}
+
+export async function resolveDefaultAuthorizationContext(
+  actor: Readonly<{ id: string }> | null,
+  memberships: DefaultMembershipReader,
+): Promise<AuthorizationContext> {
+  if (!actor) throw new AuthorizationError("UNAUTHENTICATED");
+
+  const membership = await memberships.findFirstActiveMembership(actor.id);
+  if (!membership || membership.userId !== actor.id) {
     throw new AuthorizationError("FORBIDDEN");
   }
 

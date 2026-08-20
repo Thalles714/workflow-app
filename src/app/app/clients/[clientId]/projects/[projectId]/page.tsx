@@ -10,7 +10,6 @@ import { createAuthorizationContext } from "@/modules/authorization/server";
 import { DomainError } from "@/modules/authorization/errors";
 import { createServerClientService } from "@/modules/clients/server";
 import { createDeliverableAction } from "@/modules/core/actions";
-import { auroraWorkspaceId } from "@/modules/core/contracts";
 import {
   parseProjectWorkspaceSearch,
   type ProjectTask,
@@ -36,7 +35,7 @@ export default async function ProjectPage({
   const { clientId, projectId } = await params;
   const search = parseProjectWorkspaceSearch(await searchParams);
   const { view, ...filters } = search;
-  const context = await createAuthorizationContext(auroraWorkspaceId);
+  const context = await createAuthorizationContext();
   try {
     const [client, workspace] = await Promise.all([
       (await createServerClientService()).get(context, { id: clientId }),

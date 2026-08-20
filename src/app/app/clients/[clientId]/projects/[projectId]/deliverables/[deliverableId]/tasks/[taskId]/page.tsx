@@ -10,7 +10,6 @@ import {
   createTaskUpdateAction,
   updateTaskAction,
 } from "@/modules/core/actions";
-import { auroraWorkspaceId } from "@/modules/core/contracts";
 import { createServerDeliverableService } from "@/modules/deliverables/server";
 import { createServerProjectService } from "@/modules/projects/server";
 import { listWorkspaceMembers } from "@/modules/tasks/members";
@@ -23,7 +22,7 @@ export default async function TaskPage({
   params: Promise<{ clientId: string; deliverableId: string; projectId: string; taskId: string }>;
 }) {
   const { clientId, deliverableId, projectId, taskId } = await params;
-  const context = await createAuthorizationContext(auroraWorkspaceId);
+  const context = await createAuthorizationContext();
   try {
     const [client, project, deliverable, task, members, updates] = await Promise.all([
       (await createServerClientService()).get(context, { id: clientId }),

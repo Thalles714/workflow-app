@@ -5,11 +5,10 @@ import { AppShell } from "../layouts/app-shell";
 import { logout } from "../../modules/auth/actions";
 import { requirePageUser } from "../../modules/auth/guard";
 import { createAuthorizationContext } from "../../modules/authorization/server";
-import { auroraWorkspaceId } from "../../modules/core/contracts";
 
 export async function CoreShell({ children }: { children: ReactNode }) {
   const user = await requirePageUser();
-  const context = await createAuthorizationContext(auroraWorkspaceId);
+  const context = await createAuthorizationContext();
   return (
     <AppShell
       footer={
