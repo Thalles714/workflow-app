@@ -1,11 +1,42 @@
 import { describe, expect, it } from "vitest";
 
-import { AuthorizationError, requireAdmin, resolveAuthorizationContext } from "./service";
+import {
+  AuthorizationError,
+  requireAdmin,
+  resolveAuthorizationContext,
+  resolveDefaultAuthorizationContext,
+} from "./service";
 
 const workspaceId = "10000000-0000-0000-0000-000000000001";
 const actorId = "00000000-0000-0000-0000-000000000102";
 
 describe("authorization context", () => {
+  it("derives the default context from the actor's active membership", async () => {
+    await expect(
+      resolveDefaultAuthorizationContext(
+        { id: actorId },
+        {
+          async findFirstActiveMembership() {
+            return { role: "MEMBER", userId: actorId, workspaceId };
+          },
+        },
+      ),
+    ).resolves.toEqual({ actorId, role: "MEMBER", workspaceId });
+  });
+
+  it("denies an authenticated user without an active membership", async () => {
+    await expect(
+      resolveDefaultAuthorizationContext(
+        { id: actorId },
+        {
+          async findFirstActiveMembership() {
+            return null;
+          },
+        },
+      ),
+    ).rejects.toMatchObject({ code: "FORBIDDEN", status: 403 });
+  });
+
   it("denies an anonymous request before membership lookup", async () => {
     let queried = false;
 

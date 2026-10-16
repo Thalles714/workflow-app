@@ -1,16 +1,14 @@
 "use client";
 
-export default function ProjectsError({ reset }: { reset: () => void }) {
+import { RouteErrorState } from "@/components/core/route-error-state";
+
+export default function ProjectsError({ retry }: { retry: () => void }) {
   return (
-    <main className="core-page">
-      <section className="operation-permission" role="alert">
-        <span className="eyebrow">Projetos indisponíveis</span>
-        <h1>Não foi possível carregar os projetos</h1>
-        <p>Seus dados foram preservados. Tente carregar a página novamente.</p>
-        <button className="ui-button ui-button--primary" onClick={reset} type="button">
-          Tentar novamente
-        </button>
-      </section>
-    </main>
+    <RouteErrorState
+      description="Seus dados foram preservados. Tente carregar a lista novamente."
+      eyebrow="Projetos indisponíveis"
+      retry={retry}
+      title="Não foi possível carregar os projetos"
+    />
   );
 }

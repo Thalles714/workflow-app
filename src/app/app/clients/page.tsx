@@ -4,11 +4,10 @@ import { EntityForm } from "@/components/core/entity-form";
 import { Card, EmptyState } from "@/components/ui";
 import { createAuthorizationContext } from "@/modules/authorization/server";
 import { createClientAction } from "@/modules/core/actions";
-import { auroraWorkspaceId } from "@/modules/core/contracts";
 import { createServerClientService } from "@/modules/clients/server";
 
 export default async function ClientsPage() {
-  const context = await createAuthorizationContext(auroraWorkspaceId);
+  const context = await createAuthorizationContext();
   const clients = await (await createServerClientService()).list(context);
   return (
     <CoreShell>

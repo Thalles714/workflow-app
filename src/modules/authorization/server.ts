@@ -4,14 +4,10 @@ import { requireAuthenticatedUser } from "@/modules/auth/service";
 import { createServerAuthProvider, createServerSupabaseClient } from "@/modules/auth/server";
 
 import { createSupabaseMembershipRepository } from "./repository";
-import { resolveAuthorizationContext } from "./service";
+import { resolveDefaultAuthorizationContext } from "./service";
 
-export async function createAuthorizationContext(selectedWorkspaceId: string) {
+export async function createAuthorizationContext() {
   const actor = await requireAuthenticatedUser(await createServerAuthProvider());
   const client = await createServerSupabaseClient();
-  return resolveAuthorizationContext(
-    actor,
-    selectedWorkspaceId,
-    createSupabaseMembershipRepository(client),
-  );
+  return resolveDefaultAuthorizationContext(actor, createSupabaseMembershipRepository(client));
 }

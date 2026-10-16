@@ -5,11 +5,10 @@ import { createServerAttentionService } from "@/modules/attention/server";
 import type { AttentionAlert } from "@/modules/attention/evaluate";
 import { requirePageUser } from "@/modules/auth/guard";
 import { createAuthorizationContext } from "@/modules/authorization/server";
-import { auroraWorkspaceId } from "@/modules/core/contracts";
 
 export default async function OperationPage() {
   await requirePageUser();
-  const context = await createAuthorizationContext(auroraWorkspaceId);
+  const context = await createAuthorizationContext();
   return (
     <CoreShell>
       <div className="app-content">

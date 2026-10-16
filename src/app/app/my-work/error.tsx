@@ -1,12 +1,14 @@
 "use client";
-import { Alert, Button } from "@/components/ui";
-export default function MyWorkError({ reset }: { reset: () => void }) {
+
+import { RouteErrorState } from "@/components/core/route-error-state";
+
+export default function MyWorkError({ retry }: { retry: () => void }) {
   return (
-    <main className="core-page">
-      <Alert title="Não foi possível carregar seu trabalho" tone="error">
-        Sua fila não foi alterada. Tente novamente.
-      </Alert>
-      <Button onClick={reset}>Tentar novamente</Button>
-    </main>
+    <RouteErrorState
+      description="Sua fila não foi alterada. Tente buscar suas prioridades novamente."
+      eyebrow="Prioridades indisponíveis"
+      retry={retry}
+      title="Não foi possível carregar seu trabalho"
+    />
   );
 }
